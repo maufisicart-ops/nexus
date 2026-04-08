@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>NEXUS SAUDE v1</title>
+<style>
+:root{--bg:#050810;--s1:#0b0f18;--s2:#101620;--s3:#162030;--bd:#1a2838;--a:#00e5ff;--a2:#ff6b35;--a3:#7cff6b;--w:#ffb800;--d:#ff3d5a;--pu:#b060ff;--t:#c8dff0;--td:#4a6a8a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--t);font-family:'Courier New',monospace;font-size:13px;display:flex;flex-direction:column}
+.hdr{background:var(--s1);border-bottom:1px solid var(--bd);padding:9px 13px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo{font-size:16px;font-weight:900;color:var(--a);letter-spacing:2px}
+.logo b{color:var(--a2)}
+.hdr-r{margin-left:auto;display:flex;align-items:center;gap:7px}
+.pill{background:var(--s3);border:1px solid var(--bd);padding:2px 8px;border-radius:20px;font-size:9px;color:var(--td)}
+.pill.ok{border-color:var(--a3);color:var(--a3)}.pill.err{border-color:var(--d);color:var(--d)}
+.nav{background:var(--s1);border-bottom:1px solid var(--bd);display:flex;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.nav::-webkit-scrollbar{display:none}
+.nb{padding:9px 10px;background:none;border:none;color:var(--td);font-family:'Courier New',monospace;font-size:9px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;flex-shrink:0;text-transform:uppercase;letter-spacing:.5px}
+.nb.on{color:var(--a);border-bottom-color:var(--a)}.nb:hover{color:var(--t)}
+.cnt{flex:1;overflow-y:auto;padding:12px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.sc{display:none}.sc.on{display:block}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:13px;margin-bottom:11px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--a),transparent)}
+.card.cw::before{background:linear-gradient(90deg,var(--w),transparent)}
+.card.cg::before{background:linear-gradient(90deg,var(--a3),transparent)}
+.card.co::before{background:linear-gradient(90deg,var(--a2),transparent)}
+.card.cp::before{background:linear-gradient(90deg,var(--pu),transparent)}
+.card.cd::before{background:linear-gradient(90deg,var(--d),transparent)}
+.ct{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px}
+.si{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:10px;text-align:center}
+.sv{font-size:18px;font-weight:800;line-height:1;color:var(--a)}
+.sv.g{color:var(--a3)}.sv.o{color:var(--a2)}.sv.w{color:var(--w)}.sv.d{color:var(--d)}.sv.p{color:var(--pu)}.sv.sm{font-size:13px}
+.sl{font-size:8px;color:var(--td);text-transform:uppercase;letter-spacing:.7px;margin-top:3px}
+.pb{height:5px;background:var(--s3);border-radius:3px;overflow:hidden;margin:4px 0}
+.pf{height:100%;border-radius:3px;background:var(--a);transition:width .5s}
+.pf.g{background:var(--a3)}.pf.w{background:var(--w)}.pf.d{background:var(--d)}
+.fg{margin-bottom:8px}
+.fl{display:block;font-size:8px;color:var(--td);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:3px}
+input,select,textarea{width:100%;background:var(--s2);border:1px solid var(--bd);color:var(--t);font-family:'Courier New',monospace;font-size:12px;padding:7px 9px;border-radius:5px;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--a)}
+select option{background:var(--s2)}
+textarea{resize:vertical;min-height:55px;line-height:1.5}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+button{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 13px;border:1px solid var(--bd);border-radius:6px;font-family:'Courier New',monospace;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;background:var(--s2);color:var(--t);text-transform:uppercase;letter-spacing:.5px}
+button:hover{border-color:var(--a);color:var(--a)}
+button.pr{background:var(--a);color:#000;border-color:var(--a)}.pr:hover{background:#33ecff}
+button.pu{background:var(--pu);color:#fff;border-color:var(--pu)}
+button.or{background:var(--a2);color:#fff;border-color:var(--a2)}
+button.wn{background:var(--w);color:#000;border-color:var(--w)}
+button.gr{background:var(--a3);color:#000;border-color:var(--a3)}
+button.fw{width:100%}
+button.sm{padding:4px 8px;font-size:9px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:8px;font-weight:700}
+.tg{background:rgba(124,255,107,.15);color:var(--a3);border:1px solid var(--a3)}
+.tw{background:rgba(255,184,0,.15);color:var(--w);border:1px solid var(--w)}
+.tp{background:rgba(176,96,255,.15);color:var(--pu);border:1px solid var(--pu)}
+.to{background:rgba(255,107,53,.15);color:var(--a2);border:1px solid var(--a2)}
+.td2{background:rgba(255,61,90,.15);color:var(--d);border:1px solid var(--d)}
+.al{padding:9px 12px;border-radius:6px;font-size:11px;margin-bottom:8px;display:flex;gap:7px;line-height:1.55;border:1px solid}
+.al-i{background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.2);color:var(--a)}
+.al-d{background:rgba(255,61,90,.06);border-color:rgba(255,61,90,.2);color:var(--d)}
+.al-w{background:rgba(255,184,0,.06);border-color:rgba(255,184,0,.2);color:var(--w)}
+.al-g{background:rgba(124,255,107,.06);border-color:rgba(124,255,107,.2);color:var(--a3)}
+.al-p{background:rgba(176,96,255,.06);border-color:rgba(176,96,255,.2);color:var(--pu)}
+.dv{height:1px;background:var(--bd);margin:10px 0}
+.stb{background:var(--s3);border:1px solid var(--bd);border-radius:6px;padding:11px;font-size:11px;line-height:1.8;max-height:500px;overflow-y:auto;display:none;word-break:break-word;color:var(--t);scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.stb.on{display:block;border-color:rgba(0,229,255,.25)}
+.stb h2{font-size:13px;font-weight:700;color:var(--a2);margin:8px 0 3px}
+.stb h3{font-size:12px;font-weight:700;color:var(--a);margin:6px 0 3px}
+.stb strong{font-weight:700}
+.stb .lr{display:block;padding:2px 0 2px 10px;border-left:2px solid var(--a);margin:2px 0;font-size:11px}
+.cur{display:inline-block;width:7px;height:13px;background:var(--a);margin-left:2px;vertical-align:middle;animation:bl .5s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+.upz{border:2px dashed var(--bd);border-radius:8px;padding:18px;text-align:center;cursor:pointer;background:var(--s2);position:relative;margin-bottom:9px;transition:border-color .2s}
+.upz:hover{border-color:var(--pu)}.upz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upz-t{font-size:11px;color:var(--td);margin-top:5px}
+.fi{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:10px;margin-bottom:7px}
+.fi-h{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.fi-th{width:48px;height:48px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);flex-shrink:0}
+.sb{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:8px;font-weight:700;border:1px solid}
+.sb-ok{background:rgba(124,255,107,.1);border-color:var(--a3);color:var(--a3)}
+.sb-p{background:rgba(0,229,255,.1);border-color:var(--a);color:var(--a)}
+.sb-w{background:rgba(255,184,0,.1);border-color:var(--w);color:var(--w)}
+.spc{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:11px;margin-bottom:8px}
+.laudo-box{background:var(--s3);border:1px solid rgba(0,229,255,.3);border-radius:8px;padding:14px;margin-top:10px}
+.laud-t{font-size:14px;font-weight:800;color:var(--a);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.ab{background:linear-gradient(135deg,var(--pu),var(--a));color:#fff;padding:3px 10px;border-radius:20px;font-size:9px;font-weight:700}
+.iac{display:flex;flex-direction:column;height:calc(100vh - 120px)}
+.iam{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:8px 0;scrollbar-width:thin;scrollbar-color:var(--bd) transparent}
+.msg{max-width:93%;padding:9px 12px;border-radius:7px;font-size:11px;line-height:1.7;border:1px solid var(--bd)}
+.msg-ia{align-self:flex-start;background:var(--s2);border-left:3px solid var(--a);border-radius:0 7px 7px 0}
+.msg-u{align-self:flex-end;background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.2)}
+.ms{font-size:8px;color:var(--a);text-transform:uppercase;letter-spacing:2px;margin-bottom:3px;font-weight:700}
+.iair{display:flex;gap:7px;padding:9px 0 0;border-top:1px solid var(--bd);flex-shrink:0}
+.iair input{flex:1}
+.mc2{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:10px}
+.mv{font-size:20px;font-weight:800;line-height:1}
+.ml{font-size:8px;color:var(--td);text-transform:uppercase;margin-top:2px;letter-spacing:.5px}
+#toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);padding:7px 14px;border-radius:20px;font-size:10px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999;white-space:nowrap}
+#toast.show{opacity:1}
+#toast.ok{background:rgba(124,255,107,.9);color:#000}
+#toast.err{background:rgba(255,61,90,.9);color:#fff}
+#toast.info{background:rgba(0,229,255,.9);color:#000}
+.ld{display:inline-flex;gap:3px;align-items:center}
+.ld span{width:4px;height:4px;border-radius:50%;background:currentColor;animation:bk 1.1s infinite;opacity:.3}
+.ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
+@keyframes bk{50%{opacity:1}}
+.mt8{margin-top:8px}.mt12{margin-top:11px}.mb8{margin-bottom:8px}
+.fb{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px}
+.ga{color:var(--a3)}.gd{color:var(--d)}.gw{color:var(--w)}.gi{color:var(--a)}.go{color:var(--a2)}.gp{color:var(--pu)}
+.es{text-align:center;padding:20px;color:var(--td);font-size:11px}
+.hid{display:none!important}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="logo">NEXUS <b>SAUDE</b> <span style="font-size:10px;color:var(--td);font-weight:400">v1</span></div>
+  <div class="hdr-r">
+    <span id="hdr-d" style="font-size:9px;color:var(--td)"></span>
+    <span class="pill" id="api-pill">API</span>
+    <span class="pill" id="age-pill" style="display:none"></span>
+  </div>
+</div>
+<nav class="nav">
+  <button class="nb on"  onclick="gn('perfil',0)">Perfil</button>
+  <button class="nb"     onclick="gn('olhos',1)">Olhos</button>
+  <button class="nb"     onclick="gn('intestino',2)">Intestino</button>
+  <button class="nb"     onclick="gn('supl',3)">Suplementos</button>
+  <button class="nb"     onclick="gn('dieta',4)">Dieta</button>
+  <button class="nb"     onclick="gn('exames',5)">Exames</button>
+  <button class="nb"     onclick="gn('tratamentos',6)">Tratamentos</button>
+  <button class="nb"     onclick="gn('laudo',7)">Laudo IA</button>
+  <button class="nb"     onclick="gn('ia',8)">IA Central</button>
+</nav>
+<div class="cnt">
+
+<!-- PERFIL -->
+<div id="sc-perfil" class="sc on">
+  <div class="al al-i mb8">Preencha seu perfil completo. Todos os modulos usam esses dados para analises personalizadas e precisas.</div>
+  <div class="card">
+    <div class="ct">Dados pessoais</div>
+    <div class="fr"><div class="fg"><label class="fl">Nome</label><input id="p-nome" oninput="savP()"></div><div class="fg"><label class="fl">Data de nascimento</label><input type="date" id="p-nasc" oninput="savP();calcTudo()"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Sexo</label><select id="p-sexo" onchange="savP()"><option value="M">Masculino</option><option value="F">Feminino</option></select></div><div class="fg"><label class="fl">Altura (cm)</label><input type="number" id="p-alt" placeholder="175" oninput="savP();calcTudo()"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Peso atual (kg)</label><input type="number" id="p-peso" placeholder="75" step="0.1" oninput="savP();calcTudo()"></div><div class="fg"><label class="fl">Circunferencia abdominal (cm)</label><input type="number" id="p-abd" placeholder="85" oninput="savP()"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Nivel de atividade</label><select id="p-ativ" onchange="savP();calcTudo()"><option value="sedentario">Sedentario</option><option value="leve">Leve (1-2x/sem)</option><option value="moderado">Moderado (3-4x/sem)</option><option value="ativo">Ativo (5-6x/sem)</option><option value="muito_ativo">Muito ativo</option></select></div><div class="fg"><label class="fl">Objetivo principal</label><select id="p-obj" onchange="savP()"><option value="saude">Saude geral</option><option value="perda">Perda de peso</option><option value="ganho">Ganho muscular</option><option value="tgi">Saude intestinal</option><option value="energia">Energia</option><option value="antiinf">Anti-inflamatorio</option><option value="cerebro">Saude cerebral</option><option value="longevidade">Longevidade</option></select></div></div>
+  </div>
+  <div class="card" id="imc-card">
+    <div class="ct">Composicao corporal calculada</div>
+    <div class="g4 mb8">
+      <div class="si"><div class="sv" id="imc-val">--</div><div class="sl">IMC</div></div>
+      <div class="si"><div class="sv o sm" id="imc-cls">--</div><div class="sl">Status</div></div>
+      <div class="si"><div class="sv g sm" id="tmb-val">--</div><div class="sl">TMB kcal</div></div>
+      <div class="si"><div class="sv p sm" id="tdee-val">--</div><div class="sl">TDEE kcal</div></div>
+    </div>
+    <div class="g3">
+      <div class="si"><div class="sv sm" id="peso-ideal">--</div><div class="sl">Peso ideal (kg)</div></div>
+      <div class="si"><div class="sv sm" id="idade-bio">--</div><div class="sl">Idade biologica</div></div>
+      <div class="si"><div class="sv sm" id="gordura-c">--</div><div class="sl">% Gordura est.</div></div>
+    </div>
+    <button class="pr fw mt8" id="btn-imc" onclick="run('imc_completo','imc-stb','btn-imc')">Analise IA completa da composicao corporal</button>
+    <div id="imc-stb" class="stb mt8"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Historico de saude</div>
+    <div class="fg"><label class="fl">Condicoes medicas / diagnosticos</label><textarea id="p-cond" placeholder="Ex: Hernia de disco L4-L5, ansiedade, refluxo, cirurgia de coluna..." oninput="savP()"></textarea></div>
+    <div class="fg"><label class="fl">Sintomas atuais (descreva detalhadamente)</label><textarea id="p-sint" rows="3" placeholder="Ex: Tontura ao levantar, fadiga apos almoco, intestino solto 2-3x/dia, dor lombar, visao turva ao entardecer..." oninput="savP()"></textarea></div>
+    <div class="fg"><label class="fl">Alergias e intolerancias</label><input id="p-alerg" placeholder="Ex: Intolerante a lactose, alergia a dipirona..." oninput="savP()"></div>
+    <div class="fg"><label class="fl">Historico familiar</label><input id="p-fam" placeholder="Ex: Pai diabetico tipo 2, mae com hipotireoidismo..." oninput="savP()"></div>
+  </div>
+  <div class="card cg">
+    <div class="ct">Analise IA do perfil + idade biologica + plano mestre</div>
+    <button class="pr fw" id="btn-perfil" onclick="run('perfil_completo','perfil-stb','btn-perfil')">Analisar perfil + calcular idade biologica + gerar plano</button>
+    <div id="perfil-stb" class="stb mt8"></div>
+  </div>
+</div>
+
+<!-- OLHOS -->
+<div id="sc-olhos" class="sc hid">
+  <div class="al al-p mb8">Carregue fotos dos olhos (iris, esclera, retina) e descreva os sintomas. A IA pensa como oftalmologista integrativo e gera laudo personalizado com diagnostico, tratamento e protocolo de recuperacao.</div>
+  <div class="card cp">
+    <div class="ct">Upload de fotos dos olhos</div>
+    <div class="upz" ondragover="event.preventDefault();this.style.borderColor='var(--pu)'" ondragleave="this.style.borderColor=''" ondrop="hDropOlhos(event)">
+      <input type="file" id="up-olhos" accept="image/*" multiple onchange="hOlhos(event)">
+      <div style="font-size:26px;margin-bottom:5px">👁️</div>
+      <div class="upz-t"><strong>Clique ou arraste</strong> fotos dos olhos, iris, esclera, retina, laudos...</div>
+      <div style="font-size:10px;color:var(--pu);margin-top:4px;font-weight:700" id="up-olhos-cnt"></div>
+    </div>
+    <div id="olhos-prev"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Sintomas e queixas visuais</div>
+    <div class="fg"><label class="fl">Sintomas visuais (descreva tudo)</label><textarea id="olhos-sint" rows="3" placeholder="Ex: Visao turva a distancia, pontos flutuantes (moscas volantes), ardencia ao acordar, fotofobia, dificuldade de foco, halos em luzes, visao dupla, sensacao de areia..." oninput="savOlhos()"></textarea></div>
+    <div class="fr"><div class="fg"><label class="fl">Acuidade visual OD (olho direito)</label><input id="olhos-od" placeholder="Ex: 20/20 ou -2.50 ou nd" oninput="savOlhos()"></div><div class="fg"><label class="fl">Acuidade visual OE (olho esquerdo)</label><input id="olhos-oe" placeholder="Ex: 20/40 ou -3.00 ou nd" oninput="savOlhos()"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Usa oculos ou lentes?</label><select id="olhos-oc" onchange="savOlhos()"><option value="nao">Nao</option><option value="oculos">Oculos</option><option value="lentes">Lentes de contato</option><option value="ambos">Ambos</option></select></div><div class="fg"><label class="fl">Ultima consulta oftalmologica</label><input type="date" id="olhos-dt" oninput="savOlhos()"></div></div>
+    <div class="fg"><label class="fl">Contexto (pos-Covid, diabetes, medicamentos, pressao ocular)</label><textarea id="olhos-ctx" placeholder="Ex: Pressao ocular 21 mmHg em 2023, uso de Rivotril, historico de uveite, diabetes tipo 2..." oninput="savOlhos()"></textarea></div>
+  </div>
+  <div class="card cp">
+    <div class="ct">Analise oftalmologica IA - escolha o especialista</div>
+    <div class="g2 mb8">
+      <button class="sm pu fw" id="btn-oftalmo" onclick="analisarOlhos('oftalmologico')">Oftalmologista Clinico</button>
+      <button class="sm fw" style="background:rgba(176,96,255,.15);color:var(--pu);border-color:var(--pu)" id="btn-irid" onclick="analisarOlhos('iridologia')">Iridologista</button>
+      <button class="sm fw" style="background:rgba(255,61,90,.15);color:var(--d);border-color:var(--d)" id="btn-escl" onclick="analisarOlhos('esclerologia')">Esclerologista</button>
+      <button class="sm pr fw" id="btn-integ" onclick="analisarOlhos('integrativo')">Analise Integrativa Completa</button>
+    </div>
+    <div id="olhos-res"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Protocolos por sintoma ocular</div>
+    <div class="g2">
+      <button class="sm fw" onclick="run('olhos_seco','olhos-sint-stb','')">Olho Seco</button>
+      <button class="sm fw" onclick="run('olhos_pressao','olhos-sint-stb','')">Pressao Ocular</button>
+      <button class="sm fw" onclick="run('olhos_moscas','olhos-sint-stb','')">Moscas Volantes</button>
+      <button class="sm fw" onclick="run('olhos_turva','olhos-sint-stb','')">Visao Turva</button>
+      <button class="sm fw" onclick="run('olhos_fadiga','olhos-sint-stb','')">Fadiga Visual</button>
+      <button class="sm fw" onclick="run('olhos_nutri','olhos-sint-stb','')">Nutricao para Olhos</button>
+    </div>
+    <div id="olhos-sint-stb" class="stb mt8"></div>
+  </div>
+  <div class="card cg">
+    <div class="ct">Exercicios oculares diarios (10 min)</div>
+    <button class="gr fw sm" id="btn-olhos-ex" onclick="run('olhos_exercicios','olhos-ex-stb','btn-olhos-ex')">Gerar rotina completa de exercicios oculares</button>
+    <div id="olhos-ex-stb" class="stb mt8"></div>
+  </div>
+</div>
+
+<!-- INTESTINO -->
+<div id="sc-intestino" class="sc hid">
+  <div class="al al-i mb8">Modulo completo de saude intestinal com diagnostico, prescricao de exames para vermifugacao correta, microbioma e protocolo de regeneracao.</div>
+  <div class="card">
+    <div class="ct">Sintomas intestinais</div>
+    <div class="fg"><label class="fl">Descreva detalhadamente seus sintomas</label><textarea id="int-sint" rows="4" placeholder="Ex: Intestino solto 2-3x ao dia, fezes com muco, gases excessivos apos refeicoes, inchaco abdominal a tarde, dor em colica no lado esquerdo, urgencia para evacuar, fezes com odor forte..." oninput="savInt()"></textarea></div>
+    <div class="fr"><div class="fg"><label class="fl">Frequencia de evacuacao</label><select id="int-freq" onchange="savInt()"><option value="1dia">1x ao dia</option><option value="2x">2-3x ao dia</option><option value="mais3">Mais de 3x (diarreia)</option><option value="2dias">A cada 2 dias</option><option value="3mais">A cada 3+ dias (constipacao)</option><option value="alt">Alternado</option></select></div><div class="fg"><label class="fl">Consistencia - Escala Bristol</label><select id="int-bris" onchange="savInt()"><option value="1">1 - Carocos duros</option><option value="2">2 - Salsichas duras</option><option value="3">3 - Com rachaduras</option><option value="4">4 - Suaves (ideal)</option><option value="5">5 - Pastosa</option><option value="6">6 - Paposa/borra</option><option value="7">7 - Liquida/aquosa</option></select></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Sangue ou muco?</label><select id="int-sang" onchange="savInt()"><option value="nao">Nao</option><option value="muco">Muco sim</option><option value="sang_p">Sangue no papel</option><option value="sang_f">Sangue nas fezes</option></select></div><div class="fg"><label class="fl">Quando piora?</label><select id="int-pior" onchange="savInt()"><option value="stress">Estresse/ansiedade</option><option value="gluten">Apos gluten</option><option value="lactose">Apos laticinios</option><option value="gordura">Apos gordura</option><option value="manha">Pela manha</option><option value="noite">A noite</option><option value="sempre">Sempre</option></select></div></div>
+    <div class="fg"><label class="fl">Viagens recentes? Contato com animais? Agua de poco?</label><input id="int-hist" placeholder="Ex: Viajei para o Nordeste, bebo agua de poco artesiano, tenho 3 gatos..." oninput="savInt()"></div>
+    <div class="fg"><label class="fl">Sintomas fora do intestino (ansiedade, pele, cabelo, humor)</label><textarea id="int-rel" placeholder="Ansiedade, depressao, fadiga cronica, bruxismo, urticaria, queda de cabelo... (eixo intestino-cerebro)" oninput="savInt()"></textarea></div>
+  </div>
+  <div class="card cp">
+    <div class="ct">Diagnostico IA + Prescricao de exames para vermifugacao correta</div>
+    <div class="al al-w mb8">A IA analisa seu quadro e prescreve os exames para identificar QUAL parasita/bacteria esta causando o problema e qual vermifugo correto usar.</div>
+    <button class="pu fw" id="btn-int-diag" onclick="run('int_diag','int-diag-stb','btn-int-diag')">Diagnostico + Prescricao de exames + Protocolo vermifugacao</button>
+    <div id="int-diag-stb" class="stb mt8"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Analises especificas</div>
+    <div class="g2">
+      <button class="sm fw" onclick="run('int_microb','int-esp-stb','')">Microbioma e Disbiose</button>
+      <button class="sm fw" onclick="run('int_leaky','int-esp-stb','')">Intestino Permeavel</button>
+      <button class="sm fw" onclick="run('int_sibo','int-esp-stb','')">SIBO</button>
+      <button class="sm fw" onclick="run('int_cand','int-esp-stb','')">Candidíase Intestinal</button>
+      <button class="sm fw" onclick="run('int_ans','int-esp-stb','')">Eixo Intestino-Cerebro</button>
+      <button class="sm fw" onclick="run('int_prot','int-esp-stb','')">Protocolo 12 semanas</button>
+    </div>
+    <div id="int-esp-stb" class="stb mt8"></div>
+  </div>
+</div>
+
+<!-- SUPLEMENTOS -->
+<div id="sc-supl" class="sc hid">
+  <div class="al al-i mb8">Carregue foto dos suplementos, registre o que usa, e a IA analisa considerando seu peso, altura, exames e necessidades. Inclui horarios, doses e como combinar com a dieta.</div>
+  <div class="card cw">
+    <div class="ct">Foto dos suplementos atuais</div>
+    <div class="upz"><input type="file" id="up-supl-f" accept="image/*" onchange="hSuplFoto(event)"><div style="font-size:26px;margin-bottom:5px">💊</div><div class="upz-t"><strong>Foto</strong> de todos os suplementos, vitaminas e medicamentos</div></div>
+    <div id="supl-foto-p"></div>
+    <button class="wn fw mt8" id="btn-supl-id" onclick="identificarSupl()">Identificar e analisar todos os suplementos da foto</button>
+    <div id="supl-id-stb" class="stb mt8"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Registrar suplemento manualmente</div>
+    <div class="fr"><div class="fg"><label class="fl">Nome</label><input id="sp-n" placeholder="Ex: Creatina Monoidratada"></div><div class="fg"><label class="fl">Categoria</label><select id="sp-c"><option value="proteina">Proteina</option><option value="vitamina">Vitamina/Mineral</option><option value="omega">Omega/Lipidio</option><option value="probiotico">Probiotico</option><option value="tgi">Saude Intestinal</option><option value="adaptogeno">Adaptogeno</option><option value="psiq">Psiquiatrico/Neuro</option><option value="aminoacido">Aminoacido</option><option value="outro">Outro</option></select></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Dosagem atual</label><input id="sp-d" placeholder="Ex: 5g"></div><div class="fg"><label class="fl">Horario que toma</label><input id="sp-h" placeholder="Ex: Manha em jejum"></div></div>
+    <div class="fg"><label class="fl">Objetivo / por que toma</label><textarea id="sp-o" style="min-height:40px"></textarea></div>
+    <div class="fg"><label class="fl">Ha quanto tempo usa</label><input id="sp-t" placeholder="Ex: 3 meses"></div>
+    <button class="fw" onclick="addSupl()">Registrar suplemento</button>
+  </div>
+  <div class="card">
+    <div class="ct">Otimizacao do protocolo</div>
+    <div class="fg"><label class="fl">Queixas / necessidades atuais</label><textarea id="sp-ctx" rows="3" placeholder="Fadiga, queda de cabelo, ansiedade, intestino ruim, sono irregular..." oninput="savSupl()"></textarea></div>
+    <div class="fr"><div class="fg"><label class="fl">Orcamento supl. R$/mes</label><input type="number" id="sp-orca" placeholder="150" oninput="savSupl()"></div><div class="fg"><label class="fl">Refeicoes por dia</label><input type="number" id="sp-ref" placeholder="3" oninput="savSupl()"></div></div>
+    <button class="wn fw mt8" id="btn-supl-otm" onclick="run('supl_otim','supl-otm-stb','btn-supl-otm')">Otimizar protocolo considerando peso, altura, exames e queixas</button>
+    <div id="supl-otm-stb" class="stb mt8"></div>
+    <button class="sm mt8 fw" id="btn-supl-hor" onclick="run('supl_hor','supl-hor-stb','btn-supl-hor')">Gerar tabela de horarios ideal</button>
+    <div id="supl-hor-stb" class="stb mt8"></div>
+  </div>
+  <div class="fb mt12 mb8"><span style="font-weight:700;color:var(--a)">Protocolo atual</span><span style="color:var(--a3);font-weight:700" id="supl-tot">R$0/mes</span></div>
+  <div id="lista-supl"></div>
+</div>
+
+<!-- DIETA -->
+<div id="sc-dieta" class="sc hid">
+  <div class="al al-g mb8">Plano alimentar integrado com suplementos, exames e perfil corporal. Perspectiva de melhora em 1 semana, 1 mes e 6 meses.</div>
+  <div class="card co">
+    <div class="ct">Upload de prescricao alimentar</div>
+    <div class="upz"><input type="file" id="up-presc" accept="image/*" onchange="hPresc(event)"><div style="font-size:26px;margin-bottom:5px">📋</div><div class="upz-t"><strong>Foto</strong> da prescricao de nutricionista ou nutrologo</div></div>
+    <div id="presc-prev"></div>
+    <div class="fg mt8"><label class="fl">Contexto da prescricao</label><textarea id="presc-ctx" placeholder="Qual profissional prescreveu, quando, objetivo..."></textarea></div>
+    <button class="or fw" id="btn-presc" onclick="salvarPresc()">Salvar e Interpretar com IA</button>
+    <div id="presc-stb" class="stb mt8"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Configuracoes alimentares</div>
+    <div class="fr"><div class="fg"><label class="fl">Orcamento R$/mes</label><input type="number" id="d-orca" placeholder="400" oninput="savDieta()"></div><div class="fg"><label class="fl">Objetivo</label><select id="d-obj" onchange="savDieta()"><option value="saude">Saude geral</option><option value="perda">Perda de peso</option><option value="ganho">Ganho muscular</option><option value="tgi">Saude intestinal</option><option value="antiinf">Anti-inflamatorio</option><option value="cerebro">Saude cerebral</option><option value="energia">Energia/performance</option></select></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Restricoes / alergias</label><input id="d-rest" oninput="savDieta()"></div><div class="fg"><label class="fl">Alimentos que nao gosta</label><input id="d-neg" oninput="savDieta()"></div></div>
+    <div class="fg"><label class="fl">Como esta sua alimentacao atual e o que quer melhorar</label><textarea id="d-relato" rows="3" oninput="savDieta()"></textarea></div>
+    <div class="g3 mt8">
+      <button class="sm pr fw" id="btn-d-plan" onclick="run('dieta_plan','d-plan-stb','btn-d-plan')">Plano semanal</button>
+      <button class="sm fw" id="btn-d-comp" onclick="run('dieta_comp','d-comp-stb','btn-d-comp')">Lista de compras</button>
+      <button class="sm wn fw" id="btn-d-evo" onclick="run('dieta_evo','d-evo-stb','btn-d-evo')">Perspectiva 1s/1m/6m</button>
+    </div>
+    <div id="d-plan-stb" class="stb mt8"></div>
+    <div id="d-comp-stb" class="stb mt8"></div>
+    <div id="d-evo-stb" class="stb mt8"></div>
+  </div>
+  <div class="fb mt12 mb8"><span style="font-weight:700;color:var(--a2)">Prescricoes salvas</span></div>
+  <div id="lista-presc"></div>
+</div>
+
+<!-- EXAMES -->
+<div id="sc-exames" class="sc hid">
+  <div class="al al-p mb8">Carregue todos os exames de uma vez. Cada um recebe especialista IA diferente. Os resultados alimentam automaticamente todos os outros modulos.</div>
+  <div class="card cp">
+    <div class="ct">Upload multiplo de exames</div>
+    <div class="upz" ondragover="event.preventDefault();this.style.borderColor='var(--pu)'" ondragleave="this.style.borderColor=''" ondrop="hDropEx(event)"><input type="file" id="up-ex" accept="image/*" multiple onchange="hExMulti(event)"><div style="font-size:26px;margin-bottom:5px">🔬</div><div class="upz-t"><strong>Clique ou arraste</strong> - varios arquivos de uma vez. Exames de sangue, urina, fezes, imagens, laudos...</div><div style="font-size:10px;color:var(--pu);margin-top:4px;font-weight:700" id="up-ex-cnt"></div></div>
+    <div class="fg mt8"><label class="fl">Queixas e contexto geral</label><textarea id="ex-ctx" placeholder="Quais sintomas voce sente? Contexto dos exames..."></textarea></div>
+    <div id="fila-ex-cfg"></div>
+    <button class="pu fw mt8" id="btn-ex-go" style="display:none" onclick="iniciarFilaEx()">Analisar todos os exames</button>
+  </div>
+  <div id="fila-ex-prog" class="hid card cp"><div class="ct"><span class="ld"><span></span><span></span><span></span></span> <span id="ex-prog-txt">Processando...</span></div><div class="pb"><div class="pf" id="ex-prog-bar" style="width:0%"></div></div><div style="font-size:10px;color:var(--td);margin-top:4px" id="ex-prog-spec"></div></div>
+  <div id="lista-ex"></div>
+  <div id="card-ex-geral" class="card cg hid"><div class="ct">Analise integrativa de todos os exames</div><button class="gr fw sm mb8" id="btn-ex-geral" onclick="run('ex_geral','ex-geral-stb','btn-ex-geral')">Gerar analise integrativa</button><div id="ex-geral-stb" class="stb"></div></div>
+</div>
+
+<!-- TRATAMENTOS -->
+<div id="sc-tratamentos" class="sc hid">
+  <div class="al al-w mb8">Registre todos os tratamentos em andamento. A IA explica o que esta acontecendo no corpo, como funciona, e como melhorar e curar.</div>
+  <div class="card cw">
+    <div class="ct">Registrar tratamento</div>
+    <div class="fr"><div class="fg"><label class="fl">Tipo</label><select id="tr-tipo"><option value="medicamento">Medicamento</option><option value="fisioterapia">Fisioterapia</option><option value="psicoterapia">Psicoterapia</option><option value="nutricional">Nutricional</option><option value="cirurgia">Pos-cirurgia</option><option value="alternativo">Terapia alternativa</option><option value="odontologico">Odontologico</option><option value="outro">Outro</option></select></div><div class="fg"><label class="fl">Nome / descricao</label><input id="tr-nome" placeholder="Ex: Sertralina 50mg, Fisioterapia coluna..."></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Iniciado em</label><input type="date" id="tr-ini"></div><div class="fg"><label class="fl">Frequencia</label><input id="tr-freq" placeholder="Ex: 1x ao dia, 2x/semana"></div></div>
+    <div class="fg"><label class="fl">Para qual condicao</label><input id="tr-obj" placeholder="Ex: Depressao, hernia de disco, ansiedade..."></div>
+    <div class="fg"><label class="fl">Duvidas sobre este tratamento</label><textarea id="tr-duv" placeholder="O que nao entende? O que quer saber? Ex: Por que tomo isso? Posso parar? Efeitos colaterais?"></textarea></div>
+    <button class="fw" onclick="addTrat()">Registrar tratamento</button>
+  </div>
+  <div class="card cp">
+    <div class="ct">Analise geral dos tratamentos</div>
+    <div class="fg"><label class="fl">Duvidas gerais</label><textarea id="trat-duv-g" placeholder="Ex: Por que tomo tanto remedio? Posso melhorar sem medicacao? O que esta causando tudo isso?"></textarea></div>
+    <button class="pu fw mt8" id="btn-trat" onclick="run('trat_analise','trat-stb','btn-trat')">Analisar tratamentos + explicar + plano de melhora</button>
+    <div id="trat-stb" class="stb mt8"></div>
+  </div>
+  <div class="fb mt12 mb8"><span style="font-weight:700;color:var(--w)">Tratamentos em andamento</span></div>
+  <div id="lista-trat"></div>
+</div>
+
+<!-- LAUDO -->
+<div id="sc-laudo" class="sc hid">
+  <div class="al al-p mb8">O LAUDO PESSOAL integra TODOS os dados e gera documento completo como uma consulta medica integrativa. Preencha os outros modulos primeiro para resultados mais precisos.</div>
+  <div class="card cp">
+    <div class="ct">Gerar laudo pessoal</div>
+    <div class="fg"><label class="fl">Queixa principal para o laudo de hoje</label><textarea id="laudo-q" placeholder="O que mais te preocupa hoje? Qual o principal sintoma ou objetivo desta consulta virtual?"></textarea></div>
+    <div class="g2 mt8">
+      <button class="pu fw" id="btn-laudo-g" onclick="gerarLaudo('geral')">Laudo Geral Completo</button>
+      <button class="fw" id="btn-laudo-o" onclick="gerarLaudo('olhos')">Laudo Ocular</button>
+      <button class="fw" id="btn-laudo-i" onclick="gerarLaudo('intestino')">Laudo Intestinal</button>
+      <button class="fw" id="btn-laudo-n" onclick="gerarLaudo('nutricional')">Laudo Nutricional</button>
+    </div>
+    <div id="laudo-res" class="mt12"></div>
+  </div>
+</div>
+
+<!-- IA CENTRAL -->
+<div id="sc-ia" class="sc hid">
+  <div class="iac">
+    <div class="iam" id="ia-msgs">
+      <div class="msg msg-ia"><div class="ms">NEXUS SAUDE IA</div>
+Ola! Sou seu medico virtual integrativo. Tenho acesso ao seu prontuario completo: dados corporais, sintomas, exames, olhos, intestino, suplementos, dieta e tratamentos.<br><br>
+Posso responder qualquer duvida sobre sua saude, explicar resultados, analisar sintomas, recomendar protocolos e ajudar a entender o que esta acontecendo no seu corpo.<br><br>
+Lembro: sempre consulte profissionais de saude para diagnostico definitivo.
+      </div>
+    </div>
+    <div class="iair">
+      <input id="ia-inp" placeholder="Pergunte sobre sua saude..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendIA()}">
+      <button class="pr" onclick="sendIA()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /cnt -->
+<div id="toast"></div>
+
+<script>
+// ─── ESTADO ───────────────────────────────────────────────────
+let S={
+  perfil:{nome:'',nasc:'',sexo:'M',alt:0,peso:0,abd:0,ativ:'moderado',obj:'saude',cond:'',sint:'',alerg:'',fam:''},
+  olhos:{sint:'',od:'',oe:'',oc:'nao',dt:'',ctx:''},
+  intestino:{sint:'',freq:'1dia',bris:'4',sang:'nao',pior:'stress',hist:'',rel:''},
+  supl:{ctx:'',orca:150,ref:3,lista:[]},
+  dieta:{orca:400,obj:'saude',rest:'',neg:'',relato:''},
+  exames:[],tratamentos:[],receitas:[],conv:[]
+};
+let suplFotoB64='',prescFotoB64='',filaEx=[],olhosImgs=[];
+
+// ─── PERSISTENCIA ─────────────────────────────────────────────
+function sv(){
+  try{
+    const slim={...S,exames:S.exames.map(e=>({...e,img:''})),receitas:S.receitas.map(r=>({...r,img:''}))};
+    localStorage.setItem('nxs1',JSON.stringify(slim));
+    S.exames.forEach(e=>{if(e.img)try{localStorage.setItem('ei'+e.id,e.img)}catch(x){}});
+    S.receitas.forEach(r=>{if(r.img)try{localStorage.setItem('ri'+r.id,r.img)}catch(x){}});
+  }catch(x){}
+  toast('Salvo','ok',500);
+}
+function ld(){
+  try{
+    const d=localStorage.getItem('nxs1');
+    if(!d)return;
+    const p=JSON.parse(d);
+    S={...S,...p};
+    if(!S.exames)S.exames=[];
+    if(!S.tratamentos)S.tratamentos=[];
+    if(!S.receitas)S.receitas=[];
+    if(!S.conv)S.conv=[];
+    S.exames.forEach(e=>{const i=localStorage.getItem('ei'+e.id);if(i)e.img=i;});
+    S.receitas.forEach(r=>{const i=localStorage.getItem('ri'+r.id);if(i)r.img=i;});
+  }catch(x){}
+}
+
+// ─── UTIL ─────────────────────────────────────────────────────
+const $=id=>document.getElementById(id);
+const v=id=>$(id)?.value||'';
+const n=id=>parseFloat($(id)?.value)||0;
+const esc=s=>(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function toast(msg,tp='ok',dur=2000){const e=$('toast');e.textContent=msg;e.className='show '+tp;clearTimeout(e._t);e._t=setTimeout(()=>e.className='',dur);}
+
+// ─── NAV ──────────────────────────────────────────────────────
+const SECS=['perfil','olhos','intestino','supl','dieta','exames','tratamentos','laudo','ia'];
+function gn(id,i){
+  SECS.forEach(s=>{const e=$('sc-'+s);if(e){e.className='sc';if(s===id)e.classList.add('on');else e.classList.add('hid');}});
+  document.querySelectorAll('.nb').forEach((b,j)=>b.classList.toggle('on',j===i));
+}
+
+// ─── SALVAR SEÇÕES ────────────────────────────────────────────
+function savP(){Object.assign(S.perfil,{nome:v('p-nome'),nasc:v('p-nasc'),sexo:v('p-sexo'),alt:n('p-alt'),peso:n('p-peso'),abd:n('p-abd'),ativ:v('p-ativ'),obj:v('p-obj'),cond:v('p-cond'),sint:v('p-sint'),alerg:v('p-alerg'),fam:v('p-fam')});sv();}
+function savOlhos(){Object.assign(S.olhos,{sint:v('olhos-sint'),od:v('olhos-od'),oe:v('olhos-oe'),oc:v('olhos-oc'),dt:v('olhos-dt'),ctx:v('olhos-ctx')});sv();}
+function savInt(){Object.assign(S.intestino,{sint:v('int-sint'),freq:v('int-freq'),bris:v('int-bris'),sang:v('int-sang'),pior:v('int-pior'),hist:v('int-hist'),rel:v('int-rel')});sv();}
+function savSupl(){S.supl.ctx=v('sp-ctx');S.supl.orca=n('sp-orca');S.supl.ref=n('sp-ref');sv();}
+function savDieta(){Object.assign(S.dieta,{orca:n('d-orca'),obj:v('d-obj'),rest:v('d-rest'),neg:v('d-neg'),relato:v('d-relato')});sv();}
+
+// ─── CÁLCULOS ─────────────────────────────────────────────────
+function idadeNum(){const nasc=v('p-nasc')||S.perfil.nasc;if(!nasc)return 0;return Math.floor((new Date()-new Date(nasc))/(1000*60*60*24*365.25));}
+function calcTudo(){
+  const p=n('p-peso')||S.perfil.peso,h=n('p-alt')||S.perfil.alt;
+  if(!p||!h)return;
+  const imc=p/((h/100)**2),idade=idadeNum()||30,s=v('p-sexo')||S.perfil.sexo||'M';
+  const cls=imc<18.5?'Abaixo peso':imc<25?'Ideal':imc<30?'Sobrepeso':imc<35?'Obesidade I':'Obesidade II+';
+  const cor=imc<18.5?'d':imc<25?'g':imc<30?'w':'d';
+  const ev=$('imc-val');if(ev)ev.textContent=imc.toFixed(1);
+  const ec=$('imc-cls');if(ec){ec.textContent=cls;ec.className='sv sm '+cor;}
+  const tmb=s==='M'?88.36+(13.4*p)+(4.8*h)-(5.7*idade):447.6+(9.2*p)+(3.1*h)-(4.3*idade);
+  const fats={sedentario:1.2,leve:1.375,moderado:1.55,ativo:1.725,muito_ativo:1.9};
+  const tdee=tmb*(fats[v('p-ativ')||S.perfil.ativ||'moderado']||1.55);
+  const et=$('tmb-val');if(et)et.textContent=Math.round(tmb);
+  const ed=$('tdee-val');if(ed)ed.textContent=Math.round(tdee);
+  const pi=s==='M'?50+0.91*(h-152.4):45.5+0.91*(h-152.4);
+  const ep=$('peso-ideal');if(ep)ep.textContent=Math.max(0,pi).toFixed(1)+' kg';
+  const gc=(1.2*imc)+(0.23*idade)-(10.8*(s==='M'?1:0))-5.4;
+  const eg=$('gordura-c');if(eg)eg.textContent=Math.max(0,gc).toFixed(1)+'%';
+  let aj=0;const at=v('p-ativ')||S.perfil.ativ;
+  if(at==='ativo'||at==='muito_ativo')aj-=3;if(at==='sedentario')aj+=3;
+  if(imc>=25&&imc<30)aj+=1;if(imc>=30)aj+=3;if(imc<18.5)aj+=2;
+  const ib=Math.max(18,idade+aj);
+  const eib=$('idade-bio');if(eib){eib.textContent=ib+' anos';eib.className='sv sm '+(ib<=idade?'g':ib<=idade+2?'':'w');}
+  const ap=$('age-pill');if(ap){ap.style.display='';ap.textContent=idade+'a (bio:'+ib+')';}
+  $('hdr-d').textContent=new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short'}).toUpperCase();
+}
+
+// ─── POPULATE ─────────────────────────────────────────────────
+function pop(){
+  const sv2=(id,val)=>{const e=$(id);if(e)e.value=val||''};
+  sv2('p-nome',S.perfil.nome);sv2('p-nasc',S.perfil.nasc);sv2('p-sexo',S.perfil.sexo);
+  sv2('p-alt',S.perfil.alt||'');sv2('p-peso',S.perfil.peso||'');sv2('p-abd',S.perfil.abd||'');
+  sv2('p-ativ',S.perfil.ativ);sv2('p-obj',S.perfil.obj);
+  sv2('p-cond',S.perfil.cond);sv2('p-sint',S.perfil.sint);sv2('p-alerg',S.perfil.alerg);sv2('p-fam',S.perfil.fam);
+  sv2('olhos-sint',S.olhos.sint);sv2('olhos-od',S.olhos.od);sv2('olhos-oe',S.olhos.oe);
+  sv2('olhos-oc',S.olhos.oc);sv2('olhos-dt',S.olhos.dt);sv2('olhos-ctx',S.olhos.ctx);
+  sv2('int-sint',S.intestino.sint);sv2('int-freq',S.intestino.freq);sv2('int-bris',S.intestino.bris);
+  sv2('int-sang',S.intestino.sang);sv2('int-pior',S.intestino.pior);
+  sv2('int-hist',S.intestino.hist);sv2('int-rel',S.intestino.rel);
+  sv2('sp-ctx',S.supl.ctx);sv2('sp-orca',S.supl.orca||'');sv2('sp-ref',S.supl.ref||'');
+  sv2('d-orca',S.dieta.orca||'');sv2('d-obj',S.dieta.obj);sv2('d-rest',S.dieta.rest);
+  sv2('d-neg',S.dieta.neg);sv2('d-relato',S.dieta.relato);
+  calcTudo();rSupl();rExames();rTrat();rPresc();
+}
+
+// ─── OLHOS ────────────────────────────────────────────────────
+function hDropOlhos(e){e.preventDefault();e.currentTarget.style.borderColor='';processOlhosF(Array.from(e.dataTransfer.files));}
+function hOlhos(e){processOlhosF(Array.from(e.target.files));e.target.value='';}
+function processOlhosF(files){
+  files.filter(f=>f.type.startsWith('image/')).forEach(file=>{
+    const r=new FileReader();r.onload=ev=>{olhosImgs.push({id:Date.now()+Math.random(),b64:ev.target.result});rOlhosPrev();};r.readAsDataURL(file);
+  });
+}
+function rOlhosPrev(){
+  const el=$('olhos-prev');if(!el)return;
+  if(!olhosImgs.length){el.innerHTML='';return;}
+  el.innerHTML='<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">'+
+    olhosImgs.map((img,i)=>`<div style="position:relative"><img src="${img.b64}" style="width:75px;height:75px;object-fit:cover;border-radius:6px;border:1px solid var(--bd)">
+    <button class="sm" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;padding:0;font-size:9px" onclick="olhosImgs.splice(${i},1);rOlhosPrev()">X</button></div>`).join('')+
+    '</div><div style="font-size:10px;color:var(--pu);font-weight:700;margin-top:5px">'+olhosImgs.length+' foto(s) carregada(s)</div>';
+  $('up-olhos-cnt').textContent=olhosImgs.length+' foto(s)';
+}
+
+async function analisarOlhos(tipo){
+  const btns={oftalmologico:'btn-oftalmo',iridologia:'btn-irid',esclerologia:'btn-escl',integrativo:'btn-integ'};
+  const btn=$(btns[tipo]);if(btn){btn.disabled=true;btn.textContent='Analisando...';}
+  const el=$('olhos-res');el.innerHTML='';
+  const specs={
+    oftalmologico:`Voce e um oftalmologista clinico experiente. Analise as imagens dos olhos com olhar clinico profissional e forneca:
+1. Achados oftalmologicos visiveis nas imagens
+2. Avaliacao da cornea, iris, pupila e esclera
+3. Patologias possiveis identificadas (diagnostico diferencial)
+4. Correlacao com os sintomas relatados
+5. Exames complementares necessarios (e onde fazer)
+6. Protocolo de tratamento clinico
+7. Tratamentos naturais e integrativose
+8. Nutricao especifica para os achados
+9. Urgencias — o que requer atencao imediata
+SEMPRE oriente buscar oftalmologista presencialmente.`,
+    iridologia:`Voce e um iridologista especialista. Analise a iris em detalhe e forneca:
+1. Mapa iridologico — zonas e sinais identificados em cada sector
+2. Indicadores de saude sistemica visiveis na iris
+3. Correlacoes organicas (intestino, figado, rins, coracao, sistema nervoso, coluna)
+4. Constituicao iridologica do paciente
+5. Recomendacoes de saude integrativa baseadas na analise da iris`,
+    esclerologia:`Voce e especialista em esclerologia. Analise a esclera (branco do olho) e forneca:
+1. Padrao vascular — espessura, tortuosidade, cor e densidade dos vasos
+2. Manchas, pigmentacao anormal ou areas de preocupacao
+3. Indicadores sistemicos (circulacao, inflamacao, intoxicacao, deficiencias)
+4. Correlacoes via zonas esclerais com orgaos especificos
+5. Recomendacoes de tratamento integrativo`,
+    integrativo:`Voce e medico integrativo especialista em saude ocular, combinando oftalmologia clinica, iridologia, esclerologia e medicina funcional. Analise TUDO que ve nas imagens e forneca:
+LAUDO COMPLETO incluindo:
+- Achados clinicos objetivos
+- Analise iridologica e esclerologica
+- Diagnostico diferencial completo
+- Causas identificadas (sistemicas, nutricionais, posturais)
+- Plano de tratamento integrativo (convencional + natural)
+- Nutricao especifica para olhos: alimentos por estrutura ocular
+- Suplementacao especifica com doses
+- Exercicios oculares personalizados para os achados
+- Perspectiva de melhora: 1 mes e 3 meses de protocolo`
+  };
+  const content=[];
+  olhosImgs.forEach(img=>{
+    if(img.b64&&img.b64.startsWith('data:image')){
+      content.push({type:'image',source:{type:'base64',media_type:img.b64.split(';')[0].split(':')[1],data:img.b64.split(',')[1]}});
+    }
+  });
+  const ctx=`DADOS DO PACIENTE:
+${ctxC()}
+SINTOMAS VISUAIS: ${v('olhos-sint')||S.olhos.sint||'nao informado'}
+Acuidade OD: ${v('olhos-od')||S.olhos.od||'nd'} | OE: ${v('olhos-oe')||S.olhos.oe||'nd'}
+Usa oculos: ${v('olhos-oc')||S.olhos.oc}
+Contexto: ${v('olhos-ctx')||S.olhos.ctx||'nenhum'}
+Ultima consulta: ${v('olhos-dt')||S.olhos.dt||'nd'}`;
+  content.push({type:'text',text:ctx+'\n\nAnalise com maximo detalhe e profissionalismo. Gere laudo estruturado. IMPORTANTE: sempre oriente buscar avaliacao presencial para diagnostico definitivo.'});
+  const laudoEl=document.createElement('div');
+  laudoEl.className='laudo-box';
+  const titulos={oftalmologico:'Laudo Oftalmologico Clinico',iridologia:'Analise Iridologica',esclerologia:'Analise Esclerologica',integrativo:'Laudo Ocular Integrativo Completo'};
+  laudoEl.innerHTML=`<div class="laud-t">${titulos[tipo]} <span class="ab">IA analise</span></div><div id="olhos-laudo-str" style="font-size:11px;line-height:1.8;color:var(--t)"></div>`;
+  el.appendChild(laudoEl);
+  const streamEl=$('olhos-laudo-str');
+  try{
+    const msgs=content.length>1?[{role:'user',content}]:[{role:'user',content:[{type:'text',text:ctx+'\nNao tenho imagens, mas analise os sintomas descritos.'}]}];
+    await streamTo(msgs,specs[tipo],streamEl);
+    if(btn){btn.disabled=false;btn.textContent='Re-analisar';}
+  }catch(e){
+    if(streamEl)streamEl.innerHTML='<span style="color:var(--d)">Erro: '+esc(e.message)+'</span>';
+    if(btn){btn.disabled=false;btn.textContent='Tentar novamente';}
+  }
+}
+
+// ─── SUPLEMENTOS ──────────────────────────────────────────────
+function hSuplFoto(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{suplFotoB64=ev.target.result;$('supl-foto-p').innerHTML='<img src="'+ev.target.result+'" style="width:100%;max-height:160px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);margin-bottom:8px">';};r.readAsDataURL(file);}
+async function identificarSupl(){
+  const btn=$('btn-supl-id');btn.disabled=true;btn.textContent='Identificando...';
+  const el=$('supl-id-stb');el.innerHTML='';el.classList.add('on');
+  const content=[];
+  if(suplFotoB64&&suplFotoB64.startsWith('data:image')){
+    content.push({type:'image',source:{type:'base64',media_type:suplFotoB64.split(';')[0].split(':')[1],data:suplFotoB64.split(',')[1]}});
+  }
+  content.push({type:'text',text:`Identifique CADA suplemento/vitamina/medicamento visivel nesta foto. Para cada um forneca:
+1. Nome completo e principio ativo
+2. Categoria e funcao principal
+3. Dosagem usual e maxima segura
+4. Melhor horario (em jejum? Com comida? A noite?)
+5. Sinergias com outros suplementos (potencializadores)
+6. Contraindicacoes e interacoes medicamentosas
+7. Dose adequada para este perfil especifico
+
+PERFIL: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg, ${S.perfil.alt||'?'}cm, IMC: ${S.perfil.peso&&S.perfil.alt?(S.perfil.peso/((S.perfil.alt/100)**2)).toFixed(1):'?'}
+Queixas: ${S.supl.ctx||v('sp-ctx')||'nao informado'}
+Objetivo: ${S.perfil.obj}
+Condicoes medicas: ${S.perfil.cond||'nao informado'}
+Atividade fisica: ${S.perfil.ativ}
+
+Ao final: liste o que FALTA para completar o protocolo de saude deste paciente.`});
+  try{await streamTo([{role:'user',content}],'Farmaceutico clinico e nutrologo especialista.',el);}
+  catch(e){el.innerHTML='<span style="color:var(--d)">Erro: '+esc(e.message)+'</span>';}
+  btn.disabled=false;btn.textContent='Re-analisar';
+}
+function addSupl(){
+  const nome=v('sp-n').trim();if(!nome)return;
+  S.supl.lista.push({id:Date.now(),nome,cat:v('sp-c'),dose:v('sp-d'),hora:v('sp-h'),obj:v('sp-o'),tempo:v('sp-t'),nota:''});
+  ['sp-n','sp-d','sp-h','sp-o','sp-t'].forEach(id=>{const e=$(id);if(e)e.value='';});
+  sv();rSupl();toast('Suplemento adicionado','ok');
+}
+function rSupl(){
+  const el=$('lista-supl');if(!el)return;
+  if(!S.supl.lista.length){el.innerHTML='<div class="es">Sem suplementos registrados</div>';return;}
+  el.innerHTML=S.supl.lista.map(s=>`
+    <div class="spc">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px">
+        <div><div style="font-size:12px;font-weight:700">${s.nome}</div>
+        <div style="font-size:9px;color:var(--td);margin-top:2px"><span class="tag tp">${s.cat}</span> ${s.dose||'--'} · ${s.hora||'--'}</div>
+        ${s.obj?`<div style="font-size:9px;color:var(--td);margin-top:2px;font-style:italic">${s.obj}</div>`:''}
+        ${s.tempo?`<div style="font-size:9px;color:var(--td)">Ha: ${s.tempo}</div>`:''}</div>
+        <button class="sm" onclick="delSupl(${s.id})">X</button>
+      </div>
+      <label class="fl">Notas pessoais e feedback</label>
+      <textarea id="sn-${s.id}" style="min-height:38px;font-size:11px">${s.nota||''}</textarea>
+      <div style="display:flex;gap:5px;margin-top:6px">
+        <button class="sm" onclick="savNota(${s.id})">Salvar nota</button>
+        <button class="sm pu" onclick="explSupl(${s.id})">IA explica</button>
+      </div>
+      <div id="snia-${s.id}" class="stb mt8"></div>
+    </div>`).join('');
+}
+function delSupl(id){S.supl.lista=S.supl.lista.filter(s=>s.id!==id);sv();rSupl();}
+function savNota(id){const s=S.supl.lista.find(s=>s.id===id);if(s){s.nota=$('sn-'+id)?.value||'';sv();toast('Nota salva','ok',800);}}
+async function explSupl(id){
+  const s=S.supl.lista.find(s=>s.id===id);if(!s)return;
+  const el=$('snia-'+id);el.innerHTML='';el.classList.add('on');
+  await streamTo([{role:'user',content:`Explique em profundidade: ${s.nome} (${s.dose||''}, ${s.hora||''})
+1. Como funciona no corpo (mecanismo de acao)
+2. Quanto tempo para sentir resultado
+3. Dosagem ideal para: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg, ${S.perfil.alt||'?'}cm
+4. Melhor horario e forma de tomar (com ou sem comida, qual alimento potencializa)
+5. O que NAO combinar com este suplemento
+6. Sinais de que esta funcionando
+7. Marcas custo-efetivas no Brasil
+Objetivo: ${s.obj||'nd'}. ${ctxC()}`}],
+  'Nutrologo e farmaceutico clinico especialista em suplementacao funcional.',el);
+}
+
+// ─── DIETA ────────────────────────────────────────────────────
+function hPresc(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{prescFotoB64=ev.target.result;$('presc-prev').innerHTML='<img src="'+ev.target.result+'" style="width:100%;max-height:160px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);margin-bottom:8px">';};r.readAsDataURL(file);}
+async function salvarPresc(){
+  const btn=$('btn-presc');btn.disabled=true;btn.textContent='Salvando...';
+  const rec={id:Date.now(),titulo:v('presc-ctx').trim()||'Prescricao',ctx:v('presc-ctx'),img:prescFotoB64,interp:'',status:'wait'};
+  S.receitas.push(rec);sv();rPresc();$('presc-ctx').value='';$('presc-prev').innerHTML='';$('up-presc').value='';prescFotoB64='';
+  const se=$('presc-stb');se.innerHTML='';se.classList.add('on');
+  const content=[];
+  if(rec.img&&rec.img.startsWith('data:image'))content.push({type:'image',source:{type:'base64',media_type:rec.img.split(';')[0].split(':')[1],data:rec.img.split(',')[1]}});
+  content.push({type:'text',text:`Interprete esta prescricao alimentar de nutricionista/nutrologo. Extraia:
+1. Todas as refeicoes com horarios (cafe, almoco, jantar, lanches)
+2. Alimentos permitidos e proibidos
+3. Porcoes e gramas quando especificados
+4. Regras especiais da dieta
+5. Objetivo da dieta prescrita
+6. Adapte para o perfil: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg, ${S.perfil.alt||'?'}cm
+7. Impacto esperado seguindo rigorosamente: 1 semana, 1 mes e 6 meses
+${ctxC()}`});
+  try{await streamTo([{role:'user',content}],'Nutricionista clinica funcional especialista.',se,(txt)=>{rec.interp=txt;});rec.interp=se.textContent||rec.interp;rec.status='ok';}
+  catch(e){se.innerHTML='<span style="color:var(--d)">Erro: '+esc(e.message)+'</span>';rec.status='err';}
+  sv();rPresc();btn.disabled=false;btn.textContent='Salvar e Interpretar com IA';
+}
+function rPresc(){
+  const el=$('lista-presc');if(!el)return;
+  el.innerHTML=S.receitas.length?S.receitas.map(r=>`
+    <div class="spc">
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+        <div style="font-size:12px;font-weight:700">${r.titulo}</div>
+        <button class="sm" onclick="delPresc(${r.id})">X</button>
+      </div>
+      ${r.img?`<img src="${r.img}" style="width:100%;max-height:110px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);margin-bottom:7px">`:''}
+      <div class="stb ${r.interp?'on':''}">${r.interp?md2h(r.interp):'Sem interpretacao'}</div>
+      <button class="sm mt8" onclick="reinterpPresc(${r.id})">Reinterpretar</button>
+    </div>`).join(''):'<div class="es">Sem prescricoes salvas</div>';
+}
+function delPresc(id){S.receitas=S.receitas.filter(r=>r.id!==id);try{localStorage.removeItem('ri'+id)}catch(x){}sv();rPresc();}
+async function reinterpPresc(id){
+  const rec=S.receitas.find(r=>r.id===id);if(!rec)return;
+  const idx=S.receitas.indexOf(rec);const cards=$('lista-presc').querySelectorAll('.spc');
+  const se=cards[idx]?.querySelector('.stb');if(!se)return;se.innerHTML='';se.classList.add('on');
+  const content=[];
+  if(rec.img)content.push({type:'image',source:{type:'base64',media_type:rec.img.split(';')[0].split(':')[1],data:rec.img.split(',')[1]}});
+  content.push({type:'text',text:'Interprete esta prescricao para o perfil: '+ctxC()});
+  try{await streamTo([{role:'user',content}],'Nutricionista clinica funcional.',se,(txt)=>{rec.interp=txt;});sv();}
+  catch(e){if(se)se.innerHTML='<span style="color:var(--d)">Erro</span>';}
+}
+
+// ─── EXAMES ───────────────────────────────────────────────────
+const EN={laboratorial:'medico de analises clinicas',iridologia:'iridologista',esclerologia:'especialista em esclerologia',intestinal:'gastroenterologista especialista em microbioma e parasitologia',corporal:'fisiologista',dermatologico:'dermatologista',radiologico:'radiologista',nutricional:'nutricionista clinica',psiquiatrico:'psiquiatra',odontologico:'dentista periodontista',oftalmologico:'oftalmologista',geral:'medico integrativo'};
+const ENL={laboratorial:'Laboratorio',iridologia:'Iridologia',esclerologia:'Esclerologia',intestinal:'Saude Intestinal',corporal:'Corporal',dermatologico:'Dermatologico',radiologico:'Radiologico',nutricional:'Nutricional',psiquiatrico:'Psiquiatrico',odontologico:'Odontologico',oftalmologico:'Oftalmologico',geral:'Geral'};
+function dE(nome){const n=nome.toLowerCase();if(n.includes('iris'))return'iridologia';if(n.includes('esclera'))return'esclerologia';if(n.includes('intestin')||n.includes('fezes'))return'intestinal';if(n.includes('rx')||n.includes('raio')||n.includes('ultra'))return'radiologico';if(n.includes('pele')||n.includes('derm'))return'dermatologico';if(n.includes('sangue')||n.includes('hemo'))return'laboratorial';if(n.includes('psiqui'))return'psiquiatrico';if(n.includes('dente')||n.includes('dental'))return'odontologico';if(n.includes('olho')||n.includes('oftalm'))return'oftalmologico';return'geral';}
+function hDropEx(e){e.preventDefault();e.currentTarget.style.borderColor='';pArqsEx(Array.from(e.dataTransfer.files));}
+function hExMulti(e){pArqsEx(Array.from(e.target.files));e.target.value='';}
+function pArqsEx(files){files.filter(f=>f.type.startsWith('image/')).forEach(file=>{const r=new FileReader();r.onload=ev=>{filaEx.push({id:Date.now()+Math.random(),nome:file.name.replace(/\.[^.]+$/,''),espec:dE(file.name),img:ev.target.result,ctx:v('ex-ctx')});rFilaCfgEx();};r.readAsDataURL(file);});}
+function rFilaCfgEx(){
+  $('up-ex-cnt').textContent=filaEx.length?filaEx.length+' arquivo(s)':'';$('btn-ex-go').style.display=filaEx.length?'flex':'none';
+  const el=$('fila-ex-cfg');if(!el)return;
+  if(!filaEx.length){el.innerHTML='';return;}
+  el.innerHTML='<div class="dv"></div>'+filaEx.map((item,i)=>`
+    <div class="fi"><div class="fi-h">
+      <img src="${item.img}" class="fi-th">
+      <div style="flex:1;min-width:0">
+        <input value="${item.nome}" onchange="filaEx[${i}].nome=this.value" style="font-size:11px;padding:4px 7px;margin-bottom:4px">
+        <select onchange="filaEx[${i}].espec=this.value" style="font-size:10px;padding:4px 7px">
+          ${Object.entries(ENL).map(([k,nl])=>`<option value="${k}" ${item.espec===k?'selected':''}>${nl}</option>`).join('')}
+        </select>
+      </div>
+      <button class="sm" onclick="filaEx.splice(${i},1);rFilaCfgEx()">X</button>
+    </div>
+    <textarea placeholder="Contexto..." onchange="filaEx[${i}].ctx=this.value" style="min-height:32px;font-size:10px">${item.ctx||''}</textarea>
+    </div>`).join('');
+}
+async function iniciarFilaEx(){
+  if(!filaEx.length)return;
+  filaEx.forEach(item=>S.exames.push({id:item.id,nome:item.nome,espec:item.espec,ctx:item.ctx,img:item.img,resultado:'',status:'wait',ts:Date.now()}));
+  filaEx=[];rFilaCfgEx();$('btn-ex-go').style.display='none';$('up-ex-cnt').textContent='';
+  sv();rExames();$('card-ex-geral').classList.remove('hid');
+  const fp=$('fila-ex-prog');fp.classList.remove('hid');
+  const pend=S.exames.filter(e=>e.status==='wait');const total=pend.length;let done=0;
+  for(const ex of pend){
+    ex.status='proc';rExames();
+    $('ex-prog-txt').textContent='Analisando: '+ex.nome+' ('+(done+1)+'/'+total+')';
+    $('ex-prog-spec').textContent=ENL[ex.espec]||ex.espec;
+    $('ex-prog-bar').style.width=Math.round((done/total)*100)+'%';
+    await analisarEx(ex.id);done++;
+    $('ex-prog-bar').style.width=Math.round((done/total)*100)+'%';
+  }
+  fp.classList.add('hid');toast(done+' exame(s) analisado(s)!','ok',3000);
+}
+async function analisarEx(id){
+  const ex=S.exames.find(e=>e.id===id);if(!ex)return;
+  const el=$('ex-res-'+id);if(el){el.innerHTML='';el.classList.add('on');}
+  const sys=`Voce e ${EN[ex.espec]||'medico especialista'} com ampla experiencia clinica e integrativa. Analise e forneca laudo detalhado:
+## Achados principais
+## Valores alterados / pontos de atencao
+## Correlacoes clinicas com os sintomas do paciente
+## Protocolo de tratamento (convencional + integrativo)
+## Impacto na saude intestinal e microbioma
+## Sequelas pos-Covid se aplicavel
+## Suplementos especificos para os achados (doses e horarios)
+## Alimentos indicados e contraindicados
+## Proximos exames necessarios
+## Quando buscar atendimento urgente
+Paciente: ${ctxC()}
+Contexto: ${ex.ctx||v('ex-ctx')||'nao informado'}
+SEMPRE oriente buscar profissional para diagnostico definitivo.`;
+  const content=[];
+  if(ex.img&&ex.img.startsWith('data:image'))content.push({type:'image',source:{type:'base64',media_type:ex.img.split(';')[0].split(':')[1],data:ex.img.split(',')[1]}});
+  content.push({type:'text',text:ex.ctx||'Analise. Especialidade: '+ex.espec+'. Nome: '+ex.nome});
+  try{await streamTo([{role:'user',content}],sys,el,(txt)=>{ex.resultado=txt;});ex.status='ok';}
+  catch(e){ex.status=e.message.includes('429')?'offline':'err';ex.resultado=ex.status==='offline'?'API no limite. Clique Reanalisar em alguns min.':'Erro: '+e.message;if(el)el.innerHTML=md2h(ex.resultado);}
+  sv();rExames();
+}
+function rExames(){
+  const el=$('lista-ex');if(!el)return;
+  if(!S.exames.length){el.innerHTML='<div class="es">Nenhum exame carregado</div>';return;}
+  el.innerHTML=S.exames.map(ex=>`
+    <div class="card" style="margin-bottom:9px">
+      <div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:8px">
+        ${ex.img?`<img src="${ex.img}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;border:1px solid var(--bd);flex-shrink:0">`:''}
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:700">${ex.nome}</div>
+          <div style="font-size:10px;color:var(--td)">${ENL[ex.espec]||ex.espec}</div>
+          <div style="margin-top:4px"><span class="sb ${ex.status==='ok'?'sb-ok':ex.status==='proc'?'sb-p':'sb-w'}">${ex.status==='ok'?'Analisado':ex.status==='proc'?'Processando...':'Na fila'}</span></div>
+        </div>
+        <button class="sm" onclick="delEx(${ex.id})">X</button>
+      </div>
+      <div id="ex-res-${ex.id}" class="stb ${ex.resultado?'on':''}">${ex.resultado?md2h(ex.resultado):''}</div>
+      <button class="sm pu mt8" onclick="analisarEx(${ex.id})">Reanalisar</button>
+    </div>`).join('');
+}
+function delEx(id){S.exames=S.exames.filter(e=>e.id!==id);try{localStorage.removeItem('ei'+id)}catch(x){}sv();rExames();}
+
+// ─── TRATAMENTOS ──────────────────────────────────────────────
+function addTrat(){
+  const nome=v('tr-nome').trim();if(!nome)return;
+  S.tratamentos.push({id:Date.now(),tipo:v('tr-tipo'),nome,inicio:v('tr-ini'),freq:v('tr-freq'),obj:v('tr-obj'),duv:v('tr-duv'),nota:''});
+  ['tr-nome','tr-ini','tr-freq','tr-obj','tr-duv'].forEach(id=>{const e=$(id);if(e)e.value='';});
+  sv();rTrat();toast('Tratamento registrado','ok');
+}
+function rTrat(){
+  const el=$('lista-trat');if(!el)return;
+  if(!S.tratamentos.length){el.innerHTML='<div class="es">Sem tratamentos registrados</div>';return;}
+  el.innerHTML=S.tratamentos.map(t=>`
+    <div class="spc">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px">
+        <div><div style="font-size:12px;font-weight:700">${t.nome}</div>
+        <div style="font-size:9px;color:var(--td);margin-top:2px"><span class="tag to">${t.tipo}</span> ${t.freq||'--'} ${t.inicio?'· desde '+t.inicio:''}</div>
+        ${t.obj?`<div style="font-size:9px;color:var(--td)">Para: ${t.obj}</div>`:''}
+        ${t.duv?`<div style="font-size:9px;color:var(--w);font-style:italic">Duvida: ${t.duv.substring(0,80)}</div>`:''}</div>
+        <button class="sm" onclick="delTrat(${t.id})">X</button>
+      </div>
+      <button class="sm pu fw" onclick="explTrat(${t.id})">IA explica + plano de melhora</button>
+      <div id="trat-ia-${t.id}" class="stb mt8"></div>
+    </div>`).join('');
+}
+function delTrat(id){S.tratamentos=S.tratamentos.filter(t=>t.id!==id);sv();rTrat();}
+async function explTrat(id){
+  const t=S.tratamentos.find(t=>t.id===id);if(!t)return;
+  const el=$('trat-ia-'+id);el.innerHTML='';el.classList.add('on');
+  await streamTo([{role:'user',content:`Explique o tratamento: ${t.nome} (${t.tipo}) para ${t.obj||'nd'}
+Duvida do paciente: ${t.duv||'nenhuma especifica'}
+Responda de forma clara e simples:
+1. O QUE esta acontecendo no corpo que requer este tratamento
+2. COMO este tratamento funciona (mecanismo de acao)
+3. QUANTO TEMPO para ver resultados reais
+4. COMO SABER se esta funcionando (sinais de melhora)
+5. COMO ACELERAR A MELHORA (o que fazer alem do tratamento)
+6. CURA E POSSIVEL? Qual e o prognostico?
+7. Complementos naturais que potencializam o tratamento
+8. O que deve ser EVITADO durante o tratamento
+9. Possibilidade de reducao da medicacao no futuro
+${ctxC()}`}],
+  'Medico integrativo que explica tudo em linguagem clara e simples.',el);
+}
+
+// ─── LAUDO ────────────────────────────────────────────────────
+async function gerarLaudo(tipo){
+  const btns={geral:'btn-laudo-g',olhos:'btn-laudo-o',intestino:'btn-laudo-i',nutricional:'btn-laudo-n'};
+  const btn=$(btns[tipo]);if(btn){btn.disabled=true;btn.textContent='Gerando laudo...';}
+  const el=$('laudo-res');const queixa=v('laudo-q');
+  const prompts={
+    geral:`Voce e medico integrativo gerando LAUDO MEDICO PESSOAL COMPLETO.
+Gere laudo ESTRUTURADO com todos os itens:
+## DADOS DO PACIENTE
+## QUEIXA PRINCIPAL
+## ANAMNESE E HISTORICO CLINICO
+## DADOS VITAIS E COMPOSICAO CORPORAL
+## ANALISE DOS EXAMES DISPONÍVEIS
+## SAUDE OCULAR
+## SAUDE INTESTINAL E MICROBIOMA
+## PROTOCOLO DE SUPLEMENTACAO ATUAL E AJUSTES
+## ANALISE NUTRICIONAL + PRESCRICAO ALIMENTAR
+## TRATAMENTOS EM ANDAMENTO
+## HIPOTESE DIAGNOSTICA INTEGRATIVA
+## PERSPECTIVA DE MELHORA: 1 SEMANA / 1 MES / 6 MESES
+## PLANO DE TRATAMENTO INTEGRADO (cronograma detalhado)
+## ROTINA DIARIA RECOMENDADA (tabela com horarios)
+## ALERTAS E QUANDO BUSCAR ATENDIMENTO URGENTE
+## ESPECIALISTAS QUE DEVE CONSULTAR
+Dados completos:
+${ctxC()}
+Queixa principal: ${queixa||'nao informada'}
+Olhos: ${S.olhos.sint||'sem queixas visuais'}
+Intestino: ${S.intestino.sint||'sem sintomas intestinais'}
+Bristol: ${S.intestino.bris} | Frequencia: ${S.intestino.freq}
+Exames: ${S.exames.filter(e=>e.status==='ok').map(e=>e.nome+' ('+e.espec+')').join(', ')||'nenhum'}
+Suplementos: ${S.supl.lista.map(s=>s.nome+' '+s.dose+' '+s.hora).join(', ')||'nenhum'}
+Tratamentos: ${S.tratamentos.map(t=>t.nome).join(', ')||'nenhum'}
+Prescricoes alimentares: ${S.receitas.length} carregada(s)
+IMPORTANTE: Gere laudo especifico e personalizado. Oriente sempre buscar profissional para diagnostico definitivo.`,
+    olhos:`Gere LAUDO OCULAR PESSOAL COMPLETO:
+Queixa: ${queixa||S.olhos.sint||'nd'}
+${ctxC()}
+Incluir: diagnostico diferencial, exames necessarios, tratamento, nutricao especifica para olhos, exercicios oculares para os achados, perspectiva em 1 mes e 3 meses.`,
+    intestino:`Gere LAUDO INTESTINAL PERSONALIZADO:
+Sintomas: ${S.intestino.sint||'nd'} | Bristol: ${S.intestino.bris} | Freq: ${S.intestino.freq}
+${ctxC()}
+Incluir: diagnostico provavel, exames para vermifugacao correta, protocolo 12 semanas, dieta intestinal especifica, suplementos, perspectiva 1m e 6m.`,
+    nutricional:`Gere LAUDO NUTRICIONAL PERSONALIZADO:
+${ctxC()}
+Incluir: estado nutricional atual, deficits identificados, cardapio completo com horarios, lista de compras para 1 semana, suplementos ajustados ao perfil, perspectiva corporal em 1 semana, 1 mes e 6 meses.`
+  };
+  const laudoEl=document.createElement('div');laudoEl.className='laudo-box';
+  const titulos={geral:'Laudo Medico Pessoal Integrado',olhos:'Laudo Ocular',intestino:'Laudo Intestinal',nutricional:'Laudo Nutricional'};
+  laudoEl.innerHTML=`<div class="laud-t">${titulos[tipo]} <span class="ab">${new Date().toLocaleDateString('pt-BR')}</span></div><div id="laudo-str-${tipo}" style="font-size:11px;line-height:1.8;color:var(--t)"></div>`;
+  el.innerHTML='';el.appendChild(laudoEl);
+  try{await streamTo([{role:'user',content:prompts[tipo]}],'Medico integrativo experiente gerando laudos detalhados e personalizados.',$('laudo-str-'+tipo));if(btn){btn.disabled=false;btn.textContent='Regenerar laudo';}}
+  catch(e){const sr=$('laudo-str-'+tipo);if(sr)sr.innerHTML='<span style="color:var(--d)">Erro: '+esc(e.message)+'</span>';if(btn){btn.disabled=false;btn.textContent='Erro - tentar novamente';}}
+}
+
+// ─── IA CENTRAL ───────────────────────────────────────────────
+async function sendIA(){
+  const inp=$('ia-inp');const msg=inp.value.trim();if(!msg)return;inp.value='';
+  const msgs=$('ia-msgs');
+  msgs.innerHTML+=`<div class="msg msg-u">${esc(msg)}</div>`;
+  const lid='ld-'+Date.now();
+  msgs.innerHTML+=`<div class="msg msg-ia" id="${lid}"><div class="ms">NEXUS SAUDE IA</div><span class="ld"><span></span><span></span><span></span></span> analisando...</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  S.conv.push({role:'user',content:msg});
+  if(S.conv.length>12)S.conv=S.conv.slice(-12);
+  const el=$(lid);el.innerHTML='<div class="ms">NEXUS SAUDE IA</div>';
+  const te=document.createElement('div');te.style.cssText='white-space:pre-wrap;word-break:break-word;font-size:11px;line-height:1.7';
+  el.appendChild(te);
+  try{
+    let full='';
+    await streamTo(S.conv,`Voce e medico integrativo virtual especialista. Tem acesso ao prontuario completo deste paciente e responde de forma clara, empatica e embasada. Sempre oriente buscar profissional para diagnosticos definitivos.\n\n${ctxC()}`,te,(txt)=>{full=txt;});
+    S.conv.push({role:'assistant',content:full||te.textContent});
+  }catch(e){
+    el.innerHTML='<div class="ms">NEXUS SAUDE IA</div><span style="color:var(--d)">Erro: '+esc(e.message)+'</span>';
+  }
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ─── RUN ──────────────────────────────────────────────────────
+async function run(modo,stbId,btnId){
+  const btn=btnId?$(btnId):null;const el=stbId?$(stbId):null;const orig=btn?.textContent;
+  if(btn){btn.disabled=true;btn.textContent='Gerando...';}
+  if(el){el.innerHTML='';el.classList.add('on');}
+  const ctx=ctxC();
+  const M={
+    imc_completo:{sys:'Voce e fisiologista e nutrologo especialista em composicao corporal.',msg:`Analise completa da composicao corporal:
+${ctx}
+IMC: ${S.perfil.peso&&S.perfil.alt?(S.perfil.peso/((S.perfil.alt/100)**2)).toFixed(1):'?'}
+Abdomen: ${S.perfil.abd||'?'}cm
+Forneca: analise detalhada do IMC, % gordura estimada, massa magra estimada, CALCULO DA IDADE BIOLOGICA com explicacao dos fatores, metas realistas de peso, protocolo de 3 meses para otimizacao corporal, dieta e exercicios especificos.`},
+    perfil_completo:{sys:'Medico integrativo gerando analise completa do perfil de saude.',msg:`Analise completa do perfil + CALCULO DA IDADE BIOLOGICA + Plano mestre:
+${ctx}
+Forneca: avaliacao geral, IDADE BIOLOGICA com todos os fatores (IMC, atividade, sintomas, historico), principais riscos, plano mestre 90 dias, prioridades de tratamento, impacto esperado em 1m/3m/6m.`},
+    int_diag:{sys:'Gastroenterologista funcional especialista em saude intestinal, parasitologia e microbioma.',msg:`Diagnostico intestinal completo + Prescricao de exames para vermifugacao correta:
+Sintomas: ${S.intestino.sint||'nd'}
+Frequencia: ${S.intestino.freq} | Bristol: ${S.intestino.bris} | Sangue/muco: ${S.intestino.sang}
+Piora com: ${S.intestino.pior} | Historico: ${S.intestino.hist||'nd'}
+Sintomas relacionados: ${S.intestino.rel||'nd'}
+${ctx}
+Forneca DETALHADAMENTE:
+1. DIAGNOSTICO DIFERENCIAL — quais condicoes sao mais provaveis (parasitose, SIBO, candida, SII, DII, etc.)
+2. EXAMES ESPECIFICOS A SOLICITAR para confirmar e identificar QUAL PARASITA:
+   - Parasitologico de fezes (metodo SAF, Baermann-Moraes, etc.)
+   - Coprocultura, antígenos especificos, IgE, eosinofilos, calprotectina
+   - Teste respiratorio H2 se SIBO suspeito
+   - ONDE pedir (UBS, laboratorio) e CUSTO estimado Brasil
+3. VERMIFUGOS e para qual parasita cada um serve:
+   - Albendazol: Giardia, Ascaris, Ancilostomidae, Oxiuros
+   - Mebendazol: Ascaris, Trichiura, Ancilostomidae, Oxiuros
+   - Secnidazol/Tinidazol: Giardia, Entamoeba
+   - Ivermectina: Estrongiloides, Sarcoptes
+   - Metronidazol: Giardia, Entamoeba
+4. COMO TOMAR o vermifugo corretamente (nao tomar sem saber o parasita)
+5. PROTOCOLO DE REGENERACAO INTESTINAL — 12 semanas
+6. DIETA INTESTINAL com alimentos que curam vs inflamam
+7. SUPLEMENTOS (L-Glutamina, probioticos, enzimas, zinco, etc.)
+8. RELACAO com ansiedade, humor e sintomas sistemicos
+9. PERSPECTIVA de melhora em 2 semanas, 1 mes e 3 meses`},
+    int_microb:{sys:'Gastroenterologista funcional.',msg:`Analise do microbioma e disbiose. Sintomas: ${S.intestino.sint||'nd'}. ${ctx}. Explique: o que e disbiose, como identificar, protocolo de repopulacao com probioticos especificos (cepas, doses, marcas Brasil), prebioticos, fermentados, perspectiva de restauracao.`},
+    int_leaky:{sys:'Medico especialista em permeabilidade intestinal.',msg:`Analise de intestino permeavel. ${ctx}. Sintomas: ${S.intestino.sint||'nd'}. Causas, como identificar, exames (Zonulina, Actina F), protocolo de cura com L-Glutamina, colageno, zinco, curcuma, aloe vera.`},
+    int_sibo:{sys:'Gastroenterologista especialista em SIBO.',msg:`Analise de SIBO. ${ctx}. Sintomas: ${S.intestino.sint||'nd'}. Diferenca SIBO H2 x CH4, teste de hidrogenio respiratorio, dieta Low FODMAP, antibioticos e herbais.`},
+    int_cand:{sys:'Medico especialista em infeccoes fungicas.',msg:`Analise de candidíase intestinal. ${ctx}. Sintomas: ${S.intestino.sint||'nd'}. Como identificar, exames, protocolo (antifungicos, dieta anti-candida, probioticos), duracao.`},
+    int_ans:{sys:'Neurologista e gastroenterologista.',msg:`Eixo intestino-cerebro e ansiedade. ${ctx}. 90% da serotonina esta no intestino. Como parasitas afetam humor. Protocolo integrativo intestino → saude mental.`},
+    int_prot:{sys:'Gastroenterologista funcional.',msg:`Protocolo completo 12 semanas de regeneracao intestinal. ${ctx}. Sintomas: ${S.intestino.sint||'nd'}. Semana a semana: dieta, suplementos, tecnicas, exames, sintomas esperados em cada fase.`},
+    supl_otim:{sys:'Nutrologo e farmaceutico clinico especialista.',msg:`Otimize o protocolo de suplementacao:
+Suplementos em uso: ${S.supl.lista.map(s=>s.nome+' '+s.dose+' '+s.hora).join(', ')||'nenhum'}
+Queixas: ${S.supl.ctx||v('sp-ctx')||'nd'}
+Perfil: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg, ${S.perfil.alt||'?'}cm, ${S.perfil.sexo}
+IMC: ${S.perfil.peso&&S.perfil.alt?(S.perfil.peso/((S.perfil.alt/100)**2)).toFixed(1):'?'}
+Exames disponíveis: ${S.exames.filter(e=>e.status==='ok').map(e=>e.nome).join(', ')||'nenhum'}
+Orcamento: R$ ${S.supl.orca||150}/mes
+${ctx}
+Forneca:
+1. Avaliacao de cada suplemento atual — manter, ajustar ou remover
+2. Dose ideal ajustada para o peso/idade/sexo deste paciente
+3. O que ADICIONAR para completar o protocolo
+4. Interacoes entre os suplementos atuais
+5. TABELA horaria completa (manha ao dormir)
+6. Custo total estimado
+7. Marcas custo-efetivas no Brasil`},
+    supl_hor:{sys:'Nutrologo especialista em biodisponibilidade.',msg:`Tabela completa de horarios para os suplementos:
+${S.supl.lista.map(s=>s.nome+' '+s.dose).join(', ')||'nenhum'}
+Refeicoes por dia: ${S.supl.ref||3}
+Perfil: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg
+${ctx}
+Crie tabela horaria do dia (manha ao dormir): horario, suplemento, dose, com/sem comida, por que naquele horario.`},
+    dieta_plan:{sys:'Nutricionista clinica funcional.',msg:`Plano alimentar semanal COMPLETO:
+Objetivo: ${v('d-obj')||S.dieta.obj}
+Orcamento: R$ ${n('d-orca')||S.dieta.orca}/mes
+Restricoes: ${v('d-rest')||S.dieta.rest||'nenhuma'}
+Nao gosta: ${v('d-neg')||S.dieta.neg||'nenhum'}
+Relato: ${v('d-relato')||S.dieta.relato||'nd'}
+TMB estimada: ${S.perfil.peso&&S.perfil.alt&&idadeNum()?Math.round(S.perfil.sexo==='M'?88.36+(13.4*S.perfil.peso)+(4.8*S.perfil.alt)-(5.7*idadeNum()):447.6+(9.2*S.perfil.peso)+(3.1*S.perfil.alt)-(4.3*idadeNum())):'?'} kcal
+${ctx}
+Cardapio segunda a domingo (todas as refeicoes com horarios e gramas), calorias por dia, macros, alimentos prioritarios.`},
+    dieta_comp:{sys:'Nutricionista clinica.',msg:`Lista de compras para 1 semana:
+Orcamento: R$ ${n('d-orca')||S.dieta.orca}/mes
+Objetivo: ${v('d-obj')||S.dieta.obj}
+Restricoes: ${v('d-rest')||S.dieta.rest||'nenhuma'}
+${ctx}
+Lista organizada por categoria com quantidades e precos estimados Atacadao/Ceagesp Campinas/SP.`},
+    dieta_evo:{sys:'Nutricionista e medico integrativo.',msg:`Perspectiva de melhora seguindo a dieta rigorosamente:
+Objetivo: ${v('d-obj')||S.dieta.obj}
+Perfil: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg, IMC: ${S.perfil.peso&&S.perfil.alt?(S.perfil.peso/((S.perfil.alt/100)**2)).toFixed(1):'?'}
+${ctx}
+Descreva com DETALHES o que acontece no corpo:
+1 SEMANA: sintomas de transicao, primeiras melhoras, o que esperar
+1 MES: mudancas visiveis, exames que melhoram, peso, energia, intestino
+6 MESES: transformacao completa, peso ideal alcancado, exames normalizados, qualidade de vida`},
+    trat_analise:{sys:'Medico integrativo especialista.',msg:`Analise completa dos tratamentos:
+Tratamentos: ${S.tratamentos.map(t=>t.nome+' ('+t.tipo+', para: '+t.obj+')').join(' | ')||'nd'}
+Duvida geral: ${v('trat-duv-g')||'nd'}
+${ctx}
+Para cada tratamento e como conjunto: O que acontece no corpo, como funcionam, interacoes entre eles, o que potencializa naturalmente, perspectiva de melhora e possibilidade de cura, o que o paciente pode fazer alem do tratamento.`},
+    ex_geral:{sys:'Medico integrativo.',msg:`Analise integrativa de TODOS os exames:
+${S.exames.map(e=>`[${e.nome} - ${ENL[e.espec]}]: ${(e.resultado||'sem analise').substring(0,600)}`).join('\n\n')}
+${ctx}
+Correlacione todos os achados, identifique padroes, crie plano integrado, prioridade de tratamento.`},
+    olhos_seco:{sys:'Oftalmologista.',msg:`Protocolo completo para sindrome do olho seco. ${ctxO()}. Colírios naturais vs sinteticos, nutricao, umidificadores, exercicios, suplementos (Omega-3, Vitamina A, Biotina).`},
+    olhos_pressao:{sys:'Oftalmologista especialista em glaucoma.',msg:`Protocolo para pressao ocular elevada/glaucoma. ${ctxO()}. Nutricao que reduz pressao (Mg, Vitamina C, Ginkgo), exercicios, o que evitar.`},
+    olhos_moscas:{sys:'Oftalmologista.',msg:`Protocolo para moscas volantes (floaters). ${ctxO()}. Causas, quando e urgente, suplementos (Vitamina C, E, Astaxantina, Colageno), exercicios.`},
+    olhos_turva:{sys:'Oftalmologista.',msg:`Protocolo para visao turva e catarata. ${ctxO()}. Causas, prevencao, nutricao antioxidante, colírios naturais, suplementos, quando operar.`},
+    olhos_fadiga:{sys:'Optometrista.',msg:`Protocolo para fadiga visual. ${ctxO()}. Regra 20-20-20, exercicios de foco, suplementos (Luteina, Zeaxantina, Vitamina A), temperatura de tela.`},
+    olhos_nutri:{sys:'Nutricionista oftalmologica.',msg:`Protocolo nutricional completo para saude ocular. ${ctxO()}. Alimentos para cada estrutura ocular (retina, cristalino, cornea), suplementos com doses, o que evitar.`},
+    olhos_exercicios:{sys:'Fisioterapeuta ocular.',msg:`Rotina completa de exercicios oculares de 10 minutos. ${ctxO()}. Aquecimento, movimentos de rastreamento, foco proximo/distante, rotacoes, palming, massagem acupressura ocular. Com timer e repeticoes detalhadas.`}
+  };
+  const cfg=M[modo];if(!cfg){if(btn){btn.disabled=false;btn.textContent=orig;}return;}
+  try{
+    await streamTo([{role:'user',content:cfg.msg}],cfg.sys,el);
+    if(btn){btn.disabled=false;btn.textContent='Regerar';}
+  }catch(e){
+    if(el)el.innerHTML='<span style="color:var(--d)">Erro: '+esc(e.message)+'</span>';
+    if(btn){btn.disabled=false;btn.textContent=orig||'Tentar novamente';}
+  }
+}
+
+// ─── STREAM ENGINE ────────────────────────────────────────────
+async function streamTo(messages,system,targetEl,onChunk){
+  const body={model:'claude-sonnet-4-20250514',max_tokens:3000,stream:true,messages};
+  if(system)body.system=system;
+  let resp;
+  try{
+    resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01'},
+      body:JSON.stringify(body)
+    });
+  }catch(e){
+    setP('err');
+    throw new Error('Sem conexao. Este arquivo precisa ser aberto dentro do Claude.ai como artifact para a API funcionar. Se voce esta testando localmente, a API nao funcionara devido ao CORS — use o artifact no chat.');
+  }
+  if(!resp.ok){
+    setP('err');
+    let msg='Erro '+resp.status;
+    try{const j=await resp.json();msg=j?.error?.message||msg;}catch(x){}
+    if(resp.status===429)msg='Limite de uso atingido. Aguarde alguns minutos — todos os dados foram salvos automaticamente.';
+    if(resp.status===401)msg='Nao autorizado. Abra este arquivo como artifact dentro do Claude.ai.';
+    throw new Error(msg);
+  }
+  setP('ok');
+  const reader=resp.body.getReader();const dec=new TextDecoder();let buf='';let full='';
+  while(true){
+    const{done,value}=await reader.read();if(done)break;
+    buf+=dec.decode(value,{stream:true});
+    const lines=buf.split('\n');buf=lines.pop()||'';
+    for(const line of lines){
+      if(!line.startsWith('data:'))continue;
+      const data=line.slice(5).trim();if(data==='[DONE]')continue;
+      try{
+        const ev=JSON.parse(data);
+        if(ev.type==='content_block_delta'&&ev.delta?.text){
+          full+=ev.delta.text;
+          if(targetEl){
+            targetEl.innerHTML=md2h(full)+'<span class="cur"></span>';
+            const p=targetEl.closest('.stb')||targetEl.closest('.iam')||targetEl.closest('.laudo-box');
+            if(p)p.scrollTop=p.scrollHeight;
+          }
+          if(onChunk)onChunk(full);
+        }
+      }catch(x){}
+    }
+  }
+  if(targetEl)targetEl.innerHTML=md2h(full);
+  if(onChunk)onChunk(full);
+  return full;
+}
+function md2h(txt){
+  return(txt+'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^[-•] (.+)$/gm,'<span class="lr">$1</span>')
+    .replace(/^(\d+)\. (.+)$/gm,'<span class="lr"><strong>$1.</strong> $2</span>')
+    .replace(/\n/g,'<br>');
+}
+function setP(s){const e=$('api-pill');if(!e)return;e.className='pill '+s;e.textContent={ok:'API OK',err:'API ERR'}[s]||'API';}
+
+// ─── CONTEXTO ─────────────────────────────────────────────────
+function ctxC(){
+  const p=S.perfil;const peso=p.peso||0,alt=p.alt||0;
+  const imc=peso&&alt?(peso/((alt/100)**2)).toFixed(1):'?';
+  const idade=idadeNum()||'?';
+  return `PRONTUARIO COMPLETO:
+Nome: ${p.nome||'nd'} | Idade: ${idade} anos | Sexo: ${p.sexo}
+Peso: ${peso}kg | Altura: ${alt}cm | IMC: ${imc} | Abdomen: ${p.abd||'?'}cm
+Atividade: ${p.ativ} | Objetivo: ${p.obj}
+Condicoes medicas: ${p.cond||'nd'}
+Sintomas atuais: ${p.sint||'nd'}
+Alergias: ${p.alerg||'nenhuma'}
+Historico familiar: ${p.fam||'nd'}
+Suplementos: ${S.supl.lista.map(s=>s.nome+' '+s.dose+' ('+s.hora+')').join(', ')||'nenhum'}
+Tratamentos: ${S.tratamentos.map(t=>t.nome).join(', ')||'nenhum'}
+Exames: ${S.exames.filter(e=>e.status==='ok').map(e=>e.nome+' ('+e.espec+')').join(', ')||'nenhum'}
+Dieta: ${S.dieta.relato||'nd'} | Objetivo alimentar: ${S.dieta.obj}
+Intestino: ${S.intestino.sint||'nd'} | Bristol: ${S.intestino.bris}
+Olhos: ${S.olhos.sint||'sem queixas visuais'}`;
+}
+function ctxO(){return `Paciente: ${idadeNum()||'?'} anos, ${S.perfil.peso||'?'}kg, ${S.perfil.alt||'?'}cm. Sintomas oculares: ${v('olhos-sint')||S.olhos.sint||'nd'}. Condicoes: ${S.perfil.cond||'nd'}.`;}
+
+// ─── INIT ─────────────────────────────────────────────────────
+ld();pop();
+$('hdr-d').textContent=new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'short'}).toUpperCase();
+</script>
+</body>
+</html>

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Proposta de Implantação · Farma Popular Munhoz</title>
+<style>
+  :root {
+    --verde:    #1a7a4a;
+    --verde-cl: #2ea86a;
+    --ouro:     #c8a84b;
+    --ouro-cl:  #e8c96a;
+    --fundo:    #0d0d0d;
+    --card:     #161616;
+    --card2:    #1e1e1e;
+    --borda:    #252525;
+    --texto:    #e0e0e0;
+    --muted:    #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* CAPA */
+  .capa {
+    background: linear-gradient(160deg, #061a0e 0%, #0f2d19 50%, #061a0e 100%);
+    padding: 40px 20px 32px;
+    text-align: center;
+    border-bottom: 1px solid #1a3a22;
+    position: relative;
+    overflow: hidden;
+  }
+  .capa::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, #2ea86a18 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .capa-badge {
+    display: inline-block;
+    border: 1px solid var(--ouro);
+    color: var(--ouro-cl);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .capa h1 {
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .capa h2 {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .capa h2 span { color: var(--verde-cl); }
+  .capa .sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    margin-bottom: 24px;
+  }
+  .capa-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--verde-cl);
+    margin: 0 auto 20px;
+    border-radius: 2px;
+  }
+  .capa-info {
+    display: inline-flex;
+    gap: 20px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .capa-info span { color: #fff; font-weight: 600; }
+
+  /* SEÇÕES */
+  .secao {
+    padding: 24px 18px;
+    border-bottom: 1px solid var(--borda);
+  }
+  .secao-titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .secao-titulo .icone {
+    width: 32px; height: 32px;
+    background: #1a3a22;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .secao-titulo h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .secao-titulo .num {
+    font-size: 10px;
+    color: var(--verde-cl);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* OBJETIVO */
+  .objetivo-box {
+    background: linear-gradient(135deg, #0a1f10, #142a18);
+    border: 1px solid #1e4a28;
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .objetivo-box p { font-size: 13px; color: #ccc; line-height: 1.8; }
+  .objetivo-box p + p { margin-top: 10px; }
+
+  /* ESTRUTURA */
+  .estrutura-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .est-item {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .est-check {
+    width: 22px; height: 22px;
+    background: var(--verde);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .est-item span { font-size: 12px; color: #ccc; font-weight: 500; }
+
+  /* ÁREA */
+  .area-centro {
+    background: linear-gradient(135deg, #0a1f10, #142a18);
+    border: 1px solid var(--verde);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .area-centro .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .area-centro .val { font-size: 18px; font-weight: 800; color: var(--verde-cl); margin-top: 2px; }
+  .area-centro .raio { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .expansao-list {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .expansao-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--borda);
+    font-size: 13px;
+  }
+  .expansao-item:last-child { border-bottom: none; }
+  .expansao-item .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--verde-cl);
+    flex-shrink: 0;
+  }
+
+  /* MESES */
+  .mes-card {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .mes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #1a1a1a;
+    border-bottom: 1px solid var(--borda);
+  }
+  .mes-header .mes-num-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .mes-header .mes-titulo { font-size: 14px; font-weight: 800; color: #fff; margin-top: 2px; }
+  .mes-meta {
+    text-align: right;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--verde-cl);
+    line-height: 1;
+  }
+  .mes-meta small { font-size: 10px; font-weight: 400; color: var(--muted); display: block; }
+  .mes-body { padding: 14px 16px; }
+
+  .barra { height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
+  .barra-fill { height: 100%; border-radius: 3px; }
+  .m1 .barra-fill { background: #2ea86a; width: 60%; }
+  .m2 .barra-fill { background: #e8a020; width: 78%; }
+  .m3 .barra-fill { background: var(--verde-cl); width: 100%; }
+
+  .mes-itens { list-style: none; }
+  .mes-itens li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: #bbb;
+    padding: 4px 0;
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .mes-itens li:last-child { border-bottom: none; }
+  .mes-itens li::before { content: '→'; color: var(--verde-cl); font-weight: 700; flex-shrink: 0; }
+
+  .mes-obs {
+    margin-top: 10px;
+    background: #0f1f14;
+    border-left: 3px solid var(--verde-cl);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: #aaa;
+    font-style: italic;
+  }
+
+  /* INDICADORES */
+  .ind-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .ind-item {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .ind-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 4px; }
+  .ind-val { font-size: 18px; font-weight: 800; color: var(--verde-cl); }
+  .ind-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  /* BENEFÍCIOS */
+  .beneficios-list { display: flex; flex-direction: column; gap: 6px; }
+  .ben-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: #ccc;
+  }
+  .ben-item .check {
+    width: 24px; height: 24px;
+    background: var(--verde);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* CRESCIMENTO FUTURO */
+  .futuro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .fut-item {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .fut-icon { font-size: 22px; margin-bottom: 6px; }
+  .fut-titulo { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .fut-desc { font-size: 10px; color: var(--muted); }
+
+  /* JORNADA */
+  .jornada-box {
+    background: linear-gradient(135deg, #0a1f10, #142a18);
+    border: 1px solid #1e4a28;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .jornada-box .val { font-size: 32px; font-weight: 900; color: var(--verde-cl); }
+  .jornada-box .desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .pausas-list { display: flex; flex-direction: column; gap: 6px; }
+  .pausa-item {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #ccc;
+  }
+  .pausa-item .p-time {
+    background: #1a3a22;
+    color: var(--verde-cl);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* FILOSOFIA */
+  .filosofia-box {
+    background: linear-gradient(135deg, #0a1a0d, #142518);
+    border: 1px solid #1e4a28;
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .filosofia-box p { font-size: 13px; color: #ccc; line-height: 1.8; margin-bottom: 12px; }
+  .filosofia-items { display: flex; flex-direction: column; gap: 6px; }
+  .fil-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #bbb;
+  }
+  .fil-item::before { content: '✓'; color: var(--verde-cl); font-weight: 700; flex-shrink: 0; }
+
+  /* MAPA LINK */
+  .mapa-cortesia {
+    background: linear-gradient(135deg, #0a1f10, #142a18);
+    border: 1px solid var(--ouro);
+    border-radius: 14px;
+    padding: 20px 18px;
+    text-align: center;
+  }
+  .mapa-cortesia .titulo {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ouro);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .mapa-cortesia h4 { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+  .mapa-cortesia p { font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+  .mapa-btn {
+    display: inline-block;
+    background: var(--verde);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: .5px;
+  }
+  .mapa-btn:active { background: #156038; }
+
+  /* FECHAMENTO */
+  .fechamento {
+    background: linear-gradient(160deg, #061a0e 0%, #0f2d19 100%);
+    padding: 28px 20px;
+    text-align: center;
+    border-top: 1px solid #1a3a22;
+  }
+  .fechamento .assinatura {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .fechamento .nome {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .fechamento .nome span { color: var(--verde-cl); }
+  .fechamento .cargo { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .fechamento-divider { width: 30px; height: 2px; background: var(--ouro); margin: 0 auto 18px; border-radius: 2px; }
+
+  .abertura-box {
+    background: #0f1f14;
+    border: 1px solid #1e4a28;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.8;
+    text-align: left;
+  }
+  .abertura-box strong { color: var(--verde-cl); }
+
+  .contato-info {
+    margin-top: 16px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .contato-info span { color: #fff; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="capa">
+  <div class="capa-badge">Proposta Comercial</div>
+  <h1>Implantação do Serviço de Entregas</h1>
+  <h2>Farma Popular <span>Munhoz</span></h2>
+  <p class="sub">Munhoz/MG e Região · 2025</p>
+  <div class="capa-divider"></div>
+  <div class="capa-info">
+    <div>Prazo <span>90 dias</span></div>
+    <div>Raio <span>20 km</span></div>
+    <div>Início <span>Imediato</span></div>
+  </div>
+</div>
+
+<!-- OBJETIVO -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">🎯</div>
+    <div>
+      <div class="num">01</div>
+      <h3>Objetivo</h3>
+    </div>
+  </div>
+  <div class="objetivo-box">
+    <p>Implantar de forma gradual um serviço de entregas eficiente, capaz de atender Munhoz, zona rural e cidades próximas — oferecendo um diferencial competitivo real para a empresa e permitindo crescimento sustentável.</p>
+    <p>A proposta é iniciar em ritmo controlado, permitindo ajustes operacionais, conhecimento das rotas e desenvolvimento de processos seguros e eficientes.</p>
+  </div>
+</div>
+
+<!-- ESTRUTURA -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">🏗️</div>
+    <div>
+      <div class="num">02</div>
+      <h3>Estrutura Operacional</h3>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">A empresa disponibiliza toda a infraestrutura necessária:</p>
+  <div class="estrutura-grid">
+    <div class="est-item"><div class="est-check">✓</div><span>Motocicleta</span></div>
+    <div class="est-item"><div class="est-check">✓</div><span>Combustível</span></div>
+    <div class="est-item"><div class="est-check">✓</div><span>Manutenção e mecânica</span></div>
+    <div class="est-item"><div class="est-check">✓</div><span>Estrutura de apoio</span></div>
+  </div>
+</div>
+
+<!-- ÁREA DE COBERTURA -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">📍</div>
+    <div>
+      <div class="num">03</div>
+      <h3>Área de Cobertura</h3>
+    </div>
+  </div>
+  <div class="area-centro">
+    <div class="label">Centro de Operação</div>
+    <div class="val">Munhoz – MG</div>
+    <div class="raio">Raio de expansão: até 20 km</div>
+  </div>
+  <div class="expansao-list">
+    <div class="expansao-item"><div class="dot"></div>Zona urbana de Munhoz</div>
+    <div class="expansao-item"><div class="dot"></div>Zona rural</div>
+    <div class="expansao-item"><div class="dot"></div>Toledo / MG</div>
+    <div class="expansao-item"><div class="dot"></div>Senador Amaral / MG</div>
+    <div class="expansao-item"><div class="dot"></div>Cambuí / MG</div>
+    <div class="expansao-item"><div class="dot"></div>Borda da Mata / MG</div>
+    <div class="expansao-item"><div class="dot"></div>Regiões próximas de Extrema / MG</div>
+  </div>
+</div>
+
+<!-- IMPLANTAÇÃO 90 DIAS -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">📈</div>
+    <div>
+      <div class="num">04</div>
+      <h3>Implantação em 90 Dias</h3>
+    </div>
+  </div>
+
+  <!-- MÊS 1 -->
+  <div class="mes-card m1">
+    <div class="mes-header">
+      <div>
+        <div class="mes-num-label">Mês 1</div>
+        <div class="mes-titulo">Adaptação</div>
+      </div>
+      <div class="mes-meta">8–10<small>entregas/dia</small></div>
+    </div>
+    <div class="mes-body">
+      <div class="barra"><div class="barra-fill"></div></div>
+      <ul class="mes-itens">
+        <li>Aprender as rotas e pontos de referência</li>
+        <li>Identificar horários de maior movimento</li>
+        <li>Organizar prioridades de atendimento</li>
+        <li>Ajustar processos internos</li>
+        <li>Criar regularidade na operação</li>
+      </ul>
+      <div class="mes-obs">O primeiro mês é de adaptação e ajustes — não de trabalhar no limite.</div>
+    </div>
+  </div>
+
+  <!-- MÊS 2 -->
+  <div class="mes-card m2">
+    <div class="mes-header">
+      <div>
+        <div class="mes-num-label">Mês 2</div>
+        <div class="mes-titulo">Consolidação</div>
+      </div>
+      <div class="mes-meta">10–12<small>entregas/dia</small></div>
+    </div>
+    <div class="mes-body">
+      <div class="barra"><div class="barra-fill"></div></div>
+      <ul class="mes-itens">
+        <li>Melhorar tempo de resposta das entregas</li>
+        <li>Criar padrão de atendimento ao cliente</li>
+        <li>Expandir cobertura da zona rural</li>
+        <li>Otimizar rotas pelo aprendizado do mês 1</li>
+        <li>Compreender perfil da demanda e horários críticos</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- MÊS 3 -->
+  <div class="mes-card m3">
+    <div class="mes-header">
+      <div>
+        <div class="mes-num-label">Mês 3</div>
+        <div class="mes-titulo">Crescimento</div>
+      </div>
+      <div class="mes-meta">12–15<small>entregas/dia</small></div>
+    </div>
+    <div class="mes-body">
+      <div class="barra"><div class="barra-fill"></div></div>
+      <ul class="mes-itens">
+        <li>Operação totalmente estabilizada</li>
+        <li>Atendimento mais rápido e previsível</li>
+        <li>Cobertura completa da área inicial</li>
+        <li>Base sólida para expansão futura</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- INDICADORES -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">🛵</div>
+    <div>
+      <div class="num">05</div>
+      <h3>Indicadores Operacionais</h3>
+    </div>
+  </div>
+  <div class="ind-grid">
+    <div class="ind-item">
+      <div class="ind-label">Área urbana</div>
+      <div class="ind-val">3–5 km</div>
+      <div class="ind-sub">por entrega</div>
+    </div>
+    <div class="ind-item">
+      <div class="ind-label">Zona rural</div>
+      <div class="ind-val">8–20 km</div>
+      <div class="ind-sub">por entrega</div>
+    </div>
+    <div class="ind-item">
+      <div class="ind-label">Percurso diário</div>
+      <div class="ind-val">70–120 km</div>
+      <div class="ind-sub">estimado</div>
+    </div>
+    <div class="ind-item">
+      <div class="ind-label">Percurso mensal</div>
+      <div class="ind-val">~2.000 km</div>
+      <div class="ind-sub">estimado</div>
+    </div>
+    <div class="ind-item">
+      <div class="ind-label">Entrega urbana</div>
+      <div class="ind-val">~15 min</div>
+      <div class="ind-sub">tempo médio</div>
+    </div>
+    <div class="ind-item">
+      <div class="ind-label">Entrega rural</div>
+      <div class="ind-val">30–50 min</div>
+      <div class="ind-sub">tempo médio</div>
+    </div>
+  </div>
+  <div class="ind-item" style="text-align:center;background:var(--card);border:1px solid var(--borda);border-radius:10px;padding:12px;">
+    <div class="ind-label">Jornada</div>
+    <div class="ind-val" style="font-size:22px;">8h · Escala 6×1</div>
+    <div class="ind-sub">operação saudável e sustentável</div>
+  </div>
+</div>
+
+<!-- BENEFÍCIOS -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">⭐</div>
+    <div>
+      <div class="num">06</div>
+      <h3>Benefícios para a Empresa</h3>
+    </div>
+  </div>
+  <div class="beneficios-list">
+    <div class="ben-item"><div class="check">✓</div>Maior fidelização dos clientes</div>
+    <div class="ben-item"><div class="check">✓</div>Diferencial competitivo na região</div>
+    <div class="ben-item"><div class="check">✓</div>Atendimento completo da zona rural</div>
+    <div class="ben-item"><div class="check">✓</div>Crescimento natural das vendas</div>
+    <div class="ben-item"><div class="check">✓</div>Melhor experiência para idosos e pessoas com dificuldade de locomoção</div>
+    <div class="ben-item"><div class="check">✓</div>Fortalecimento da marca da empresa</div>
+    <div class="ben-item"><div class="check">✓</div>Base sólida para expansão regional</div>
+  </div>
+</div>
+
+<!-- CRESCIMENTO FUTURO -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">🚀</div>
+    <div>
+      <div class="num">07</div>
+      <h3>Crescimento Futuro</h3>
+    </div>
+  </div>
+  <div class="area-centro" style="margin-bottom:12px;">
+    <div class="label">Após consolidação</div>
+    <div class="val">15–20 entregas/dia</div>
+    <div class="raio">capacidade operacional projetada</div>
+  </div>
+  <div class="futuro-grid">
+    <div class="fut-item">
+      <div class="fut-icon">🗺️</div>
+      <div class="fut-titulo">Expansão da área</div>
+      <div class="fut-desc">Mais cidades e regiões atendidas</div>
+    </div>
+    <div class="fut-item">
+      <div class="fut-icon">👤</div>
+      <div class="fut-titulo">Segundo entregador</div>
+      <div class="fut-desc">Divisão de rotas e maior cobertura</div>
+    </div>
+    <div class="fut-item">
+      <div class="fut-icon">⚡</div>
+      <div class="fut-titulo">Serviço expresso</div>
+      <div class="fut-desc">Entregas prioritárias diferenciadas</div>
+    </div>
+    <div class="fut-item">
+      <div class="fut-icon">📱</div>
+      <div class="fut-titulo">Pedidos WhatsApp</div>
+      <div class="fut-desc">Sistema simples e automatizado</div>
+    </div>
+  </div>
+</div>
+
+<!-- JORNADA E PAUSAS -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">⏱️</div>
+    <div>
+      <div class="num">08</div>
+      <h3>Jornada e Pausas</h3>
+    </div>
+  </div>
+  <div class="jornada-box">
+    <div class="val">8h · Escala 6×1</div>
+    <div class="desc">Equilíbrio entre produtividade, segurança e qualidade</div>
+  </div>
+  <div class="pausas-list">
+    <div class="pausa-item"><div class="p-time">Após 2h30</div>Pausa de 10 minutos · Hidratação e descanso</div>
+    <div class="pausa-item"><div class="p-time">Meio do dia</div>Almoço e descanso de 45 min a 1 hora</div>
+    <div class="pausa-item"><div class="p-time">Tarde</div>Nova pausa de 10 min após 2h30 de atividade</div>
+  </div>
+  <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center;">Total de pausas: 1h05 a 1h20 por jornada</p>
+</div>
+
+<!-- FILOSOFIA -->
+<div class="secao">
+  <div class="secao-titulo">
+    <div class="icone">💡</div>
+    <div>
+      <div class="num">09</div>
+      <h3>Filosofia da Implantação</h3>
+    </div>
+  </div>
+  <div class="filosofia-box">
+    <p>A proposta não é iniciar no limite da capacidade, mas construir um serviço sólido, confiável e sustentável. Os primeiros 90 dias são fundamentais para criar uma base real de operação.</p>
+    <div class="filosofia-items">
+      <div class="fil-item">Menor risco de acidentes e imprevistos</div>
+      <div class="fil-item">Maior qualidade nas entregas</div>
+      <div class="fil-item">Melhor atendimento ao cliente</div>
+      <div class="fil-item">Menor desgaste físico e mental</div>
+      <div class="fil-item">Continuidade e previsibilidade da operação</div>
+      <div class="fil-item">Capacidade real de expansão futura</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAPA CORTESIA -->
+<div class="secao">
+  <div class="mapa-cortesia">
+    <div class="titulo">🎁 Cortesia</div>
+    <h4>Mapa Operacional Interativo</h4>
+    <p>Como parte desta proposta, desenvolvi um mapa interativo com todas as rotas, distâncias, tempos e o plano de crescimento dos 90 dias — disponível gratuitamente para visualização.</p>
+    <a class="mapa-btn" href="https://maufisicart-ops.github.io/nexus/farma-munhoz.html" target="_blank">
+      🗺️ Abrir Mapa Operacional
+    </a>
+  </div>
+</div>
+
+<!-- FECHAMENTO -->
+<div class="fechamento">
+  <div class="assinatura">Proposta apresentada por</div>
+  <div class="nome">Maurício <span>Mau Shows</span></div>
+  <div class="cargo">Operador Logístico · Munhoz / MG</div>
+  <div class="fechamento-divider"></div>
+  <div class="abertura-box">
+    <p>Estou plenamente aberto a uma conversa franca sobre os próximos passos. Minha intenção é construir uma parceria justa, onde tanto a empresa quanto o serviço possam crescer juntos de forma sólida e sustentável.</p>
+    <p style="margin-top:10px;">As habilidades de <strong>logística, tecnologia e planejamento operacional</strong> que acompanham esta proposta são um diferencial que vai além da entrega — e estou disponível para discutir como podemos estruturar isso da melhor forma para ambos os lados.</p>
+    <p style="margin-top:10px;color:#aaa;font-size:12px;">Fico à disposição para negociações. 🤝</p>
+  </div>
+</div>
+
+</body>
+</html>

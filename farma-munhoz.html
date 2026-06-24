@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mapa Operacional · Farma Popular Munhoz</title>
+<style>
+  :root {
+    --verde:    #1a7a4a;
+    --verde-cl: #2ea86a;
+    --amarelo:  #e8a020;
+    --laranja:  #d95f20;
+    --vermelho: #c0392b;
+    --fundo:    #111;
+    --card:     #1e1e1e;
+    --borda:    #2a2a2a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--fundo); color: #fff; }
+
+  .header {
+    background: linear-gradient(135deg, #0a1f10 0%, #1a4a2e 100%);
+    padding: 20px 16px 14px;
+    text-align: center;
+    border-bottom: 2px solid var(--verde-cl);
+  }
+  .badge {
+    display: inline-block;
+    background: var(--verde-cl);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .header h1 { font-size: 22px; font-weight: 800; }
+  .header h1 span { color: var(--verde-cl); }
+  .header p { font-size: 12px; color: #999; margin-top: 4px; }
+
+  .tabs {
+    display: flex;
+    background: #181818;
+    border-bottom: 1px solid var(--borda);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 0 0 auto;
+    padding: 13px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  .tab.active { color: var(--verde-cl); border-bottom-color: var(--verde-cl); }
+
+  .panel { display: none; padding: 16px; }
+  .panel.active { display: block; }
+
+  /* MAPA */
+  .map-wrap {
+    background: #0a180e;
+    border-radius: 14px;
+    padding: 12px;
+    border: 1px solid #1e3d28;
+    margin-bottom: 14px;
+  }
+  .map-wrap svg { width: 100%; height: auto; display: block; }
+
+  .legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .leg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 11px;
+    color: #bbb;
+  }
+  .leg-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+
+  .info-box {
+    background: linear-gradient(135deg, #0a1f10, #1a3a20);
+    border: 1px solid var(--verde-cl);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .info-box .t { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--verde-cl); margin-bottom: 6px; }
+  .info-box p { font-size: 12px; color: #bbb; line-height: 1.7; }
+
+  /* ROTAS */
+  .hint { font-size: 11px; color: #555; text-align: center; margin-bottom: 12px; }
+  .hint span { color: var(--verde-cl); }
+
+  .loc { background: var(--card); border-radius: 10px; margin-bottom: 8px; border-left: 4px solid var(--verde-cl); overflow: hidden; cursor: pointer; }
+  .loc.z5  { border-left-color: var(--verde); }
+  .loc.z10 { border-left-color: var(--verde-cl); }
+  .loc.z15 { border-left-color: var(--amarelo); }
+  .loc.z20 { border-left-color: var(--laranja); }
+  .loc.z30 { border-left-color: var(--vermelho); }
+
+  .loc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+  }
+  .loc-nome { font-size: 14px; font-weight: 700; }
+  .loc-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .tag-u { background: #1a7a4a22; color: var(--verde-cl); border: 1px solid var(--verde); }
+  .tag-r { background: #e8a02022; color: var(--amarelo); border: 1px solid var(--amarelo); }
+  .tag-v { background: #c0392b22; color: #e07070; border: 1px solid var(--vermelho); }
+
+  .loc-body { display: none; padding: 0 14px 14px; }
+  .loc-body.open { display: block; }
+
+  .loc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .loc-item { background: #151515; border-radius: 6px; padding: 8px 10px; }
+  .loc-item .l { font-size: 9px; color: #666; text-transform: uppercase; letter-spacing: .5px; }
+  .loc-item .v { font-size: 14px; font-weight: 700; margin-top: 1px; }
+  .v.g { color: var(--verde-cl); }
+  .v.a { color: var(--amarelo); }
+  .v.o { color: #ff8c42; }
+  .v.r { color: #e07070; }
+
+  .loc-freq {
+    background: #151515;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #aaa;
+    line-height: 1.5;
+  }
+  .loc-freq strong { color: #fff; }
+
+  /* CRESCIMENTO */
+  .mes { background: var(--card); border-radius: 12px; margin-bottom: 10px; padding: 16px; border: 1px solid var(--borda); position: relative; overflow: hidden; }
+  .mes::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+  .mes.m1::before { background: var(--verde); }
+  .mes.m2::before { background: var(--amarelo); }
+  .mes.m3::before { background: var(--verde-cl); }
+
+  .mes-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .mes-label { font-size: 10px; color: #666; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .mes-obj { font-size: 14px; font-weight: 700; margin-top: 2px; }
+  .mes-num { font-size: 36px; font-weight: 900; line-height: 1; color: var(--verde-cl); text-align: right; }
+  .mes-num small { font-size: 13px; font-weight: 400; color: #666; display: block; }
+
+  .bar { height: 8px; background: #2a2a2a; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .m1 .bar-fill { background: var(--verde); width: 53%; }
+  .m2 .bar-fill { background: var(--amarelo); width: 80%; }
+  .m3 .bar-fill { background: var(--verde-cl); width: 100%; }
+
+  .mes-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
+  .ms { background: #151515; border-radius: 6px; padding: 8px; text-align: center; }
+  .ms .v { font-size: 15px; font-weight: 700; color: #fff; }
+  .ms .l { font-size: 9px; color: #666; margin-top: 2px; }
+
+  .mes-desc { background: #151515; border-radius: 6px; padding: 8px 10px; font-size: 11px; color: #aaa; line-height: 1.5; }
+  .mes-desc strong { color: #fff; }
+
+  .nota {
+    background: linear-gradient(135deg, #0a1f10, #1a3a20);
+    border: 1px solid var(--verde-cl);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 14px;
+  }
+  .nota .t { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--verde-cl); margin-bottom: 6px; }
+  .nota p { font-size: 12px; color: #bbb; line-height: 1.7; }
+
+  .footer { text-align: center; padding: 20px 16px; font-size: 11px; color: #444; border-top: 1px solid var(--borda); }
+  .footer strong { color: var(--verde-cl); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">📍 Estudo Logístico</div>
+  <h1>Farma Popular <span>Munhoz</span></h1>
+  <p>Mapa Operacional de Entregas · 2025</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('mapa',this)">🗺️ Mapa</div>
+  <div class="tab" onclick="showTab('rotas',this)">📍 Rotas</div>
+  <div class="tab" onclick="showTab('crescimento',this)">📈 Crescimento</div>
+</div>
+
+<!-- MAPA -->
+<div class="panel active" id="panel-mapa">
+  <div class="map-wrap">
+    <svg viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="160" cy="160" r="120" fill="#c0392b" fill-opacity=".10" stroke="#c0392b" stroke-width="1" stroke-dasharray="5,4"/>
+      <circle cx="160" cy="160" r="96"  fill="#d95f20" fill-opacity=".12" stroke="#d95f20" stroke-width="1" stroke-dasharray="5,4"/>
+      <circle cx="160" cy="160" r="72"  fill="#e8a020" fill-opacity=".15" stroke="#e8a020" stroke-width="1"/>
+      <circle cx="160" cy="160" r="48"  fill="#2ea86a" fill-opacity=".18" stroke="#2ea86a" stroke-width="1"/>
+      <circle cx="160" cy="160" r="24"  fill="#1a7a4a" fill-opacity=".32" stroke="#1a7a4a" stroke-width="1.5"/>
+
+      <line x1="160" y1="160" x2="210" y2="70"  stroke="#c0392b" stroke-width="1" stroke-opacity=".4" stroke-dasharray="3,3"/>
+      <line x1="160" y1="160" x2="265" y2="135" stroke="#c0392b" stroke-width="1" stroke-opacity=".4" stroke-dasharray="3,3"/>
+      <line x1="160" y1="160" x2="268" y2="205" stroke="#c0392b" stroke-width="1" stroke-opacity=".4" stroke-dasharray="3,3"/>
+      <line x1="160" y1="160" x2="218" y2="262" stroke="#c0392b" stroke-width="1" stroke-opacity=".4" stroke-dasharray="3,3"/>
+      <line x1="160" y1="160" x2="98"  y2="258" stroke="#d95f20" stroke-width="1" stroke-opacity=".4" stroke-dasharray="3,3"/>
+      <line x1="160" y1="160" x2="42"  y2="152" stroke="#c0392b" stroke-width="1" stroke-opacity=".4" stroke-dasharray="3,3"/>
+      <line x1="160" y1="160" x2="195" y2="138" stroke="#2ea86a" stroke-width="1.2" stroke-opacity=".7"/>
+      <line x1="160" y1="160" x2="148" y2="113" stroke="#2ea86a" stroke-width="1.2" stroke-opacity=".7"/>
+      <line x1="160" y1="160" x2="176" y2="197" stroke="#e8a020" stroke-width="1.2" stroke-opacity=".7"/>
+      <line x1="160" y1="160" x2="128" y2="202" stroke="#e8a020" stroke-width="1.2" stroke-opacity=".7"/>
+
+      <!-- Base -->
+      <circle cx="160" cy="160" r="10" fill="#1a7a4a" stroke="#fff" stroke-width="2.5"/>
+      <circle cx="160" cy="160" r="4"  fill="#fff"/>
+
+      <!-- Urbano -->
+      <circle cx="150" cy="148" r="5" fill="#1a7a4a" stroke="#fff" stroke-width="1.5"/>
+      <text x="112" y="145" fill="#ccc" font-size="8" font-weight="bold">Centro</text>
+
+      <!-- Rurais próximos -->
+      <circle cx="195" cy="138" r="5" fill="#2ea86a" stroke="#fff" stroke-width="1.5"/>
+      <text x="201" y="135" fill="#ccc" font-size="8">S.Roque</text>
+
+      <circle cx="148" cy="113" r="5" fill="#2ea86a" stroke="#fff" stroke-width="1.5"/>
+      <text x="130" y="106" fill="#ccc" font-size="8">R.Fundo</text>
+
+      <!-- Rurais zona 15 -->
+      <circle cx="176" cy="197" r="5" fill="#e8a020" stroke="#fff" stroke-width="1.5"/>
+      <text x="181" y="195" fill="#ccc" font-size="8">Palmeiras</text>
+
+      <circle cx="128" cy="202" r="5" fill="#e8a020" stroke="#fff" stroke-width="1.5"/>
+      <text x="100" y="200" fill="#ccc" font-size="8">Bromélias</text>
+
+      <!-- Cidades vizinhas -->
+      <circle cx="210" cy="70"  r="5" fill="#d95f20" stroke="#fff" stroke-width="1.5"/>
+      <text x="216" y="68" fill="#ccc" font-size="8">Cambuí</text>
+
+      <circle cx="265" cy="135" r="5" fill="#c0392b" stroke="#fff" stroke-width="1.5"/>
+      <text x="252" y="125" fill="#ccc" font-size="8">Extrema</text>
+
+      <circle cx="268" cy="205" r="5" fill="#c0392b" stroke="#fff" stroke-width="1.5"/>
+      <text x="255" y="220" fill="#ccc" font-size="8">Socorro</text>
+
+      <circle cx="218" cy="262" r="5" fill="#c0392b" stroke="#fff" stroke-width="1.5"/>
+      <text x="204" y="277" fill="#ccc" font-size="8">B.Brandão</text>
+
+      <circle cx="98"  cy="258" r="5" fill="#d95f20" stroke="#fff" stroke-width="1.5"/>
+      <text x="72"  y="273" fill="#ccc" font-size="8">Sen.Amaral</text>
+
+      <circle cx="42"  cy="152" r="5" fill="#c0392b" stroke="#fff" stroke-width="1.5"/>
+      <text x="10"  y="150" fill="#ccc" font-size="8">Toledo MG</text>
+
+      <!-- Rótulos km -->
+      <text x="184" y="163" fill="#1a7a4a" font-size="7" font-weight="bold">5km</text>
+      <text x="207" y="163" fill="#2ea86a" font-size="7">10km</text>
+      <text x="229" y="163" fill="#e8a020" font-size="7">15km</text>
+      <text x="252" y="163" fill="#d95f20" font-size="7">20km</text>
+      <text x="275" y="163" fill="#c0392b" font-size="7">30km</text>
+    </svg>
+  </div>
+
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#1a7a4a"></div>Até 5km · Urbano</div>
+    <div class="leg"><div class="leg-dot" style="background:#2ea86a"></div>Até 10km · Rural próx.</div>
+    <div class="leg"><div class="leg-dot" style="background:#e8a020"></div>Até 15km · Rural ext.</div>
+    <div class="leg"><div class="leg-dot" style="background:#d95f20"></div>Até 20km · Limite</div>
+    <div class="leg"><div class="leg-dot" style="background:#c0392b"></div>Até 30km · Expansão</div>
+    <div class="leg"><div class="leg-dot" style="background:#fff"></div>🏪 Base Farma Munhoz</div>
+  </div>
+
+  <div class="info-box">
+    <div class="t">💡 O que este mapa mostra</div>
+    <p>A operação parte da farmácia e alcança com segurança toda a área urbana e rural de Munhoz, com expansão natural para cidades vizinhas. Cada ponto é um mercado real com demanda identificada — mais de <strong>85 mil habitantes</strong> no raio de 30km.</p>
+  </div>
+</div>
+
+<!-- ROTAS -->
+<div class="panel" id="panel-rotas">
+  <p class="hint">Toque em uma localidade para ver <span>distância e tempo</span></p>
+
+  <!-- Centro -->
+  <div class="loc z5" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🏙️ Centro de Munhoz</div>
+      <div class="loc-tag tag-u">Urbano</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v g">~2 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v g">5–10 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~3.500</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v g">Asfalto</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> Diária · Rota prioritária · Alta demanda</div>
+    </div>
+  </div>
+
+  <!-- São Roque -->
+  <div class="loc z10" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🌿 São Roque</div>
+      <div class="loc-tag tag-r">Rural</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v g">~8 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v g">15–20 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~400</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v a">Mista</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> 2× semana · Alta fidelização · Rota programada</div>
+    </div>
+  </div>
+
+  <!-- Ribeirão Fundo -->
+  <div class="loc z10" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🌿 Ribeirão Fundo</div>
+      <div class="loc-tag tag-r">Rural</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v g">~9 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v g">18–25 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~300</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v a">Mista</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> 2× semana · Boa oportunidade de fidelização</div>
+    </div>
+  </div>
+
+  <!-- Palmeiras -->
+  <div class="loc z15" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🌄 Palmeiras</div>
+      <div class="loc-tag tag-r">Rural</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v a">~13 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v a">20–30 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~500</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v o">Terra/Mista</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> 1× semana · Dia fixo recomendado</div>
+    </div>
+  </div>
+
+  <!-- Bromélias -->
+  <div class="loc z15" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🌺 Bromélias</div>
+      <div class="loc-tag tag-r">Rural</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v a">~12 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v a">20–28 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~350</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v o">Terra/Mista</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> 1× semana · Pode combinar com Palmeiras</div>
+    </div>
+  </div>
+
+  <!-- Senador Amaral -->
+  <div class="loc z20" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🏘️ Senador Amaral</div>
+      <div class="loc-tag tag-v">Vizinha</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v o">~18 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v o">25–35 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~4.800</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v g">Asfalto</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> 1–2× semana · Alto potencial · Fase 2</div>
+    </div>
+  </div>
+
+  <!-- Cambuí -->
+  <div class="loc z30" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🌆 Cambuí</div>
+      <div class="loc-tag tag-v">Expansão</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v r">~28 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v r">35–45 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~26.000</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v g">Asfalto</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> Fase 3 · Grande mercado · Planejamento especial</div>
+    </div>
+  </div>
+
+  <!-- Bueno Brandão -->
+  <div class="loc z30" onclick="toggleLoc(this)">
+    <div class="loc-head">
+      <div class="loc-nome">🌆 Bueno Brandão</div>
+      <div class="loc-tag tag-v">Expansão</div>
+    </div>
+    <div class="loc-body">
+      <div class="loc-grid">
+        <div class="loc-item"><div class="l">Distância</div><div class="v r">~25 km</div></div>
+        <div class="loc-item"><div class="l">Tempo médio</div><div class="v r">30–40 min</div></div>
+        <div class="loc-item"><div class="l">Habitantes</div><div class="v">~11.000</div></div>
+        <div class="loc-item"><div class="l">Tipo de via</div><div class="v g">Asfalto</div></div>
+      </div>
+      <div class="loc-freq">📦 <strong>Frequência:</strong> Fase 2–3 · Boa oportunidade regional</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CRESCIMENTO -->
+<div class="panel" id="panel-crescimento">
+
+  <div class="mes m1">
+    <div class="mes-top">
+      <div>
+        <div class="mes-label">Mês 1</div>
+        <div class="mes-obj">Validação da Operação</div>
+      </div>
+      <div class="mes-num">8<small>entregas/dia</small></div>
+    </div>
+    <div class="bar"><div class="bar-fill"></div></div>
+    <div class="mes-stats">
+      <div class="ms"><div class="v">40</div><div class="l">por semana</div></div>
+      <div class="ms"><div class="v">160</div><div class="l">por mês</div></div>
+      <div class="ms"><div class="v">~R$0</div><div class="l">custo extra</div></div>
+    </div>
+    <div class="mes-desc">✅ <strong>Foco:</strong> Centro + rurais próximos · Aprender a rota · Coletar feedback dos clientes</div>
+  </div>
+
+  <div class="mes m2">
+    <div class="mes-top">
+      <div>
+        <div class="mes-label">Mês 2</div>
+        <div class="mes-obj">Consolidação das Rotas</div>
+      </div>
+      <div class="mes-num">12<small>entregas/dia</small></div>
+    </div>
+    <div class="bar"><div class="bar-fill"></div></div>
+    <div class="mes-stats">
+      <div class="ms"><div class="v">60</div><div class="l">por semana</div></div>
+      <div class="ms"><div class="v">240</div><div class="l">por mês</div></div>
+      <div class="ms"><div class="v">+50%</div><div class="l">vs mês 1</div></div>
+    </div>
+    <div class="mes-desc">📈 <strong>Foco:</strong> Adicionar rurais (Palmeiras, Bromélias) · Dias fixos por região · Pedidos via WhatsApp</div>
+  </div>
+
+  <div class="mes m3">
+    <div class="mes-top">
+      <div>
+        <div class="mes-label">Mês 3</div>
+        <div class="mes-obj">Expansão Controlada</div>
+      </div>
+      <div class="mes-num">15<small>entregas/dia</small></div>
+    </div>
+    <div class="bar"><div class="bar-fill"></div></div>
+    <div class="mes-stats">
+      <div class="ms"><div class="v">75</div><div class="l">por semana</div></div>
+      <div class="ms"><div class="v">300</div><div class="l">por mês</div></div>
+      <div class="ms"><div class="v">+87%</div><div class="l">vs mês 1</div></div>
+    </div>
+    <div class="mes-desc">🚀 <strong>Foco:</strong> Cidades vizinhas (Senador Amaral) · Rotas otimizadas · Sistema estável</div>
+  </div>
+
+  <div class="nota">
+    <div class="t">📌 Visão Executiva</div>
+    <p>Em 90 dias a operação sai do zero para <strong>300 entregas mensais</strong>, com rotas estabelecidas, clientes fidelizados e base sólida para expansão regional. Crescimento gradual para garantir qualidade e sustentabilidade.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  Elaborado para <strong>Farma Popular Munhoz · MG</strong><br>
+  Estudo logístico operacional · 2025
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  el.classList.add('active');
+}
+function toggleLoc(el) {
+  el.querySelector('.loc-body').classList.toggle('open');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Comercial – Mau Shows</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  :root{
+    --ink:#0f0c08;
+    --gold:#b8892a;
+    --gold-light:#d4a84b;
+    --gold-pale:#f5ead5;
+    --warm:#2c1f0e;
+    --cream:#faf7f2;
+    --muted:#6b5c3e;
+    --line:#e2d4b8;
+  }
+
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background:var(--warm);
+    min-height:260px;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+    padding:40px 32px 32px;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, #3d2a10 0%, transparent 70%),
+      linear-gradient(160deg, #1a1008 0%, #2c1f0e 60%, #0d0804 100%);
+  }
+  .hero-lines{
+    position:absolute;inset:0;
+    background-image:repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 38px,
+      rgba(184,137,42,0.07) 38px,
+      rgba(184,137,42,0.07) 39px
+    );
+  }
+  .hero-content{position:relative;z-index:2;}
+  .hero-eyebrow{
+    font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--gold);opacity:0.8;margin-bottom:8px;
+  }
+  .hero-name{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(32px,6vw,54px);font-weight:700;
+    color:#fff;line-height:1.1;margin-bottom:6px;
+  }
+  .hero-sub{
+    font-family:'Playfair Display',Georgia,serif;
+    font-style:italic;font-size:16px;
+    color:var(--gold-light);margin-bottom:18px;
+  }
+  .hero-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{
+    background:rgba(184,137,42,0.18);
+    border:0.5px solid rgba(184,137,42,0.4);
+    color:var(--gold-light);
+    font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    padding:4px 12px;border-radius:2px;
+  }
+  .hero-guitar-icon{
+    position:absolute;right:24px;bottom:20px;z-index:2;
+    opacity:0.13;font-size:110px;line-height:1;
+    font-family:serif;color:var(--gold);
+    user-select:none;
+  }
+
+  /* SECTION */
+  .section{padding:36px 28px;border-bottom:0.5px solid var(--line);}
+  .section-label{
+    font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:10px;
+  }
+  .section-label::after{content:'';flex:1;height:0.5px;background:var(--line);}
+
+  /* SHOW BLOCK */
+  .show-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .show-card{
+    background:#fff;
+    border:0.5px solid var(--line);
+    border-radius:4px;
+    padding:16px;
+  }
+  .show-card-label{
+    font-size:10px;letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:4px;
+  }
+  .show-card-value{
+    font-size:22px;font-weight:600;color:var(--ink);
+  }
+  .show-card-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+  .show-card.full{grid-column:1/-1;}
+
+  /* EQUIPMENT */
+  .eq-item{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:14px 0;border-bottom:0.5px solid var(--line);
+  }
+  .eq-item:last-child{border-bottom:none;}
+  .eq-icon{
+    width:40px;height:40px;flex-shrink:0;
+    background:var(--gold-pale);
+    border:0.5px solid var(--line);
+    border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:19px;
+  }
+  .eq-name{font-weight:500;font-size:14px;color:var(--ink);}
+  .eq-model{font-size:13px;color:var(--gold);font-weight:500;margin-top:1px;}
+  .eq-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5;}
+
+  /* PRICING */
+  .price-hero{
+    background:var(--warm);
+    border-radius:6px;
+    padding:28px 24px;
+    margin-bottom:16px;
+    position:relative;overflow:hidden;
+  }
+  .price-hero::before{
+    content:'';position:absolute;
+    top:-30px;right:-30px;
+    width:120px;height:120px;
+    border-radius:50%;
+    background:rgba(184,137,42,0.12);
+  }
+  .price-label{
+    font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:8px;
+  }
+  .price-value{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:48px;font-weight:700;
+    color:#fff;line-height:1;
+  }
+  .price-value span{font-size:20px;font-weight:400;opacity:0.7;}
+  .price-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px;}
+
+  .price-breakdown{display:flex;flex-direction:column;gap:8px;}
+  .price-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 14px;
+    background:#fff;
+    border:0.5px solid var(--line);
+    border-radius:4px;
+    font-size:13px;
+  }
+  .price-row-label{color:var(--muted);}
+  .price-row-value{font-weight:500;color:var(--ink);}
+  .price-row-value.gold{color:var(--gold);font-weight:600;}
+  .price-row-value.pix{
+    background:var(--gold-pale);
+    color:var(--gold);
+    padding:3px 10px;border-radius:2px;
+    font-size:12px;letter-spacing:0.05em;
+  }
+
+  /* CHECKLIST */
+  .checklist{display:flex;flex-direction:column;gap:10px;}
+  .check-item{
+    display:flex;align-items:flex-start;gap:12px;
+    padding:12px 14px;
+    background:#fff;
+    border:0.5px solid var(--line);
+    border-radius:4px;
+  }
+  .check-mark{
+    width:20px;height:20px;flex-shrink:0;
+    background:var(--gold);
+    border-radius:2px;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:12px;font-weight:700;margin-top:1px;
+  }
+  .check-text{font-size:13px;color:var(--ink);line-height:1.5;}
+  .check-text strong{color:var(--gold);font-weight:600;}
+
+  /* FOOTER */
+  .footer{
+    background:var(--warm);
+    padding:28px;
+    text-align:center;
+  }
+  .footer-name{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:20px;color:var(--gold-light);margin-bottom:4px;
+  }
+  .footer-contact{font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:0.05em;}
+  .footer-ig{color:var(--gold);text-decoration:none;}
+  .footer-nf{
+    display:inline-block;margin-top:14px;
+    background:rgba(184,137,42,0.15);
+    border:0.5px solid rgba(184,137,42,0.35);
+    color:var(--gold-light);
+    font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+    padding:6px 16px;border-radius:2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Proposta Comercial · Show ao Vivo</div>
+    <div class="hero-name">Mau Shows</div>
+    <div class="hero-sub">Voz · Violão · Gaita Cromática</div>
+    <div class="hero-tags">
+      <span class="tag">Folk</span>
+      <span class="tag">Blues</span>
+      <span class="tag">MPB</span>
+      <span class="tag">Bossa Nova</span>
+      <span class="tag">Rock Clássico</span>
+    </div>
+  </div>
+  <div class="hero-guitar-icon">♪</div>
+</div>
+
+<!-- SHOW -->
+<div class="section">
+  <div class="section-label">O Show</div>
+  <div class="show-grid">
+    <div class="show-card">
+      <div class="show-card-label">Duração</div>
+      <div class="show-card-value">2h30</div>
+      <div class="show-card-sub">de performance ao vivo</div>
+    </div>
+    <div class="show-card">
+      <div class="show-card-label">Montagem</div>
+      <div class="show-card-value">40min</div>
+      <div class="show-card-sub">antes do evento</div>
+    </div>
+    <div class="show-card full">
+      <div class="show-card-label">Formato</div>
+      <div style="font-size:14px;color:#2c1f0e;line-height:1.6;">
+        Solo acústico com alta competência técnica e artística. Resolução imediata de acústica e palco. Transporte e pilotagem próprios com estrutura segura para os equipamentos.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EQUIPAMENTOS -->
+<div class="section">
+  <div class="section-label">Estrutura Técnica Completa</div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🎸</div>
+    <div>
+      <div class="eq-name">Violão de Aço</div>
+      <div class="eq-model">Giannini · Cordas D'Addario</div>
+      <div class="eq-desc">Perfil sonoro: brilho e pegada. Ideal para Folk, Rock e Pop.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🎶</div>
+    <div>
+      <div class="eq-name">Violão de Nylon</div>
+      <div class="eq-model">Ashland · Cordas D'Addario</div>
+      <div class="eq-desc">Timbres clássicos e encorpados. Ideal para MPB, Bossa Nova e Blues.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🎵</div>
+    <div>
+      <div class="eq-name">Gaita Cromática</div>
+      <div class="eq-model">Hohner Chromonica 280 · Profissional</div>
+      <div class="eq-desc">Instrumento de referência mundial. Expressividade máxima para Blues e Folk.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🔊</div>
+    <div>
+      <div class="eq-name">Sistema de PA</div>
+      <div class="eq-model">Ecopower EP-S313 · 500W RMS · Ativo</div>
+      <div class="eq-desc">Potência e clareza para ambientes internos e externos.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🎛</div>
+    <div>
+      <div class="eq-name">Processador de Efeitos</div>
+      <div class="eq-model">Zoom GFX-8</div>
+      <div class="eq-desc">Timbres refinados, fidelidade e máxima dinâmica para os instrumentos.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🔉</div>
+    <div>
+      <div class="eq-name">Reforço de Graves</div>
+      <div class="eq-model">Meteoro Dynamic Studio 700</div>
+      <div class="eq-desc">Corpo sonoro premium. Graves firmes e presença em qualquer ambiente.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">🎤</div>
+    <div>
+      <div class="eq-name">Microfones</div>
+      <div class="eq-model">Shure SM58 + Shure A58 · 2 pedestais</div>
+      <div class="eq-desc">Referência mundial em vocalização ao vivo. Clareza e rejeição de feedback.</div>
+    </div>
+  </div>
+
+  <div class="eq-item">
+    <div class="eq-icon">⚡</div>
+    <div>
+      <div class="eq-name">Infraestrutura Elétrica</div>
+      <div class="eq-model">Extensão 22m · Régua profissional</div>
+      <div class="eq-desc">Proteção contra picos e descargas de alta tensão. Segurança total para o local.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST POR QUE VALE -->
+<div class="section">
+  <div class="section-label">Por que este valor é justo</div>
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>Estrutura completa</strong> — PA, processador, reforço de graves, 2 microfones Shure e 2 violões. O contratante não precisa locar nada.</div>
+    </div>
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>Artista profissional MEI</strong> — emite Nota Fiscal Eletrônica. Contratação legal, sem riscos trabalhistas.</div>
+    </div>
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>2h30 de show ao vivo</strong> — presença cênica, repertório variado e adaptável ao público do evento.</div>
+    </div>
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>Montagem inclusa</strong> — 40 minutos antes. Sem custo extra de equipe técnica.</div>
+    </div>
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>Transporte e logística próprios</strong> — Ford EcoSport XLT. Equipamentos chegam com segurança e pontualidade.</div>
+    </div>
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>Gaita cromática Hohner 280</strong> — diferenciais artísticos que elevam o nível do evento.</div>
+    </div>
+    <div class="check-item">
+      <div class="check-mark">✓</div>
+      <div class="check-text"><strong>Solicitação mínima da casa</strong> — apenas lanche e hidratação durante o evento.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PREÇO -->
+<div class="section">
+  <div class="section-label">Investimento</div>
+  <div class="price-hero">
+    <div class="price-label">Valor do Show</div>
+    <div class="price-value"><span>R$</span> 680</div>
+    <div class="price-sub">2h30 · estrutura completa · NF-e incluída</div>
+  </div>
+  <div class="price-breakdown">
+    <div class="price-row">
+      <span class="price-row-label">Sinal para reserva da data</span>
+      <span class="price-row-value gold">30% · R$ 204</span>
+    </div>
+    <div class="price-row">
+      <span class="price-row-label">Quitação após o show</span>
+      <span class="price-row-value">70% · R$ 476</span>
+    </div>
+    <div class="price-row">
+      <span class="price-row-label">Forma de pagamento</span>
+      <span class="price-row-value pix">PIX</span>
+    </div>
+    <div class="price-row">
+      <span class="price-row-label">Deslocamento</span>
+      <span class="price-row-value" style="font-size:12px;color:#6b5c3e;">Pedágios e km calculados por rota</span>
+    </div>
+    <div class="price-row">
+      <span class="price-row-label">Hora extra</span>
+      <span class="price-row-value" style="font-size:12px;color:#6b5c3e;">Proporcional após 2h30</span>
+    </div>
+    <div class="price-row">
+      <span class="price-row-label">Imprevistos</span>
+      <span class="price-row-value" style="font-size:12px;color:#6b5c3e;">Aviso mínimo 24h · resolução amigável</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-name">Maurício Diogo</div>
+  <div class="footer-contact">
+    <a class="footer-ig" href="https://instagram.com/mau_shows">@mau_shows</a>
+    &nbsp;·&nbsp; MEI Regularizado &nbsp;·&nbsp; Região Campinas / Circuito das Águas
+  </div>
+  <div class="footer-nf">Emite Nota Fiscal Eletrônica</div>
+</div>
+
+</body>
+</html>

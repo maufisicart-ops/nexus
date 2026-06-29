@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS · Treino Vocal Hard Rock Mastery</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap');
+
+/* ── TOKENS ─────────────────────────────────────────────────────────── */
+:root {
+  --ink:    #0c0c0c;
+  --paper:  #111111;
+  --lift:   #1a1a1a;
+  --ridge:  #272727;
+  --coal:   #333;
+  --bone:   #e4e0d8;
+  --smoke:  #8a8680;
+  --blood:  #c0291a;
+  --ember:  #e8521a;
+  --gold:   #c9922a;
+  --steel:  #7b9cb8;
+  --volt:   #a8ff3e;
+  --r: 'Bebas Neue', sans-serif;
+  --b: 'Barlow Condensed', sans-serif;
+  --body: 'Barlow', sans-serif;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.55;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER / HERO ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  width: 100%;
+  background: var(--ink);
+  border-bottom: 1px solid var(--ridge);
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.012) 2px,rgba(255,255,255,0.012) 4px),
+    repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.008) 3px,rgba(255,255,255,0.008) 6px);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 20px 36px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.hero-badge {
+  font-family: var(--b);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-badge::before {
+  content: '';
+  display: inline-block;
+  width: 28px; height: 2px;
+  background: var(--ember);
+}
+
+.hero h1 {
+  font-family: var(--r);
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  line-height: 0.92;
+  letter-spacing: 0.03em;
+  color: var(--bone);
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--blood);
+  display: block;
+}
+
+.hero-sub {
+  font-family: var(--b);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--smoke);
+  margin-top: 14px;
+  letter-spacing: 0.04em;
+}
+
+.hero-meta {
+  text-align: right;
+}
+
+.hero-meta .ver {
+  font-family: var(--r);
+  font-size: 1.1rem;
+  color: var(--coal);
+  letter-spacing: 0.1em;
+}
+
+.hero-meta .level {
+  font-family: var(--b);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+/* ── NAV TABS ──────────────────────────────────────────────────────── */
+.tab-nav {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: rgba(12,12,12,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--ridge);
+}
+
+.tab-nav-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 16px;
+  gap: 0;
+}
+
+.tab-nav-inner::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  font-family: var(--b);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 14px 18px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover { color: var(--bone); }
+.tab-btn.active { color: var(--ember); border-bottom-color: var(--ember); }
+
+/* ── CONTENT WRAPPER ───────────────────────────────────────────────── */
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+.tab-panel { display: none; padding-top: 28px; }
+.tab-panel.active { display: block; }
+
+/* ── SECTION HEADER ────────────────────────────────────────────────── */
+.sec-head {
+  margin-bottom: 20px;
+}
+
+.sec-eyebrow {
+  font-family: var(--b);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 6px;
+}
+
+.sec-title {
+  font-family: var(--r);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--bone);
+}
+
+.sec-title span { color: var(--blood); }
+
+/* ── CARD ──────────────────────────────────────────────────────────── */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-family: var(--b);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 8px;
+}
+
+/* ── COACH PANEL ───────────────────────────────────────────────────── */
+.coach-wrap {
+  background: var(--paper);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.coach-header {
+  background: var(--lift);
+  border-bottom: 1px solid var(--ridge);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.coach-indicator {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--coal);
+  flex-shrink: 0;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.coach-indicator.live {
+  background: var(--volt);
+  box-shadow: 0 0 8px rgba(168,255,62,0.5);
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%,100% { box-shadow: 0 0 4px rgba(168,255,62,0.3); }
+  50%      { box-shadow: 0 0 14px rgba(168,255,62,0.7); }
+}
+
+.coach-header-text {
+  flex: 1;
+}
+
+.coach-header-text strong {
+  font-family: var(--b);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+  display: block;
+}
+
+.coach-header-text small {
+  font-size: 0.72rem;
+  color: var(--smoke);
+  letter-spacing: 0.08em;
+}
+
+.coach-body {
+  padding: 18px 18px 14px;
+}
+
+/* PHASE STEPS */
+.phase-steps {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.ps {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ridge);
+  transition: background 0.4s;
+}
+.ps.done { background: var(--volt); }
+.ps.active { background: var(--ember); }
+
+/* BIG TIMER */
+.timer-area {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.timer-ring-wrap {
+  position: relative;
+  width: 88px; height: 88px;
+}
+
+.timer-ring-wrap svg {
+  transform: rotate(-90deg);
+  width: 88px; height: 88px;
+}
+
+.trk-bg { fill: none; stroke: var(--ridge); stroke-width: 5; }
+.trk-fg {
+  fill: none;
+  stroke: var(--ember);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 238;
+  stroke-dashoffset: 238;
+  transition: stroke-dashoffset 1s linear, stroke 0.4s;
+}
+
+.trk-time {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--r);
+  font-size: 1.6rem;
+  color: var(--bone);
+  letter-spacing: 0.04em;
+}
+
+.timer-info {}
+
+.phase-label-sm {
+  font-family: var(--b);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  margin-bottom: 3px;
+}
+
+.phase-name-lg {
+  font-family: var(--r);
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--bone);
+  margin-bottom: 6px;
+}
+
+.phase-status {
+  font-size: 0.8rem;
+  color: var(--ember);
+  font-weight: 500;
+}
+
+/* INSTRUCTION TICKER */
+.instr-ticker {
+  background: var(--lift);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.5;
+  min-height: 48px;
+  border-left: 3px solid var(--ridge);
+  transition: border-color 0.3s, color 0.3s;
+  margin-bottom: 14px;
+}
+
+.instr-ticker.speaking {
+  border-left-color: var(--ember);
+  color: var(--bone);
+}
+
+/* TONE PILL */
+.tone-pill {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: rgba(200,48,26,0.1);
+  border: 1px solid rgba(200,48,26,0.3);
+  border-radius: 4px;
+  padding: 8px 14px;
+  margin-bottom: 14px;
+}
+
+.tone-pill.show { display: flex; }
+
+.tone-note {
+  font-family: var(--r);
+  font-size: 2rem;
+  color: var(--blood);
+  line-height: 1;
+}
+
+.tone-txt {
+  font-size: 0.78rem;
+  color: var(--smoke);
+  line-height: 1.35;
+}
+
+.tone-bars {
+  margin-left: auto;
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 28px;
+}
+
+.tb {
+  width: 4px;
+  background: var(--blood);
+  border-radius: 1px;
+  animation: tb-wave 0.7s ease-in-out infinite alternate;
+}
+.tb:nth-child(1) { height: 40%; animation-delay: 0s; }
+.tb:nth-child(2) { height: 70%; animation-delay: 0.12s; }
+.tb:nth-child(3) { height: 100%; animation-delay: 0.24s; }
+.tb:nth-child(4) { height: 70%; animation-delay: 0.36s; }
+.tb:nth-child(5) { height: 40%; animation-delay: 0.48s; }
+
+@keyframes tb-wave {
+  from { transform: scaleY(0.35); opacity: 0.4; }
+  to   { transform: scaleY(1);    opacity: 1; }
+}
+
+/* COACH CONTROLS */
+.coach-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.btn {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--b);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.btn-main {
+  flex: 1;
+  padding: 13px 16px;
+  font-size: 1rem;
+  background: var(--blood);
+  color: var(--bone);
+}
+.btn-main:hover { background: var(--ember); }
+.btn-main:disabled { background: #2a1515; color: #444; cursor: default; }
+
+.btn-sm {
+  padding: 13px 14px;
+  font-size: 0.82rem;
+  background: var(--lift);
+  color: var(--smoke);
+  border: 1px solid var(--ridge);
+}
+.btn-sm:hover { color: var(--bone); border-color: var(--coal); }
+
+/* VOL CONTROL */
+.vol-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 2px;
+  margin-top: 10px;
+}
+
+.vol-row label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  white-space: nowrap;
+}
+
+input[type=range] {
+  flex: 1;
+  accent-color: var(--ember);
+  cursor: pointer;
+}
+
+.vol-num {
+  font-size: 0.72rem;
+  color: var(--smoke);
+  min-width: 30px;
+  text-align: right;
+}
+
+/* ── TÉCNICA: POSTURA ──────────────────────────────────────────────── */
+.posture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.posture-item {
+  background: var(--paper);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  padding: 16px 14px;
+  text-align: center;
+}
+
+.posture-icon {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.posture-item strong {
+  font-family: var(--b);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.posture-item p {
+  font-size: 0.78rem;
+  color: var(--smoke);
+  line-height: 1.4;
+}
+
+/* ── PROGRESSÃO 30 DIAS ────────────────────────────────────────────── */
+.prog-track {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.prog-line {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  right: 22px;
+  height: 2px;
+  background: var(--ridge);
+}
+
+.prog-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--blood), var(--ember));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.prog-nodes {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.prog-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.prog-dot {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--ridge);
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--r);
+  font-size: 0.95rem;
+  color: var(--smoke);
+  transition: all 0.25s;
+  position: relative;
+  z-index: 2;
+}
+
+.prog-node.active .prog-dot,
+.prog-node:hover .prog-dot {
+  border-color: var(--ember);
+  background: rgba(232,82,26,0.15);
+  color: var(--ember);
+}
+
+.prog-node.done .prog-dot {
+  border-color: var(--volt);
+  background: rgba(168,255,62,0.1);
+  color: var(--volt);
+}
+
+.prog-node-label {
+  font-family: var(--b);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  text-align: center;
+}
+
+.prog-detail {
+  background: var(--lift);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  padding: 18px;
+  display: none;
+}
+
+.prog-detail.show { display: block; }
+
+.prog-detail h3 {
+  font-family: var(--b);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 10px;
+}
+
+.prog-detail ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prog-detail ul li {
+  font-size: 0.84rem;
+  color: #bbb;
+  padding-left: 16px;
+  position: relative;
+}
+
+.prog-detail ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--ember);
+}
+
+/* ── REPERTÓRIO ────────────────────────────────────────────────────── */
+.rep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.rep-card {
+  background: var(--paper);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.rep-card:hover, .rep-card.open {
+  border-color: var(--blood);
+  background: rgba(192,41,26,0.06);
+}
+
+.rep-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rep-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.rep-info {}
+
+.rep-title {
+  font-family: var(--b);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.rep-artist {
+  font-size: 0.72rem;
+  color: var(--smoke);
+  margin-top: 2px;
+}
+
+.rep-diff {
+  margin-left: auto;
+  display: flex;
+  gap: 2px;
+}
+
+.diff-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ridge);
+}
+.diff-dot.on { background: var(--blood); }
+
+.rep-expand {
+  font-size: 0.8rem;
+  color: var(--smoke);
+  line-height: 1.45;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ridge);
+  display: none;
+}
+
+.rep-card.open .rep-expand { display: block; }
+
+/* ── FEEDBACK ──────────────────────────────────────────────────────── */
+.fb-question {
+  background: var(--paper);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+}
+
+.fb-q-text {
+  font-family: var(--b);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--bone);
+  margin-bottom: 12px;
+}
+
+.fb-options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.fb-opt {
+  padding: 7px 14px;
+  border-radius: 4px;
+  font-family: var(--b);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--ridge);
+  background: var(--lift);
+  color: var(--smoke);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.fb-opt:hover { border-color: var(--ember); color: var(--ember); }
+.fb-opt.selected { background: var(--blood); border-color: var(--blood); color: white; }
+
+.fb-summary {
+  background: var(--lift);
+  border: 1px solid var(--ridge);
+  border-radius: 6px;
+  padding: 18px;
+  margin-top: 14px;
+  display: none;
+}
+
+.fb-summary.show { display: block; }
+
+.fb-summary h3 {
+  font-family: var(--b);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.fb-summary p {
+  font-size: 0.84rem;
+  color: #bbb;
+  line-height: 1.55;
+}
+
+/* ── SAÚDE VOCAL ───────────────────────────────────────────────────── */
+.health-rule {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--ridge);
+  border-left: 3px solid var(--ridge);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 8px;
+  transition: border-left-color 0.3s;
+}
+
+.health-rule:hover { border-left-color: var(--gold); }
+
+.health-rule .icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.health-rule strong {
+  font-family: var(--b);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.health-rule p {
+  font-size: 0.8rem;
+  color: var(--smoke);
+  line-height: 1.4;
+}
+
+/* ── COMPLETE OVERLAY ──────────────────────────────────────────────── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,8,0.94);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 24px;
+}
+.overlay.show { display: flex; }
+
+.overlay-glyph {
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 12px;
+  animation: glyph-in 0.6s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes glyph-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.overlay h2 {
+  font-family: var(--r);
+  font-size: clamp(2.2rem, 8vw, 3.8rem);
+  color: var(--ember);
+  text-shadow: 0 0 40px rgba(232,82,26,0.5);
+  margin-bottom: 10px;
+}
+
+.overlay p {
+  font-size: 0.9rem;
+  color: var(--smoke);
+  max-width: 320px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ── WARN ───────────────────────────────────────────────────────────── */
+.warn-bar {
+  background: #1a1500;
+  border-bottom: 1px solid #3a3000;
+  padding: 8px 20px;
+  font-size: 0.78rem;
+  color: var(--gold);
+  text-align: center;
+  display: none;
+}
+.warn-bar.show { display: block; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-meta { text-align: left; }
+  .posture-grid { grid-template-columns: 1fr 1fr; }
+  .rep-grid { grid-template-columns: 1fr; }
+  .timer-area { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="warn-bar" id="warnBar">⚠️ Síntese de voz não detectada. Abra no Chrome ou Edge para o coach funcionar.</div>
+
+<!-- ── HERO ─────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">NEXUS · Treino Vocal</div>
+      <h1>HARD ROCK<em>MASTERY</em></h1>
+      <p class="hero-sub">Apoio diafragmático · Potência · Mix Voice · Emoção — estilo Sebastian Bach / Skid Row</p>
+    </div>
+    <div class="hero-meta">
+      <div class="ver">v2.0</div>
+      <div class="level">Intermediário–Avançado</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TABS ──────────────────────────────────────────────────────────── -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="switchTab('treino')">🎤 Coach</button>
+    <button class="tab-btn" onclick="switchTab('tecnica')">🤘 Técnica</button>
+    <button class="tab-btn" onclick="switchTab('progressao')">📅 30 Dias</button>
+    <button class="tab-btn" onclick="switchTab('repertorio')">🎸 Repertório</button>
+    <button class="tab-btn" onclick="switchTab('feedback')">📊 Feedback</button>
+    <button class="tab-btn" onclick="switchTab('saude')">❤️ Saúde</button>
+  </div>
+</nav>
+
+<!-- ── CONTENT ────────────────────────────────────────────────────────── -->
+<div class="content">
+
+  <!-- ═══ TREINO (COACH) ═══════════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-treino">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Sessão Guiada</div>
+      <div class="sec-title">TREINO <span>AO VIVO</span></div>
+    </div>
+
+    <div class="coach-wrap">
+      <div class="coach-header">
+        <div class="coach-indicator" id="coachDot"></div>
+        <div class="coach-header-text">
+          <strong id="coachPhaseLbl">Aguardando início</strong>
+          <small id="coachPhaseDesc">Pressione INICIAR SESSÃO</small>
+        </div>
+      </div>
+      <div class="coach-body">
+        <div class="phase-steps" id="phaseSteps"></div>
+
+        <div class="timer-area">
+          <div class="timer-ring-wrap">
+            <svg viewBox="0 0 88 88">
+              <circle class="trk-bg" cx="44" cy="44" r="38"/>
+              <circle class="trk-fg" id="trkFg" cx="44" cy="44" r="38"/>
+            </svg>
+            <div class="trk-time" id="trkTime">--:--</div>
+          </div>
+          <div class="timer-info">
+            <div class="phase-label-sm" id="phLabelSm">—</div>
+            <div class="phase-name-lg" id="phNameLg">Sessão Hard Rock</div>
+            <div class="phase-status" id="phStatus">Pronto para começar</div>
+          </div>
+        </div>
+
+        <div class="tone-pill" id="tonePill">
+          <div class="tone-note" id="toneNoteEl">Dó</div>
+          <div class="tone-txt" id="toneTxtEl">Tom base<br>Nay Nay Nay</div>
+          <div class="tone-bars">
+            <div class="tb"></div><div class="tb"></div><div class="tb"></div>
+            <div class="tb"></div><div class="tb"></div>
+          </div>
+        </div>
+
+        <div class="instr-ticker" id="instrTicker">As instruções do coach aparecerão aqui em tempo real.</div>
+
+        <div class="coach-controls">
+          <button class="btn btn-sm" id="btnSkip" onclick="skipPhase()" disabled title="Pular fase">⏭ SKIP</button>
+          <button class="btn btn-main" id="btnStart" onclick="startSession()">▶ INICIAR SESSÃO</button>
+          <button class="btn btn-sm" id="btnPause" onclick="togglePause()" style="display:none">⏸</button>
+        </div>
+
+        <div class="vol-row">
+          <label>🔊 Coach</label>
+          <input type="range" id="volRange" min="0" max="1" step="0.05" value="0.85" oninput="setVol(this.value)">
+          <span class="vol-num" id="volNum">85%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card">
+      <div class="card-title">⚡ Dicas Brutais</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+        <div style="font-size:0.83rem;color:#bbb;padding:8px 12px;background:#0f0f0f;border-radius:4px;border-left:3px solid #c0291a">🖐️ <strong>Mão na barriga</strong> — sente o diafragma empurrando pra fora em cada NAY</div>
+        <div style="font-size:0.83rem;color:#bbb;padding:8px 12px;background:#0f0f0f;border-radius:4px;border-left:3px solid #c9922a">😮‍💨 Se a <strong>garganta travar</strong> — para, respira fundo, volta mais leve</div>
+        <div style="font-size:0.83rem;color:#bbb;padding:8px 12px;background:#0f0f0f;border-radius:4px;border-left:3px solid #7b9cb8">📱 <strong>Grava no celular</strong> mesmo que ruim — ouvir depois muda tudo</div>
+        <div style="font-size:0.83rem;color:#bbb;padding:8px 12px;background:#0f0f0f;border-radius:4px;border-left:3px solid #a8ff3e">🎭 NAY tem <strong>ressonância nasal</strong> — não é o som da boca, é do nariz/máscara</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TÉCNICA ══════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-tecnica">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Postura & Mecanismo</div>
+      <div class="sec-title">A BASE DA <span>POTÊNCIA</span></div>
+    </div>
+
+    <div class="posture-grid">
+      <div class="posture-item">
+        <span class="posture-icon">🫁</span>
+        <strong>Costelas Abertas</strong>
+        <p>Expande as costelas lateralmente antes de cantar. Mantém essa expansão durante toda a frase.</p>
+      </div>
+      <div class="posture-item">
+        <span class="posture-icon">💪</span>
+        <strong>Diafragma</strong>
+        <p>O músculo abaixo dos pulmões é o teu amplificador. Empurra de baixo pra cima — não aperta a garganta.</p>
+      </div>
+      <div class="posture-item">
+        <span class="posture-icon">👄</span>
+        <strong>Garganta Solta</strong>
+        <p>Se a garganta apertar, você perde potência e arrisca lesão. O controle é no abdômen, não no pescoço.</p>
+      </div>
+      <div class="posture-item">
+        <span class="posture-icon">😤</span>
+        <strong>Ressonância Facial</strong>
+        <p>O NAY ativa a "máscara" — região nasal, maçãs do rosto. Sente vibrar aqui. Isso projeta a voz.</p>
+      </div>
+      <div class="posture-item">
+        <span class="posture-icon">🧘</span>
+        <strong>Postura Ereta</strong>
+        <p>Ombros pra trás e pra baixo. Cabeça nivelada. O canal de ar precisa estar livre da traqueia até a boca.</p>
+      </div>
+      <div class="posture-item">
+        <span class="posture-icon">🎭</span>
+        <strong>Mix Voice</strong>
+        <p>Mistura de peito + cabeça. Sebastian Bach usa isso nos agudos extremos. Treina com o NAY subindo de tom.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Como o NAY ativa tudo isso</div>
+      <p style="font-size:0.84rem;color:#bbb;line-height:1.6">O som <em style="color:var(--ember)">N</em> fecha a glote brevemente, gerando pressão subglótica. O <em style="color:var(--ember)">AY</em> abre e projeta pela máscara facial. Essa sequência obriga o corpo a usar o apoio correto — por isso é o exercício favorito de professores de rock vocal. O Sebastian Bach treinava horas de NAY antes dos shows do Skid Row.</p>
+    </div>
+
+    <div class="card" style="margin-top:4px">
+      <div class="card-title">Sinais de que está errado</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <div style="background:#1a0800;border:1px solid #3a1500;border-radius:4px;padding:10px;font-size:0.8rem;color:#ff9060">❌ Garganta seca ou doendo<br>→ Está forçando na garganta</div>
+        <div style="background:#1a0800;border:1px solid #3a1500;border-radius:4px;padding:10px;font-size:0.8rem;color:#ff9060">❌ Voz tremendo descontrolada<br>→ Falta apoio diafragmático</div>
+        <div style="background:#1a0800;border:1px solid #3a1500;border-radius:4px;padding:10px;font-size:0.8rem;color:#ff9060">❌ Som "metálico" e fino<br>→ Muita tensão, pouco apoio</div>
+        <div style="background:#0a1a00;border:1px solid #1a3a00;border-radius:4px;padding:10px;font-size:0.8rem;color:#80ff60">✅ Sente vibrar no nariz<br>→ Ressonância correta</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PROGRESSÃO 30 DIAS ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-progressao">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Plano Estruturado</div>
+      <div class="sec-title">30 DIAS DE <span>MASTERY</span></div>
+    </div>
+
+    <div class="prog-track" style="margin-bottom:30px">
+      <div class="prog-line"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      <div class="prog-nodes" id="progNodes">
+        <div class="prog-node active" data-idx="0" onclick="openProg(0)">
+          <div class="prog-dot">1–7</div>
+          <div class="prog-node-label">Base</div>
+        </div>
+        <div class="prog-node" data-idx="1" onclick="openProg(1)">
+          <div class="prog-dot">8–14</div>
+          <div class="prog-node-label">Escalas</div>
+        </div>
+        <div class="prog-node" data-idx="2" onclick="openProg(2)">
+          <div class="prog-dot">15–21</div>
+          <div class="prog-node-label">Belting</div>
+        </div>
+        <div class="prog-node" data-idx="3" onclick="openProg(3)">
+          <div class="prog-dot">22–30</div>
+          <div class="prog-node-label">Repertório</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prog-detail show" id="progDetail">
+      <h3 id="progDetailTitle">Semana 1–7: Apoio Diafragmático</h3>
+      <ul id="progDetailList"></ul>
+    </div>
+
+    <div style="margin-top:14px">
+      <div class="card">
+        <div class="card-title">📅 Estrutura Diária</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+          <div style="display:flex;gap:12px;align-items:baseline">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--ember);flex-shrink:0">10'</span>
+            <div>
+              <div style="font-size:0.84rem;font-weight:600;color:var(--bone)">Aquecimento</div>
+              <div style="font-size:0.78rem;color:var(--smoke)">Respiração diafragmática + Lip Trill + Sirene</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:baseline">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--ember);flex-shrink:0">20'</span>
+            <div>
+              <div style="font-size:0.84rem;font-weight:600;color:var(--bone)">Principal</div>
+              <div style="font-size:0.78rem;color:var(--smoke)">Nay Nay Nay em escalas + integração com violão</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:baseline">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--ember);flex-shrink:0">10'</span>
+            <div>
+              <div style="font-size:0.84rem;font-weight:600;color:var(--bone)">Repertório</div>
+              <div style="font-size:0.78rem;color:var(--smoke)">Belting controlado em Wasted Time e Quicksand Jesus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ REPERTÓRIO ══════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-repertorio">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Lista de Trabalho</div>
+      <div class="sec-title">SEU <span>REPERTÓRIO</span></div>
+    </div>
+    <div class="rep-grid" id="repGrid"></div>
+  </div>
+
+  <!-- ═══ FEEDBACK ════════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-feedback">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Pós-Sessão</div>
+      <div class="sec-title">ANÁLISE DE <span>DESEMPENHO</span></div>
+    </div>
+    <div id="fbContainer"></div>
+    <button class="btn btn-main" onclick="submitFeedback()" id="btnFb" style="width:100%;margin-top:4px" disabled>VER ANÁLISE</button>
+    <div class="fb-summary" id="fbSummary">
+      <h3>🎯 Análise da Sessão</h3>
+      <p id="fbSummaryText"></p>
+    </div>
+  </div>
+
+  <!-- ═══ SAÚDE VOCAL ═════════════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-saude">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Longevidade Vocal</div>
+      <div class="sec-title">CUIDA DA <span>VOZ</span></div>
+    </div>
+    <div id="healthContainer"></div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- COMPLETE OVERLAY -->
+<div class="overlay" id="completeOverlay">
+  <div class="overlay-glyph">🤘</div>
+  <h2>SESSÃO CONCLUÍDA</h2>
+  <p>Você completou o treino Hard Rock Mastery. Vai na aba Feedback e registra como foi.</p>
+  <button class="btn btn-main" style="max-width:280px;width:100%;font-size:1.1rem;padding:14px" onclick="closeOverlay()">↺ NOVA SESSÃO</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════════ */
+
+const REPERTOIRE = [
+  { title: 'Dream On', artist: 'Aerosmith', icon: '🎸', diff: 3, focus: 'Apoio longo em notas sustentadas', tip: 'A introdução de piano serve de metrônomo. Faz Nay por cima antes de cantar as letras. Agudos finais exigem mix voice — nunca force com garganta.' },
+  { title: 'Carry On Wayward Son', artist: 'Kansas', icon: '⚡', diff: 3, focus: 'Ritmo marcado e punch no ataque', tip: 'O riff de guitarra tem pulso fortíssimo. Deixa esse pulso guiar o apoio. Cada sílaba precisa ter "peso" vindo do diafragma.' },
+  { title: 'Wasted Time', artist: 'Skid Row', icon: '🔥', diff: 4, focus: 'Dinâmica grave-agudo, emoção pura', tip: 'Sebastian Bach alterna sussurro e potência. O contraste é a alma da música. Treina os dois extremos antes de unir.' },
+  { title: 'Quicksand Jesus', artist: 'Skid Row', icon: '😈', diff: 5, focus: 'Belting extremo + controle emocional', tip: 'A mais difícil do repertório. Trabalha em partes curtas. Aquece 20 minutos antes de tentar o refrão em potência.' },
+  { title: '18 and Life', artist: 'Skid Row', icon: '🎵', diff: 3, focus: 'Storytelling + groove rock', tip: 'Pensa menos em volume, mais em narrativa. Cada verso conta uma história. O agudo do refrão vem naturalmente quando a emoção é real.' },
+  { title: 'Youth Gone Wild', artist: 'Skid Row', icon: '🤘', diff: 3, focus: 'Energia e atitude no refrão', tip: 'Energia total mas com controle. É a melhor para treinar "atitude rock" sem sacrificar a técnica.' },
+];
+
+const FEEDBACK_QUESTIONS = [
+  { q: 'Senti o diafragma empurrando?', opts: ['Sim, claramente', 'Às vezes', 'Pouco', 'Não senti nada'] },
+  { q: 'A garganta ficou solta?', opts: ['Totalmente solta', 'Soltou depois', 'Travou bastante', 'Travou o tempo todo'] },
+  { q: 'Mantive apoio nas notas altas?', opts: ['Sim, sustentei', 'Parcialmente', 'Perdi o apoio', 'Não cheguei nos agudos'] },
+  { q: 'Como foi a emoção na voz?', opts: ['Muito presente', 'Apareceu em momentos', 'Técnica travou a emoção', 'Ainda estou mecânico'] },
+];
+
+const HEALTH_RULES = [
+  { icon: '🚫', title: 'NUNCA force a garganta', body: 'Dor é sinal vermelho. Para imediatamente. Um show perdido é recuperável, uma corda vocal lesionada pode acabar com a carreira.' },
+  { icon: '💧', title: 'Hidrate o dia todo', body: 'As cordas vocais precisam de lubrificação. Beba água antes, durante e depois. Evita álcool e cafeína excessiva antes de cantar.' },
+  { icon: '😴', title: 'Descanse a voz', body: 'Se sentir rouquidão após o treino, silêncio vocal por 24–48h. Não sussurra — isso estressa mais do que falar normal.' },
+  { icon: '🌡️', title: 'Aquece sempre', body: 'Nunca começa pela parte principal sem aquecimento. As cordas vocais são músculo — músculo frio rasga.' },
+  { icon: '🤧', title: 'Respeita doenças', body: 'Resfriado, sinusite ou tosse: cancela o treino intenso. Canta por cima de inflamação agrava e prolonga a lesão.' },
+  { icon: '🍯', title: 'Mel + gengibre', body: 'Chá de mel e gengibre antes de cantar lubrifica e tem leve efeito anti-inflamatório. Evita mentol — resseca.' },
+];
+
+const PROG_DATA = [
+  {
+    title: 'Semana 1–7: Apoio Diafragmático Base',
+    items: [
+      'Respiração diafragmática: 10 repetições todo dia antes de qualquer coisa',
+      'Lip Trill em escala simples — 3 minutos',
+      'Nay Nay Nay em tom médio (Dó/Ré), lento e constante — 10 minutos',
+      'Foco total: mão na barriga, garganta solta, costelas abertas',
+      'Sem escala subindo ainda — só consolida o mecanismo',
+      'Grava um áudio a cada 2 dias e compara',
+    ]
+  },
+  {
+    title: 'Semana 8–14: Escalas + Violão',
+    items: [
+      'Mantém aquecimento da semana 1',
+      'Nay Nay Nay em escala Dó-Mi-Sol-Mi-Dó, sobe meio tom a cada série',
+      'Integra com violão: toca Dream On e Carry On, canta Nay por cima',
+      'Começa a cantar trechos reais com apoio treinado',
+      'Exercício de mix voice: sirene de médio ao agudo com voz de cabeça',
+      'Grava e presta atenção em onde a voz "quebra"',
+    ]
+  },
+  {
+    title: 'Semana 15–21: Belting Controlado',
+    items: [
+      'Introduz Wasted Time e 18 and Life no repertório',
+      'Belting: NAY forte com apoio total — máx 5 minutos seguidos inicialmente',
+      'Trabalha passagem de registro (break) — zona de perigo entre peito e cabeça',
+      'Treina dinâmica: sussurar e explodir no mesmo exercício',
+      'Quicksand Jesus em partes curtas, nunca a música toda ainda',
+      'Avalia rouquidão pós-treino — se tiver, reduz carga',
+    ]
+  },
+  {
+    title: 'Semana 22–30: Repertório Completo',
+    items: [
+      'Sessão completa de 40 minutos com repertório Skid Row',
+      'Canta cada música inteira prestando atenção em cada verso',
+      'Exercício de performance: grava vídeo fingindo que é show',
+      'Trabalha Youth Gone Wild com atitude e presença total',
+      'Refina os agudos de Quicksand Jesus com mix voice estabelecido',
+      'Compara gravação do dia 1 com o dia 30 — é a prova',
+    ]
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHASES
+═══════════════════════════════════════════════════════════════════ */
+
+const PHASES = [
+  {
+    id: 'breath', label: '🌬️ Aquecimento', name: 'RESPIRAÇÃO',
+    duration: 90,
+    desc: '10 repetições · Inspira 4s / Expira 6s',
+    speech: 'Vamos começar, parça. Respiração diafragmática. Mão na barriga. Inspira pelo nariz por 4 segundos, sente as costelas abrindo. Depois solta em 6 segundos. 10 repetições. Começa agora.',
+    ticks: [
+      { at: 25, text: 'Boa. Sente a barriga empurrando a mão pra fora.' },
+      { at: 55, text: 'Metade. Relaxa os ombros. Garganta completamente solta.' },
+      { at: 78, text: 'Últimas respirações. Cada expiração mais longa.' },
+    ]
+  },
+  {
+    id: 'liptrill', label: '🌬️ Aquecimento', name: 'LIP TRILL + SIRENE',
+    duration: 120,
+    desc: 'Brrr em escala · Sirene 5 vezes',
+    speech: 'Lip Trill agora. Fecha os lábios levemente e sopra fazendo brrr. Sobe e desce em escala simples. Lábios soltos, não força. Depois partimos pra sirene de grave ao agudo.',
+    ticks: [
+      { at: 20, text: 'Brrr, sobe a escala. Vai pro agudo devagar.' },
+      { at: 55, text: 'Agora sirene. Grave ao agudo ao grave. Cinco vezes.' },
+      { at: 85, text: 'Cada sirene um pouco mais expandida no agudo.' },
+      { at: 108, text: 'Última sirene. Abre bem no topo.' },
+    ]
+  },
+  {
+    id: 'nay1', label: '🎤 Nível 1', name: 'NAY BASE',
+    duration: 480,
+    desc: 'Tom médio · Garganta solta · Diafragma empurrando',
+    speech: 'Nível 1. Nay Nay Nay em tom médio. Tom de referência: Dó. O NAY precisa ter ressonância nasal, sente vibrar na máscara do rosto, não na garganta. Começa lento. Foco total em costelas abertas, diafragma ativo, garganta livre.',
+    toneNote: 'Dó', toneDesc: 'Tom base · Nay Nay Nay',
+    ticks: [
+      { at: 30, text: 'Bom. A mão tá sentindo o diafragma?' },
+      { at: 80, text: 'Aumenta a ressonância nasal. Naaay... vibra no nariz.' },
+      { at: 150, text: 'Ótimo. Mantém o fluxo sem interromper.' },
+      { at: 230, text: 'Metade do nível 1. Garganta solta? Ombros baixos?' },
+      { at: 320, text: 'Sobe um décimo de intensidade. Só um décimo.' },
+      { at: 420, text: 'Últimos 60 segundos. Consolida esse apoio. É o teu alicerce.' },
+    ]
+  },
+  {
+    id: 'nay2', label: '🔥 Nível 2', name: 'POTÊNCIA ROCK',
+    duration: 480,
+    desc: 'Forte · Escala Dó Mi Sol · Sobe meio tom',
+    speech: 'Nível 2. Potência Hard Rock. Aumenta a intensidade. NAY mais forte, como se tivesse chamando alguém do outro lado do palco. Escala: Dó, Mi, Sol, Mi, Dó. Sobe meio tom a cada série. Coloca atitude de Sebastian Bach. Você não tá num coral — você tá no palco.',
+    toneNote: 'Dó', toneDesc: 'Dó · Mi · Sol · Sobe meio tom',
+    ticks: [
+      { at: 20, text: 'Nay Nay Nay forte! Atitude rock total!' },
+      { at: 65, text: 'Sobe meio tom. Ré agora.', tone: 'Ré' },
+      { at: 115, text: 'Sente o apoio embaixo? Não deixa a garganta apertar.' },
+      { at: 155, text: 'Mi agora. Mantém a ressonância facial.', tone: 'Mi' },
+      { at: 205, text: 'Isso. Mais intensidade. Você é o Sebastian Bach do palco.' },
+      { at: 250, text: 'Fá. Testa onde começa a força.', tone: 'Fá' },
+      { at: 320, text: 'Sol agora. Último nível.', tone: 'Sol' },
+      { at: 420, text: 'Segura esse volume. Diafragma empurrando até o fim.' },
+    ]
+  },
+  {
+    id: 'nay3', label: '🎸 Nível 3', name: 'INTEGRAÇÃO',
+    duration: 540,
+    desc: 'Pega o violão · Dream On · Carry On · Letras reais',
+    speech: 'Nível 3. Integração com música. Pega o violão. Toca a introdução de Dream On e faz Nay Nay Nay por cima seguindo o ritmo. Depois Carry On Wayward Son. Por fim canta os trechos reais com todo o apoio que você treinou. Transfere a técnica pra música.',
+    ticks: [
+      { at: 30, text: 'Dream On. Nay por cima da introdução. Segue o ritmo.' },
+      { at: 110, text: 'Canta as letras reais agora. Não perde o apoio.' },
+      { at: 200, text: 'Carry On Wayward Son. Mesma técnica, mais punch.' },
+      { at: 300, text: 'Sente a diferença? A voz tem mais corpo agora.' },
+      { at: 420, text: 'Canta os refrões com o diafragma, não com a garganta.' },
+      { at: 490, text: 'Últimos 50 segundos. Esse é o som do Mau Shows no palco.' },
+    ]
+  },
+  {
+    id: 'cool', label: '❄️ Cooldown', name: 'RESFRIAMENTO',
+    duration: 90,
+    desc: 'Humming suave · Relaxa tudo',
+    speech: 'Muito bem, parça. Sessão concluída. Resfria a voz agora. Fecha os lábios, hmmm suave, grave ao médio. Sem esforço. Deixa tudo relaxar.',
+    toneNote: 'Dó', toneDesc: 'Humming suave · Relaxa',
+    ticks: [
+      { at: 30, text: 'Hmmm suave. Sente o calor saindo da garganta.' },
+      { at: 65, text: 'Relaxa pescoço, mandíbula, ombros.' },
+    ]
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+   SPEECH
+═══════════════════════════════════════════════════════════════════ */
+
+const SYN = window.speechSynthesis;
+let voicePT = null, coachVol = 0.85;
+
+function loadVoices() {
+  const vs = SYN ? SYN.getVoices() : [];
+  voicePT = vs.find(v => v.lang.startsWith('pt')) ||
+            vs.find(v => v.lang.startsWith('es')) ||
+            vs[0] || null;
+}
+
+if (SYN) { SYN.onvoiceschanged = loadVoices; loadVoices(); }
+else document.getElementById('warnBar').classList.add('show');
+
+function speak(txt, cb) {
+  if (!SYN) { if (cb) cb(); return; }
+  SYN.cancel();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'pt-BR'; u.volume = coachVol; u.rate = 0.87; u.pitch = 1.05;
+  if (voicePT) u.voice = voicePT;
+  if (cb) u.onend = cb;
+  SYN.speak(u);
+  setInstr(txt, true);
+}
+
+function stopSpeech() { if (SYN) SYN.cancel(); }
+function setVol(v) {
+  coachVol = parseFloat(v);
+  document.getElementById('volNum').textContent = Math.round(v * 100) + '%';
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   AUDIO
+═══════════════════════════════════════════════════════════════════ */
+
+const NOTES = { 'Dó':261.63,'Ré':293.66,'Mi':329.63,'Fá':349.23,'Sol':392,'Lá':440 };
+let AX = null, oscNode = null;
+
+function getAX() {
+  if (!AX) AX = new (window.AudioContext || window.webkitAudioContext)();
+  return AX;
+}
+
+function playNote(freq, dur = 1.5) {
+  const ax = getAX();
+  if (oscNode) { try { oscNode.stop(); } catch(e){} oscNode = null; }
+  const osc = ax.createOscillator();
+  const gn = ax.createGain();
+  osc.type = 'sine'; osc.frequency.value = freq;
+  gn.gain.setValueAtTime(0, ax.currentTime);
+  gn.gain.linearRampToValueAtTime(0.16, ax.currentTime + 0.07);
+  gn.gain.setValueAtTime(0.16, ax.currentTime + dur - 0.1);
+  gn.gain.linearRampToValueAtTime(0, ax.currentTime + dur);
+  osc.connect(gn); gn.connect(ax.destination);
+  osc.start(); osc.stop(ax.currentTime + dur);
+  oscNode = osc;
+}
+
+function stopNote() { if (oscNode) { try { oscNode.stop(); } catch(e){} oscNode = null; } }
+
+function showTone(note, desc) {
+  document.getElementById('toneNoteEl').textContent = note;
+  document.getElementById('toneTxtEl').innerHTML = desc;
+  document.getElementById('tonePill').classList.add('show');
+  if (NOTES[note]) playNote(NOTES[note]);
+}
+
+function hideTone() {
+  document.getElementById('tonePill').classList.remove('show');
+  stopNote();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SESSION ENGINE
+═══════════════════════════════════════════════════════════════════ */
+
+let pIdx = 0, elapsed = 0, tickTimer = null, paused = false, active = false, pendTicks = [];
+
+function setInstr(txt, speaking = false) {
+  const el = document.getElementById('instrTicker');
+  el.textContent = txt;
+  el.classList.toggle('speaking', speaking);
+}
+
+function updateRing(e, tot) {
+  const C = 238, off = C - (Math.min(e / tot, 1) * C);
+  document.getElementById('trkFg').style.strokeDashoffset = off;
+  const rem = Math.max(tot - e, 0);
+  document.getElementById('trkTime').textContent =
+    String(Math.floor(rem / 60)).padStart(2,'0') + ':' + String(rem % 60).padStart(2,'0');
+}
+
+function updateSteps() {
+  document.querySelectorAll('.ps').forEach((el, i) => {
+    el.className = 'ps' + (i < pIdx ? ' done' : i === pIdx ? ' active' : '');
+  });
+}
+
+function buildSteps() {
+  const el = document.getElementById('phaseSteps');
+  el.innerHTML = PHASES.map(() => '<div class="ps"></div>').join('');
+}
+
+function loadPhase(idx) {
+  const p = PHASES[idx];
+  document.getElementById('coachPhaseLbl').textContent = p.label;
+  document.getElementById('coachPhaseDesc').textContent = p.desc;
+  document.getElementById('phLabelSm').textContent = p.label;
+  document.getElementById('phNameLg').textContent = p.name;
+  document.getElementById('phStatus').textContent = 'Em andamento…';
+  document.getElementById('coachDot').classList.add('live');
+
+  p.toneNote ? showTone(p.toneNote, p.toneDesc) : hideTone();
+
+  elapsed = 0;
+  pendTicks = [...(p.ticks || [])];
+  updateRing(0, p.duration);
+  updateSteps();
+  speak(p.speech, () => setInstr('', false));
+}
+
+function tick() {
+  if (paused) return;
+  elapsed++;
+  const p = PHASES[pIdx];
+  updateRing(elapsed, p.duration);
+
+  for (let i = pendTicks.length - 1; i >= 0; i--) {
+    if (elapsed >= pendTicks[i].at) {
+      const t = pendTicks.splice(i, 1)[0];
+      speak(t.text);
+      if (t.tone && NOTES[t.tone]) {
+        document.getElementById('toneNoteEl').textContent = t.tone;
+        playNote(NOTES[t.tone]);
+      }
+      break;
+    }
+  }
+
+  if (elapsed >= p.duration) advance();
+}
+
+function advance() {
+  stopNote();
+  pIdx++;
+  if (pIdx >= PHASES.length) { endSession(); return; }
+  setTimeout(() => loadPhase(pIdx), 600);
+}
+
+function startSession() {
+  if (active) return;
+  active = true; pIdx = 0;
+  buildSteps();
+  document.getElementById('btnStart').style.display = 'none';
+  document.getElementById('btnPause').style.display = '';
+  document.getElementById('btnSkip').disabled = false;
+  loadPhase(0);
+  tickTimer = setInterval(tick, 1000);
+}
+
+function togglePause() {
+  paused = !paused;
+  const btn = document.getElementById('btnPause');
+  btn.textContent = paused ? '▶' : '⏸';
+  document.getElementById('phStatus').textContent = paused ? '⏸ Pausado' : 'Em andamento…';
+  if (paused) { stopSpeech(); stopNote(); }
+}
+
+function skipPhase() {
+  if (!active) return;
+  clearInterval(tickTimer);
+  advance();
+  tickTimer = setInterval(tick, 1000);
+}
+
+function endSession() {
+  clearInterval(tickTimer); active = false;
+  stopSpeech(); stopNote();
+  document.getElementById('coachDot').classList.remove('live');
+  speak('Sessão completa! Você é um monstro hard rock. Vai na aba Feedback e registra como foi.');
+  setTimeout(() => document.getElementById('completeOverlay').classList.add('show'), 3000);
+}
+
+function closeOverlay() {
+  document.getElementById('completeOverlay').classList.remove('show');
+  paused = false; pIdx = 0; elapsed = 0;
+  document.getElementById('btnStart').style.display = '';
+  document.getElementById('btnPause').style.display = 'none';
+  document.getElementById('btnPause').textContent = '⏸';
+  document.getElementById('btnSkip').disabled = true;
+  document.getElementById('trkTime').textContent = '--:--';
+  document.getElementById('trkFg').style.strokeDashoffset = 238;
+  document.getElementById('coachDot').classList.remove('live');
+  document.getElementById('phLabelSm').textContent = '—';
+  document.getElementById('phNameLg').textContent = 'Sessão Hard Rock';
+  document.getElementById('phStatus').textContent = 'Pronto para começar';
+  setInstr('As instruções do coach aparecerão aqui.');
+  hideTone();
+  buildSteps();
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════════════════════ */
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', b.getAttribute('onclick').includes(id));
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + id);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   REPERTOIRE
+═══════════════════════════════════════════════════════════════════ */
+
+function buildRep() {
+  const grid = document.getElementById('repGrid');
+  grid.innerHTML = REPERTOIRE.map((r, i) => `
+    <div class="rep-card" id="rep${i}" onclick="toggleRep(${i})">
+      <div class="rep-card-top">
+        <div class="rep-icon">${r.icon}</div>
+        <div class="rep-info">
+          <div class="rep-title">${r.title}</div>
+          <div class="rep-artist">${r.artist}</div>
+        </div>
+        <div class="rep-diff">
+          ${[1,2,3,4,5].map(d => `<div class="diff-dot ${d<=r.diff?'on':''}"></div>`).join('')}
+        </div>
+      </div>
+      <div class="rep-expand">
+        <strong style="color:var(--ember);display:block;margin-bottom:4px">🎯 ${r.focus}</strong>
+        ${r.tip}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleRep(i) {
+  const el = document.getElementById('rep'+i);
+  el.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   FEEDBACK
+═══════════════════════════════════════════════════════════════════ */
+
+const fbAnswers = {};
+
+function buildFeedback() {
+  const c = document.getElementById('fbContainer');
+  c.innerHTML = FEEDBACK_QUESTIONS.map((fq, qi) => `
+    <div class="fb-question">
+      <div class="fb-q-text">${fq.q}</div>
+      <div class="fb-options">
+        ${fq.opts.map((opt, oi) => `
+          <button class="fb-opt" id="fb_${qi}_${oi}" onclick="pickFb(${qi},${oi},'${opt}')">${opt}</button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function pickFb(qi, oi, val) {
+  document.querySelectorAll(`[id^="fb_${qi}_"]`).forEach(b => b.classList.remove('selected'));
+  document.getElementById(`fb_${qi}_${oi}`).classList.add('selected');
+  fbAnswers[qi] = { oi, val };
+  document.getElementById('btnFb').disabled = Object.keys(fbAnswers).length < FEEDBACK_QUESTIONS.length;
+}
+
+function submitFeedback() {
+  const scores = Object.values(fbAnswers).map(a => 3 - a.oi);
+  const avg = scores.reduce((s, v) => s + v, 0) / scores.length;
+  let msg = '';
+  if (avg >= 2.5) msg = '🔥 Sessão excelente! O apoio tá sólido e a emoção apareceu. Continua assim — você tá no caminho do Sebastian Bach. Na próxima suba a escala mais um semitom.';
+  else if (avg >= 1.5) msg = '💪 Boa sessão com pontos a melhorar. Foca no apoio diafragmático antes de aumentar volume. Roda o Nível 1 por mais 3 minutos nas próximas sessões.';
+  else msg = '🎯 Sessão de diagnóstico. Tem coisa presa na técnica — pode ser postura, respiração ou tensão. Faz só o Nível 1 pelos próximos 3 dias, sem subir de nível. Base antes de potência.';
+  document.getElementById('fbSummaryText').textContent = msg;
+  document.getElementById('fbSummary').classList.add('show');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PROGRESSÃO
+═══════════════════════════════════════════════════════════════════ */
+
+let openProgIdx = 0;
+
+function openProg(idx) {
+  openProgIdx = idx;
+  document.querySelectorAll('.prog-node').forEach((n, i) => {
+    n.classList.toggle('active', i === idx);
+  });
+  const d = PROG_DATA[idx];
+  document.getElementById('progDetailTitle').textContent = d.title;
+  document.getElementById('progDetailList').innerHTML = d.items.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('progDetail').classList.add('show');
+  document.getElementById('progFill').style.width = (idx / (PROG_DATA.length - 1) * 100) + '%';
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HEALTH
+═══════════════════════════════════════════════════════════════════ */
+
+function buildHealth() {
+  document.getElementById('healthContainer').innerHTML = HEALTH_RULES.map(r => `
+    <div class="health-rule">
+      <div class="icon">${r.icon}</div>
+      <div>
+        <strong>${r.title}</strong>
+        <p>${r.body}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════════ */
+
+buildSteps();
+buildRep();
+buildFeedback();
+buildHealth();
+openProg(0);
+</script>
+</body>
+</html>

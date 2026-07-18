@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXUS VOCAL v7 · Sebastian Bach</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap');
+        :root {
+            --bg: #020208; --s1: #08080f; --red: #c41f0e; --ora: #e8620a; 
+            --grn: #14ff5a; --blu: #1a9fff; --wht: #f2efe8; --gry: #78788a;
+            --R: 'Bebas Neue', sans-serif; --U: 'Inter', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background: var(--bg); color: var(--wht); font-family: var(--U); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Header & HUD */
+        header { padding: 15px; text-align: center; background: linear-gradient(to bottom, var(--s1), transparent); border-bottom: 1px solid rgba(196, 31, 14, 0.3); }
+        h1 { font-family: var(--R); font-size: 2.2rem; letter-spacing: 2px; color: var(--wht); text-shadow: 0 0 10px var(--red); }
+        .hud-stats { display: flex; justify-content: space-around; padding: 10px; font-family: var(--R); font-size: 1.2rem; color: var(--ora); }
+        
+        /* SVG Anatomy Area */
+        .anatomy-container { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; padding: 20px; }
+        svg { width: 100%; max-height: 40vh; filter: drop-shadow(0 0 15px rgba(26, 159, 255, 0.2)); }
+        .zone { fill: transparent; stroke: var(--gry); stroke-width: 2; transition: all 0.1s ease-out; }
+        .zone.active { stroke: var(--red); fill: rgba(196, 31, 14, 0.4); filter: drop-shadow(0 0 10px var(--red)); }
+        
+        /* Coach Bach Chat */
+        .bach-console { height: 120px; background: rgba(8, 8, 15, 0.9); border-top: 2px solid var(--gry); padding: 15px; overflow-y: auto; font-size: 0.9rem; color: var(--grn); border-left: 4px solid var(--red); }
+        .bach-msg { margin-bottom: 8px; line-height: 1.4; }
+        .bach-msg span { color: var(--wht); font-weight: bold; }
+
+        /* Controls CVT */
+        .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; background: var(--bg); }
+        button { background: var(--s1); border: 1px solid var(--gry); color: var(--wht); font-family: var(--R); font-size: 1.2rem; padding: 12px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        button:active { background: var(--red); border-color: var(--red); transform: scale(0.95); }
+        #startBtn { grid-column: span 3; background: var(--red); border: none; font-size: 1.5rem; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NEXUS VOCAL V7</h1>
+        <div class="hud-stats">
+            <div>PITCH: <span id="pitchVal">--</span> Hz</div>
+            <div>VOL: <span id="volVal">--</span> dB</div>
+        </div>
+    </header>
+
+    <div class="anatomy-container">
+        <!-- SVG Anatômico Vetorial Otimizado -->
+        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cabeça/Máscara -->
+            <path id="mask" class="zone" d="M60,50 Q100,10 140,50 Q150,100 100,130 Q50,100 60,50 Z" />
+            <text x="100" y="70" fill="#78788a" font-size="12" text-anchor="middle" font-family="sans-serif">MÁSCARA</text>
+            <!-- Laringe/Garganta -->
+            <path id="larynx" class="zone" d="M85,130 L115,130 L110,180 L90,180 Z" />
+            <text x="100" y="160" fill="#78788a" font-size="10" text-anchor="middle" font-family="sans-serif">LARINGE</text>
+            <!-- Pulmões/Diafragma -->
+            <path id="diaphragm" class="zone" d="M50,190 Q100,170 150,190 L160,280 Q100,320 40,280 Z" />
+            <text x="100" y="250" fill="#78788a" font-size="12" text-anchor="middle" font-family="sans-serif">DIAFRAGMA</text>
+        </svg>
+    </div>
+
+    <div class="bach-console" id="bachChat">
+        <div class="bach-msg"><span>[SISTEMA]:</span> Aguardando inicialização do microfone. Coach Bach em standby.</div>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn">ATIVAR MOTOR DE ÁUDIO</button>
+        <button onclick="setMode('NAY')">NAY (Faringe)</button>
+        <button onclick="setMode('SSS')">SSS (Apoio)</button>
+        <button onclick="setMode('SIRENE')">SIRENE (Mix)</button>
+        <button onclick="setMode('BELTING')">BELTING</button>
+        <button onclick="setMode('NEUTRAL')">NEUTRAL</button>
+        <button onclick="setMode('OVERDRIVE')">OVERDRIVE</button>
+    </div>
+
+    <!-- Importando os motores Lógicos -->
+    <script src="audio-engine.js"></script>
+    <script src="bach-logic.js"></script>
+</body>
+</html>

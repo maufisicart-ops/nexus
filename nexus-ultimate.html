@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXUS VOCAL v7 · Ultimate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700&display=swap');
+        :root { --bg: #020208; --s1: #08080f; --red: #c41f0e; --ora: #e8620a; --grn: #14ff5a; --blu: #1a9fff; --wht: #f2efe8; --gry: #78788a; --R: 'Bebas Neue', sans-serif; --U: 'Inter', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background: var(--bg); color: var(--wht); font-family: var(--U); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        header { padding: 12px; text-align: center; background: linear-gradient(to bottom, var(--s1), transparent); border-bottom: 1px solid rgba(196, 31, 14, 0.3); }
+        h1 { font-family: var(--R); font-size: 2rem; letter-spacing: 2px; color: var(--wht); text-shadow: 0 0 10px var(--red); }
+        .hud-stats { display: flex; justify-content: space-around; padding: 8px; font-family: var(--R); font-size: 1.3rem; color: var(--ora); }
+        .anatomy-container { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; padding: 10px; }
+        svg { width: 100%; max-height: 42vh; filter: drop-shadow(0 0 15px rgba(26, 159, 255, 0.15)); }
+        .zone { fill: transparent; stroke: var(--gry); stroke-width: 2.5; transition: all 0.15s ease-out; }
+        .zone.active { stroke: var(--red); fill: rgba(196, 31, 14, 0.35); filter: drop-shadow(0 0 12px var(--red)); }
+        .bach-console { height: 110px; background: rgba(8, 8, 15, 0.95); border-top: 2px solid var(--gry); padding: 12px; overflow-y: auto; font-size: 0.85rem; color: var(--grn); border-left: 4px solid var(--red); font-family: monospace; }
+        .bach-msg { margin-bottom: 6px; line-height: 1.3; }
+        .bach-msg span { color: var(--wht); font-weight: bold; }
+        .controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px; background: var(--bg); }
+        button { background: var(--s1); border: 1px solid var(--gry); color: var(--wht); font-family: var(--R); font-size: 1.1rem; padding: 10px; border-radius: 6px; cursor: pointer; transition: 0.1s; }
+        button:active { background: var(--red); border-color: var(--red); transform: scale(0.96); }
+        #startBtn { grid-column: span 3; background: var(--red); border: none; font-size: 1.4rem; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NEXUS VOCAL V7 · ULTIMATE</h1>
+        <div class="hud-stats">
+            <div>FREQ: <span id="pitchVal">--</span> Hz</div>
+            <div>VOL: <span id="volVal">--</span> dB</div>
+        </div>
+    </header>
+
+    <div class="anatomy-container">
+        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+            <path id="mask" class="zone" d="M60,50 Q100,10 140,50 Q150,100 100,130 Q50,100 60,50 Z" />
+            <text x="100" y="75" fill="#78788a" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">MÁSCARA</text>
+            
+            <path id="larynx" class="zone" d="M85,135 L115,135 L110,180 L90,180 Z" />
+            <text x="100" y="160" fill="#78788a" font-size="10" text-anchor="middle" font-family="sans-serif" font-weight="bold">LARINGE</text>
+            
+            <path id="diaphragm" class="zone" d="M50,195 Q100,175 150,195 L160,285 Q100,325 40,285 Z" />
+            <text x="100" y="250" fill="#78788a" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="bold">DIAFRAGMA</text>
+        </svg>
+    </div>
+
+    <div class="bach-console" id="bachChat">
+        <div class="bach-msg"><span>[SISTEMA]:</span> Engine pronta. Toque no botão abaixo para liberar o microfone e iniciar os testes de CVT com o Coach Bach! 🤘</div>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn">ATIVAR MOTOR ULTIMATE</button>
+        <button onclick="setMode('NAY')">NAY (Twang)</button>
+        <button onclick="setMode('SSS')">SSS (Suporte)</button>
+        <button onclick="setMode('SIRENE')">SIRENE (Mix)</button>
+        <button onclick="setMode('BELTING')">BELTING</button>
+        <button onclick="setMode('NEUTRAL')">NEUTRAL</button>
+        <button onclick="setMode('OVERDRIVE')">OVERDRIVE</button>
+    </div>
+
+    <script>
+        let audioCtx, analyser, microphone, pcmData;
+        let isAudioActive = false;
+        let currentPitch = 0, currentVolume = 0;
+        let currentMode = 'NEUTRAL';
+        let lastFeedbackTime = 0;
+
+        const uiPitch = document.getElementById('pitchVal');
+        const uiVol = document.getElementById('volVal');
+        const domMask = document.getElementById('mask');
+        const domLarynx = document.getElementById('larynx');
+        const domDiaphragm = document.getElementById('diaphragm');
+        const chatBox = document.getElementById('bachChat');
+
+        function postBachMessage(msg, isError = false) {
+            const div = document.createElement('div');
+            div.className = 'bach-msg';
+            div.innerHTML = `<span>[BACH]:</span> ${msg}`;
+            if (isError) div.style.color = 'var(--red)';
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            postBachMessage(`Modo alterado para: <span>${mode}</span>. Ajuste a biomecânica.`);
+        }
+
+        async function initAudio() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: false } });
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 2048;
+                microphone = audioCtx.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+                pcmData = new Float32Array(analyser.fftSize);
+                isAudioActive = true;
+                document.getElementById('startBtn').style.display = 'none';
+                postBachMessage("MICROFONE CONECTADO! Solta a voz, bota essa ressonância para vibrar!");
+                audioLoop();
+            } catch (err) {
+                postBachMessage("ERRO: Libere o acesso ao microfone nas configurações do Chrome.", true);
+                console.error(err);
+            }
+        }
+
+        function autoCorrelate(buf, sampleRate) {
+            let SIZE = buf.length, rms = 0;
+            for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+            rms = Math.sqrt(rms / SIZE);
+            if (rms < 0.015) return -1;
+            let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+            for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+            buf = buf.slice(r1, r2); SIZE = buf.length;
+            let c = new Array(SIZE).fill(0);
+            for (let i = 0; i < SIZE; i++) for (let j = 0; j < SIZE - i; j++) c[i] = c[i] + buf[j] * buf[j + i];
+            let d = 0; while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < SIZE; i++) { if (c[i] > maxval) { maxval = c[i]; maxpos = i; } }
+            return sampleRate / maxpos;
+        }
+
+        function audioLoop() {
+            if (!isAudioActive) return;
+            analyser.getFloatTimeDomainData(pcmData);
+            let sumSquares = 0.0;
+            for (const amp of pcmData) { sumSquares += amp * amp; }
+            currentVolume = Math.sqrt(sumSquares / pcmData.length);
+            let db = 20 * Math.log10(currentVolume + 0.00001);
+            let pitch = autoCorrelate(pcmData, audioCtx.sampleRate);
+            if (pitch !== -1 && pitch < 2000) currentPitch = pitch;
+
+            if (currentVolume > 0.015) {
+                uiPitch.innerText = currentPitch.toFixed(0);
+                uiVol.innerText = db.toFixed(0);
+                domDiaphragm.classList.add('active');
+                if (currentPitch > 380 || currentMode === 'NAY' || currentMode === 'BELTING') domMask.classList.add('active');
+                if (db > -12 || currentMode === 'OVERDRIVE') domLarynx.classList.add('active');
+                
+                let now = Date.now();
+                if (now - lastFeedbackTime > 3500) { evaluateCVT(currentPitch, db); lastFeedbackTime = now; }
+            } else {
+                uiPitch.innerText = "--"; uiVol.innerText = "--";
+                domMask.classList.remove('active'); domLarynx.classList.remove('active'); domDiaphragm.classList.remove('active');
+            }
+            requestAnimationFrame(audioLoop);
+        }
+
+        function evaluateCVT(p, db) {
+            if (currentMode === 'SSS') postBachMessage(db < -25 ? "Mais fluxo de ar estável! Sinta o diafragma trabalhar sustentado." : "Excelente estabilidade de pressão de ar!");
+            else if (currentMode === 'NAY') postBachMessage(p < 220 ? "O NAY precisa de brilho metálico na máscara. Suba essa laringe!" : "Aí sim! Twang afiado e focado na máscara facial.");
+            else if (currentMode === 'BELTING') postBachMessage(db < -15 ? "Belting não é sussurro! Abre essa boca e joga a energia com apoio!" : "Que poder! Som aberto e ressonância lá em cima!");
+            else if (currentMode === 'OVERDRIVE') postBachMessage("Sinta o som de peito focado e agressivo, sem morder a garganta!");
+        }
+
+        document.getElementById('startBtn').addEventListener('click', () => {
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            initAudio();
+        });
+    </script>
+</body>
+</html>

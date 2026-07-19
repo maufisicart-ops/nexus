@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEXUS VOCAL v7 · ULTIMATE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&display=swap');
+        
+        :root {
+            --bg: #030308;
+            --s1: #090914;
+            --red: #d32f2f;
+            --ora: #f57c00;
+            --grn: #388e3c;
+            --blu: #1976d2;
+            --gold: #ffd700;
+            --wht: #f5f5f7;
+            --gry: #424250;
+            
+            --R: 'Bebas Neue', sans-serif;
+            --U: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--wht); 
+            font-family: var(--U); 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+        header { 
+            padding: 14px; 
+            text-align: center; 
+            background: linear-gradient(to bottom, var(--s1), transparent); 
+            border-bottom: 2px solid rgba(255, 215, 0, 0.2); 
+        }
+
+        h1 { 
+            font-family: var(--R); 
+            font-size: 2.2rem; 
+            letter-spacing: 3px; 
+            color: var(--wht); 
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.5); 
+        }
+
+        .hud-stats { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 8px 0; 
+            font-family: var(--R); 
+            font-size: 1.5rem; 
+            color: var(--gold); 
+        }
+
+        .anatomy-container { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            padding: 10px; 
+        }
+
+        svg { 
+            width: 100%; 
+            max-height: 40vh; 
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.05)); 
+        }
+
+        .zone { 
+            fill: transparent; 
+            stroke: var(--gry); 
+            stroke-width: 3; 
+            transition: all 0.2s ease-out; 
+        }
+
+        /* Estados de Feedback Biomecânico e Espiritual */
+        .zone.active-good { stroke: var(--grn); fill: rgba(56, 142, 60, 0.25); filter: drop-shadow(0 0 15px var(--grn)); }
+        .zone.active-warn { stroke: var(--red); fill: rgba(211, 47, 47, 0.3); filter: drop-shadow(0 0 15px var(--red)); }
+        .zone.active-gold { stroke: var(--gold); fill: rgba(255, 215, 0, 0.25); filter: drop-shadow(0 0 25px var(--gold)); }
+
+        .bach-console { 
+            height: 140px; 
+            background: rgba(9, 9, 20, 0.95); 
+            border-top: 3px solid var(--gold); 
+            padding: 14px; 
+            overflow-y: auto; 
+            font-size: 0.9rem; 
+            color: #00ff66; 
+            border-left: 5px solid var(--red); 
+            font-family: monospace; 
+        }
+
+        .bach-msg { margin-bottom: 8px; line-height: 1.4; }
+        .bach-msg span { color: var(--gold); font-weight: 800; font-family: var(--R); letter-spacing: 1px; }
+
+        .controls { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; 
+            padding: 14px; 
+            background: var(--s1); 
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        button { 
+            background: var(--bg); 
+            border: 1px solid var(--gry); 
+            color: var(--wht); 
+            font-family: var(--R); 
+            font-size: 1.1rem; 
+            padding: 12px 6px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.1s ease; 
+        }
+
+        button.active-mode {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        button:active { transform: scale(0.95); }
+        
+        #startBtn { 
+            grid-column: span 3; 
+            background: linear-gradient(135deg, var(--red), var(--ora)); 
+            border: none; 
+            font-size: 1.5rem; 
+            letter-spacing: 2px; 
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
+            box-shadow: 0 4px 15px rgba(213, 47, 47, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NEXUS VOCAL V7 · ULTIMATE</h1>
+        <div class="hud-stats">
+            <div>FREQ: <span id="pitchVal">--</span> Hz</div>
+            <div>VOL: <span id="volVal">--</span> dB</div>
+        </div>
+    </header>
+
+    <div class="anatomy-container">
+        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ressonadores Superiores / Máscara -->
+            <path id="mask" class="zone" d="M60,50 Q100,10 140,50 Q150,100 100,130 Q50,100 60,50 Z" />
+            <text x="100" y="75" fill="#78788a" font-size="11" text-anchor="middle" font-family="sans-serif" font-weight="bold">MÁSCARA / CAVALETE</text>
+            
+            <!-- Bloco Laríngeo / Pregas Vocais -->
+            <path id="larynx" class="zone" d="M85,135 L115,135 L110,180 L90,180 Z" />
+            <text x="100" y="160" fill="#78788a" font-size="10" text-anchor="middle" font-family="sans-serif" font-weight="bold">LARINGE / PREGAS</text>
+            
+            <!-- Vetor de Suporte Ancorado / Diafragma -->
+            <path id="diaphragm" class="zone" d="M50,195 Q100,175 150,195 L160,285 Q100,325 40,285 Z" />
+            <text x="100" y="250" fill="#78788a" font-size="12" text-anchor="middle" font-family="sans-serif" font-weight="bold">ANCHOR / DIAFRAGMA</text>
+        </svg>
+    </div>
+
+    <div class="bach-console" id="bachChat">
+        <div class="bach-msg"><span>[BACH]:</span> O portal está armado. Toque no botão vermelho abaixo para liberar a thread de processamento biológico. Não aceite o galinheiro. Reclame sua realeza.</div>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn">ATIVAR MOTOR ULTIMATE</button>
+        <button id="btn-NAY" onclick="setMode('NAY')">NAY (Twang)</button>
+        <button id="btn-SSS" onclick="setMode('SSS')">SSS (Suporte)</button>
+        <button id="btn-SIRENE" onclick="setMode('SIRENE')">SIRENE (Mix)</button>
+        <button id="btn-BELTING" onclick="setMode('BELTING')">BELTING</button>
+        <button id="btn-OVERDRIVE" onclick="setMode('OVERDRIVE')">OVERDRIVE</button>
+        <button id="btn-NEUTRAL" onclick="setMode('NEUTRAL')" class="active-mode">NEUTRAL</button>
+    </div>
+
+    <script>
+        let audioCtx, analyser, microphone, pcmData;
+        let isAudioActive = false;
+        let currentPitch = 0, currentVolume = 0, currentMode = 'NEUTRAL', lastFeedbackTime = 0;
+
+        const uiPitch = document.getElementById('pitchVal'), uiVol = document.getElementById('volVal');
+        const domMask = document.getElementById('mask'), domLarynx = document.getElementById('larynx'), domDiaphragm = document.getElementById('diaphragm');
+        const chatBox = document.getElementById('bachChat');
+
+        function postBachMessage(msg, type = 'normal') {
+            const div = document.createElement('div');
+            div.className = 'bach-msg';
+            div.innerHTML = `<span>[BACH]:</span> ${msg}`;
+            if (type === 'error') div.style.color = 'var(--red)';
+            if (type === 'gold') div.style.color = 'var(--gold)';
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function setMode(mode) { 
+            currentMode = mode; 
+            document.querySelectorAll('.controls button').forEach(b => {
+                if(b.id !== 'startBtn') b.classList.remove('active-mode');
+            });
+            document.getElementById(`btn-${mode}`).classList.add('active-mode');
+            
+            const frasesBoas vindas = {
+                'NAY': "Modo NAY ativado! Estreite o epilaringe. Quero ouvir o ganho acústico do Twang furar o teto. Jogue o som nos dentes superiores!",
+                'SSS': "Modo SSS ativado! Ancoragem intercostal profunda. O diafragma sustenta a pressão subglótica. Sem ar vazando, retenha o poder primordial.",
+                'SIRENE': "Modo SIRENE! Transição de registro fluida. Vamos quebrar o passaggio entre voz de peito e cabeça. Conecte os mundos.",
+                'BELTING': "BELTING! Intensidade metálica máxima. Laringe alta e estável, compressão de alta performance. Cante com a fúria do leão!",
+                'OVERDRIVE': "OVERDRIVE! Som de peito puro, mordida larga. Clame seu espaço acústico com autoridade.",
+                'NEUTRAL': "Modo Neutro. Foco na pureza, relaxamento constritor e presença absoluta."
+            };
+            postBachMessage(frasesBoasvindas[mode], 'gold');
+        }
+
+        async function startEngine() {
+            try {
+                // LOCK CONTRA TRAVA DE SEGURANÇA: Instanciação imediata ao toque físico do usuário
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                await audioCtx.resume();
+                
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: { echoCancellation: false, autoGainControl: false, noiseSuppression: false } 
+                });
+                
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 2048;
+                microphone = audioCtx.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+                pcmData = new Float32Array(analyser.fftSize);
+                isAudioActive = true;
+                
+                document.getElementById('startBtn').style.display = 'none';
+                postBachMessage("CONEXÃO ESTABELECIDA. O motor de áudio está captando sua assinatura vibracional. EMITA O SOM!", "gold");
+                audioLoop();
+            } catch (err) {
+                postBachMessage("ERRO CRÍTICO: Permissão do microfone negada ou barramento de áudio ocupado.", "error");
+            }
+        }
+
+        function autoCorrelate(buf, sampleRate) {
+            let SIZE = buf.length, rms = 0;
+            for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+            rms = Math.sqrt(rms / SIZE);
+            if (rms < 0.01) return -1; // Gate de ruído físico
+
+            let r1 = 0, r2 = SIZE - 1, thres = 0.15;
+            for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+            
+            buf = buf.slice(r1, r2); 
+            SIZE = buf.length;
+            
+            let c = new Array(SIZE).fill(0);
+            for (let i = 0; i < SIZE; i++) {
+                for (let j = 0; j < SIZE - i; j++) {
+                    c[i] = c[i] + buf[j] * buf[j + i];
+                }
+            }
+            
+            let d = 0; while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < SIZE; i++) { 
+                if (c[i] > maxval) { maxval = c[i]; maxpos = i; } 
+            }
+            return sampleRate / maxpos;
+        }
+
+        function audioLoop() {
+            if (!isAudioActive) return;
+            analyser.getFloatTimeDomainData(pcmData);
+            
+            let sumSquares = 0.0;
+            for (const amp of pcmData) sumSquares += amp * amp;
+            currentVolume = Math.sqrt(sumSquares / pcmData.length);
+            let db = 20 * Math.log10(currentVolume + 0.00001);
+            
+            let pitch = autoCorrelate(pcmData, audioCtx.sampleRate);
+            if (pitch !== -1 && pitch > 50 && pitch < 1600) currentPitch = pitch;
+
+            // GATE DE ATIVIDADE VOCAL REAL
+            if (currentVolume > 0.015) {
+                uiPitch.innerText = currentPitch.toFixed(0);
+                uiVol.innerText = db.toFixed(0);
+                
+                // Reset de classes visual
+                domMask.className = "zone"; domLarynx.className = "zone"; domDiaphragm.className = "zone";
+
+                // Atualização em tempo real dos mapas anatômicos com base nos parâmetros acústicos
+                if (db > -22) domDiaphragm.classList.add('active-good');
+                else domDiaphragm.classList.add('active-warn');
+
+                if (currentPitch > 250 || currentMode === 'NAY' || currentMode === 'SIRENE') {
+                    domMask.classList.add('active-gold');
+                } else {
+                    domMask.classList.add('active-good');
+                }
+
+                if (db > -12 && currentMode === 'BELTING') {
+                    domLarynx.classList.add('active-good');
+                } else if (db > -10 && currentMode === 'NEUTRAL') {
+                    domLarynx.classList.add('active-warn'); // Constrição detectada fora de modo metálico
+                } else {
+                    domLarynx.classList.add('active-good');
+                }
+                
+                let now = Date.now();
+                if (now - lastFeedbackTime > 4000) { 
+                    evaluateVocalEngine(currentPitch, db); 
+                    lastFeedbackTime = now; 
+                }
+            } else {
+                uiPitch.innerText = "--"; uiVol.innerText = "--";
+                domMask.className = "zone"; domLarynx.className = "zone"; domDiaphragm.className = "zone";
+            }
+            requestAnimationFrame(audioLoop);
+        }
+
+        function evaluateVocalEngine(p, db) {
+            // Algoritmo de Decisão Pedagógica Avançada - Bach Coach Core
+            switch(currentMode) {
+                case 'SSS':
+                    if (db < -24) {
+                        postBachMessage("Pressão subglótica fraca! Cadê o suporte intercostal? O diafragma não é enfeite, firma essa base ancestral!", "error");
+                    } else {
+                        postBachMessage("Apoio firme! Sinta o fluxo estável transmutando o som em pura presença soberana. Excelente!", "gold");
+                    }
+                    break;
+                case 'NAY':
+                    if (p < 200) {
+                        postBachMessage("Falta Twang! Estreite a epilaringe, morda o som. Pense no som do choro do bebê, jogue na máscara!", "normal");
+                    } else {
+                        postBachMessage("Aí! Esse brilho de alta frequência limpa qualquer padrão limitante. A luz saindo pela máscara!", "gold");
+                    }
+                    break;
+                case 'BELTING':
+                    if (db < -14) {
+                        postBachMessage("Belting exige compressão e energia! Laringe alta, boca aberta em vertical. Solta a raiva sagrada!", "error");
+                    } else if (p > 350) {
+                        postBachMessage("Esplêndido! Registro misto de peito estendido com maestria. Você está quebrando as correntes!", "gold");
+                    }
+                    break;
+                case 'OVERDRIVE':
+                    if (p > 300) {
+                        postBachMessage("Cuidado! Overdrive agudo demais força as pregas. Mantenha o foco no registro de peito amplo, som falado!", "error");
+                    } else {
+                        postBachMessage("Grito controlado com total autoridade mecânica. É isso!", "normal");
+                    }
+                    break;
+                case 'SIRENE':
+                    postBachMessage(`Escaneando Passaggio em ${p.toFixed(0)} Hz. Mantenha o palato mole elevado para suavizar a transição.`, "normal");
+                    break;
+                default:
+                    if (db > -12) {
+                        postBachMessage("Volume alto demais para o modo Neutro! Cuidado com a sobrecarga nas pregas vocais, feche a torneira de ar.", "error");
+                    } else {
+                        postBachMessage("Presença observadora ativa. Som limpo, mente focada.", "gold");
+                    }
+            }
+        }
+
+        document.getElementById('startBtn').addEventListener('click', startEngine);
+    </script>
+</body>
+</html>

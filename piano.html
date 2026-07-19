@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NEXUS VOCAL v7.5 · MASTER CLASS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;900&display=swap');
+        
+        :root {
+            --bg: #030308;
+            --s1: #0a0a1a;
+            --red: #ff1744;
+            --ora: #ff9100;
+            --grn: #00e676;
+            --gold: #ffd700;
+            --wht: #f8f9fa;
+            --gry: #3a3a4f;
+            --R: 'Bebas Neue', sans-serif;
+            --U: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--wht); 
+            font-family: var(--U); 
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        html { height: -webkit-fill-available; }
+
+        header { 
+            padding: 12px; 
+            text-align: center; 
+            background: linear-gradient(to bottom, var(--s1), transparent); 
+            border-bottom: 2px solid var(--gold); 
+            flex-shrink: 0;
+        }
+
+        h1 { 
+            font-family: var(--R); 
+            font-size: 1.8rem; 
+            letter-spacing: 3px; 
+            color: var(--wht); 
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); 
+        }
+
+        .hud-stats { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 6px 0; 
+            font-family: var(--R); 
+            font-size: 1.5rem; 
+            color: var(--gold); 
+        }
+
+        .hud-stats span { color: var(--wht); }
+
+        .main-layout {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .piano-display {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--gry);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-family: var(--R);
+            font-size: 1.3rem;
+            color: var(--ora);
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .anatomy-container { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            max-height: 30vh;
+        }
+
+        svg { 
+            width: 100%; 
+            height: 100%;
+            max-height: 28vh; 
+        }
+
+        .zone { fill: transparent; stroke: var(--gry); stroke-width: 3; transition: all 0.1s ease; }
+        .zone.active-good { stroke: var(--grn); fill: rgba(0, 230, 118, 0.15); filter: drop-shadow(0 0 8px var(--grn)); }
+        .zone.active-warn { stroke: var(--red); fill: rgba(255, 23, 68, 0.2); filter: drop-shadow(0 0 8px var(--red)); }
+        .zone.active-gold { stroke: var(--gold); fill: rgba(255, 215, 0, 0.25); filter: drop-shadow(0 0 15px var(--gold)); }
+
+        .bach-console { 
+            height: 140px; 
+            background: #04040a; 
+            border: 1px solid var(--gold); 
+            border-left: 6px solid var(--red);
+            border-radius: 6px;
+            padding: 12px; 
+            overflow-y: auto; 
+            font-size: 0.9rem; 
+            color: #14ff5a; 
+            font-family: monospace;
+            margin-bottom: 8px;
+        }
+
+        .bach-msg { margin-bottom: 8px; line-height: 1.4; }
+        .bach-msg span { color: var(--gold); font-weight: 900; font-family: var(--R); letter-spacing: 1px; }
+
+        .controls { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 8px; 
+            background: var(--s1); 
+            padding: 10px;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        button { 
+            background: linear-gradient(135deg, #111, #222); 
+            border: 1px solid var(--gry); 
+            color: var(--wht); 
+            font-family: var(--R); 
+            font-size: 1.1rem; 
+            padding: 14px 8px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.15s ease; 
+        }
+
+        button.active-mode {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,145,0,0.2));
+            color: var(--gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        #startBtn { 
+            grid-column: span 2; 
+            background: linear-gradient(135deg, var(--red), var(--ora)); 
+            border: none; 
+            font-size: 1.4rem; 
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .piano-keyboard {
+            display: flex;
+            height: 45px;
+            background: #111;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            border: 1px solid #000;
+        }
+
+        .key {
+            flex: 1;
+            background: white;
+            border-right: 1px solid #ccc;
+            height: 100%;
+            transition: background 0.1s;
+        }
+
+        .key.black {
+            background: black;
+            max-width: 6%;
+            height: 65%;
+            z-index: 2;
+            margin-left: -3%;
+            margin-right: -3%;
+        }
+
+        .key.playing {
+            background: var(--gold) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>NEXUS MASTER CLASS · V7.5</h1>
+        <div class="hud-stats">
+            <div>ALVO PIANO: <span id="targetNote">--</span></div>
+            <div>A TUA NOTA: <span id="currentNote">--</span></div>
+            <div>PRECISÃO: <span id="accuracyVal">--</span></div>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <div class="piano-display" id="instructionBox">
+            PASSO 1: INICIE O APP NO BOTÃO ABAIXO
+        </div>
+
+        <div class="piano-keyboard" id="keyboard">
+            <div class="key" id="k-C4"></div><div class="key black" id="k-Cs4"></div>
+            <div class="key" id="k-D4"></div><div class="key black" id="k-Ds4"></div>
+            <div class="key" id="k-E4"></div>
+            <div class="key" id="k-F4"></div><div class="key black" id="k-Fs4"></div>
+            <div class="key" id="k-G4"></div><div class="key black" id="k-Gs4"></div>
+            <div class="key" id="k-A4"></div><div class="key black" id="k-As4"></div>
+            <div class="key" id="k-B4"></div>
+            <div class="key" id="k-C5"></div>
+        </div>
+
+        <div class="anatomy-container">
+            <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+                <path id="mask" class="zone" d="M60,50 Q100,10 140,50 Q150,100 100,130 Q50,100 60,50 Z" />
+                <path id="larynx" class="zone" d="M85,135 L115,135 L110,180 L90,180 Z" />
+                <path id="diaphragm" class="zone" d="M50,195 Q100,175 150,195 L160,285 Q100,325 40,285 Z" />
+            </svg>
+        </div>
+
+        <div class="bach-console" id="bachChat">
+            <div class="bach-msg"><span>[PROF. BACH]:</span> Chega de amadorismo. Um treino real exige ouvir o piano, internalizar o intervalo e replicar a frequência exata. Eu toco, você imita. Escolha um treino abaixo.</div>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" onclick="initApp()">ATIVAR SISTEMA DE ÁUDIO</button>
+            <button id="vocalize1" onclick="startVocalize(1)" style="display:none;">TREINO 1: tétrade (1-3-5-8)</button>
+            <button id="vocalize2" onclick="startVocalize(2)" style="display:none;">TREINO 2: 5 NOTAS (DO-SOL)</button>
+        </div>
+    </div>
+
+    <script>
+        let audioCtx = null;
+        let analyser, micStream, pcmData;
+        let isRunning = false;
+        const noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+        const vocalize1Pattern = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 261.63];
+        const vocalize2Pattern = [261.63, 293.66, 329.63, 349.23, 392.00, 349.23, 329.63, 293.66, 261.63];
+        let currentTargetFreq = 0;
+
+        function noteFromFrequency(frequency) {
+            let noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
+            return Math.round(noteNum) + 69;
+        }
+
+        function getNoteName(noteNum) {
+            return noteStrings[noteNum % 12] + Math.floor(noteNum / 12 - 1);
+        }
+
+        async function initApp() {
+            if (audioCtx) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                await audioCtx.resume();
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 2048;
+                audioCtx.createMediaStreamSource(stream).connect(analyser);
+                pcmData = new Float32Array(analyser.fftSize);
+                document.getElementById('startBtn').style.display = 'none';
+                document.getElementById('vocalize1').style.display = 'block';
+                document.getElementById('vocalize2').style.display = 'block';
+                printBach("Sistema online. Eu toco o piano e você imita perfeitamente. Solta o som!");
+                isRunning = true;
+                listenLoop();
+            } catch (e) {
+                printBach("Erro de microfone. Ative as permissões.", "error");
+            }
+        }
+
+        function playPianoTone(freq, duration) {
+            if (!audioCtx) return;
+            let osc1 = audioCtx.createOscillator();
+            let osc2 = audioCtx.createOscillator();
+            let gainNode = audioCtx.createGain();
+            osc1.type = 'triangle'; osc2.type = 'sine';    
+            osc1.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            osc2.frequency.setValueAtTime(freq * 2, audioCtx.currentTime); 
+            gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc1.connect(gainNode); osc2.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc1.start(); osc2.start();
+            osc1.stop(audioCtx.currentTime + duration); osc2.stop(audioCtx.currentTime + duration);
+            highlightKey(freq);
+        }
+
+        function highlightKey(freq) {
+            let noteNum = noteFromFrequency(freq);
+            let name = noteStrings[noteNum % 12].toLowerCase().replace('#', 's') + Math.floor(noteNum / 12 - 1);
+            let element = document.getElementById(`k-${name}`);
+            if(element) {
+                element.classList.add('playing');
+                setTimeout(() => element.classList.remove('playing'), 350);
+            }
+        }
+
+        async function startVocalize(type) {
+            let pattern = type === 1 ? vocalize1Pattern : vocalize2Pattern;
+            document.getElementById('vocalize1').disabled = true;
+            document.getElementById('vocalize2').disabled = true;
+            printBach("OUÇA O EXEMPLO SOLO DO PIANO.", "gold");
+            document.getElementById('instructionBox').innerText = "PIANO EXEMPLIFICANDO...";
+
+            for (let i = 0; i < pattern.length; i++) {
+                playPianoTone(pattern[i], 0.5);
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            printBach("SUA VEZ! Siga o piano nota por nota.", "gold");
+            for (let i = 0; i < pattern.length; i++) {
+                currentTargetFreq = pattern[i];
+                let noteNum = noteFromFrequency(currentTargetFreq);
+                let targetName = getNoteName(noteNum);
+                document.getElementById('targetNote').innerText = targetName;
+                document.getElementById('instructionBox').innerText = `CANTE AGORA: ${targetName}`;
+                playPianoTone(currentTargetFreq, 0.4);
+                await new Promise(r => setTimeout(r, 2200)); 
+            }
+
+            currentTargetFreq = 0;
+            document.getElementById('targetNote').innerText = "--";
+            document.getElementById('instructionBox').innerText = "Escolha um treino.";
+            document.getElementById('vocalize1').disabled = false;
+            document.getElementById('vocalize2').disabled = false;
+        }
+
+        function autoCorrelate(buf, sampleRate) {
+            let SIZE = buf.length, rms = 0;
+            for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+            rms = Math.sqrt(rms / SIZE);
+            if (rms < 0.015) return -1;
+            let r1 = 0, r2 = SIZE - 1, thres = 0.15;
+            for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+            buf = buf.slice(r1, r2); SIZE = buf.length;
+            let c = new Array(SIZE).fill(0);
+            for (let i = 0; i < SIZE; i++) for (let j = 0; j < SIZE - i; j++) c[i] = c[i] + buf[j] * buf[j + i];
+            let d = 0; while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < SIZE; i++) if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+            return sampleRate / maxpos;
+        }
+
+        function listenLoop() {
+            if (!isRunning) return;
+            analyser.getFloatTimeDomainData(pcmData);
+            let pitch = autoCorrelate(pcmData, audioCtx.sampleRate);
+            const domMask = document.getElementById('mask'), domLarynx = document.getElementById('larynx'), domDiaphragm = document.getElementById('diaphragm');
+            
+            if (pitch !== -1 && pitch > 60 && pitch < 1200) {
+                let noteNum = noteFromFrequency(pitch);
+                document.getElementById('currentNote').innerText = getNoteName(noteNum);
+                
+                if (currentTargetFreq > 0) {
+                    let diff = Math.abs(pitch - currentTargetFreq);
+                    let accuracy = Math.max(0, 100 - (diff * 2));
+                    document.getElementById('accuracyVal').innerText = accuracy.toFixed(0) + "%";
+                    domMask.className = "zone"; domLarynx.className = "zone"; domDiaphragm.className = "zone";
+                    if (accuracy > 90) { domMask.classList.add('active-gold'); domLarynx.classList.add('active-good'); domDiaphragm.classList.add('active-good'); } 
+                    else if (accuracy > 70) { domMask.classList.add('active-good'); domLarynx.classList.add('active-warn'); } 
+                    else { domLarynx.classList.add('active-warn'); domDiaphragm.classList.add('active-warn'); }
+                }
+            } else {
+                document.getElementById('currentNote').innerText = "--";
+            }
+            requestAnimationFrame(listenLoop);
+        }
+
+        function printBach(msg, type = 'normal') {
+            const chatBox = document.getElementById('bachChat');
+            const div = document.createElement('div');
+            div.className = 'bach-msg';
+            div.innerHTML = `<span>[PROF. BACH]:</span> ${msg}`;
+            if (type === 'error') div.style.color = 'var(--red)';
+            if (type === 'gold') div.style.color = 'var(--gold)';
+            chatBox.appendChild(div); chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
